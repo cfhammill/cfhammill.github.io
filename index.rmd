@@ -1,0 +1,11 @@
+---
+---
+
+Welcome to the New and Improved Datamancy Blog!
+
+Here you'll find a collection of musings on all things data related.
+
+Hot Off The Presses
+----------------------
+
+<div id='blogpost'></div>

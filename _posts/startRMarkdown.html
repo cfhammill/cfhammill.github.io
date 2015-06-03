@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+<title></title>
+
+<script src="libs/jquery-1.11.0/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap-3.3.1/css/flatly.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.1/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.1/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.1/shim/respond.min.js"></script>
+
+<style type="text/css">
+  /* padding for bootstrap navbar */
+  body {
+  padding-top: 50px;
+  padding-bottom: 40px;
+  }
+  /* offset scroll position for anchor links (for fixed navbar)  */
+  .section h2 {
+  padding-top: 55px;
+  margin-top: -55px;
+  }
+  .section h3 {
+  padding-top: 55px;
+  margin-top: -55px;
+  }
+  /* don't use link color in navbar */
+  .dropdown-menu>li>a {
+  color: black;
+  }
+</style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<link rel="stylesheet"
+      href="libs/highlight/textmate.css"
+      type="text/css" />
+<script src="libs/highlight/highlight.js"></script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img { 
+  max-width:100%; 
+  height: auto; 
+}
+</style>
+<div class="container-fluid main-container">
+
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+	<span class="icon-bar"></span>
+	<span class="icon-bar"></span>
+	<span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">Datamancy</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+	<li><a href="/">Home</a></li>
+	<li><a href="authoring">Blog</a></li>
+  <li><a href="/">About Me</a></li>
+	<li class="dropdown">
+	  <a href="formats" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Tutorials <span class="caret"></span></a>
+	  <ul class="dropdown-menu" role="menu">
+	    <li class="dropdown-header">Tutorials</li>
+	    <li><a href="html_document_format.html">Getting Started With R Markdown</a></li>
+	    <li><a href="r_notebook_format.html">Breaking Up With Powerpoint</a></li>
+      <li><a href="">Regular Expressions in R</a></li>
+      <li><a href="">Overlays with ggplot2</a></li>
+	  </ul>
+	</li>
+  <li class="dropdown">
+    <a href="formats" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Data Viz <span class="caret"></span></a>
+	  <ul class="dropdown-menu" role="menu">
+	    <li class="dropdown-header">Graphics</li>
+	    <li><a href="html_document_format.html">Networks</a></li>
+	    <li><a href="r_notebook_format.html">Topography Plots</a></li>
+	  </ul>
+	</li>
+  <li class="dropdown">
+    <a href="formats" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Diversions <span class="caret"></span></a>
+    <ul class="dropdown-menu" role="menu">
+	    <li class="dropdown-header">Drink Name Generator</li>
+	  </ul>
+	</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+
+
+<div id="intro" class="section level2">
+<h2>Intro</h2>
+<p>For today’s post, I’d like to continue on the R Markdown theme started in my last post, and give a brief introduction to authoring documents using R Markdown and Knitr. If you’re completely new to Knitr and R Markdown I recommend reading the “Back to basics” paragraph in my <a href="http://datamancy.blogspot.com/2015/02/writing-knitr-engine-to-run-code.html">last post</a> to get a feel for the context and purposes of these tools.</p>
+<p>These tools fill essentially the same niche for the R community as ipython notebooks do in the python community. My experience with ipython notebooks is minimal relative to my markdown experience and so I don’t feel qualified to compare the two, but I will say that ipython notebooks aren’t the only way to share code and rationale all in one document.</p>
+<p>My affection for R Markdown and Knitr is strong, but there were some growing pains. When I started learning R Markdown, I had a tiny bit of experience with Knitr already but nothing resembling expertise, the resultant challenge was having to learn both tools concurrently, flipping back and forth between documentation that, at the time, felt more like a technical showcase. I don’t want others to have to share that struggle, so here’s my attempt at streamlining the plunge into “reproducible research”<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>.</p>
+</div>
+<div id="sources-and-suggestions" class="section level2">
+<h2>Sources and Suggestions</h2>
+<p>Before we jump in to authoring our first (second, thirtieth) document using R Markdown, I feel I need to pay homage to the materials I learned from. If a topic is not covered in this introduction you will (hopefully) be able to find it in one of these sources.</p>
+<ul>
+<li><a href="http://rmarkdown.rstudio.com/">R Studio’s R Markdown Documentation</a>: This page is the official documentation for R Markdown. It is a treasure trove of information on how to acheive different stylistic outcomes using R Markdown.</li>
+<li><a href="http://yihui.name/knitr/">Yuhui Xie’s Knitr Documentation</a>: This page is the official documentation for Knitr (in essence R Markdown is just a convenient interface to Knitr). This page is relatively comprehensive but I found it hard to use.</li>
+<li><a href="http://johnmacfarlane.net/pandoc/">Pandoc’s Documentation</a>: R Markdown uses the markdown conventions of pandoc, so if something is absent from the R Markdown documention, it’s worth examining the pandoc documention.</li>
+</ul>
+<p>These three sources (plus lots of trial and error) are sufficient to learn how to produce high quality documents with R Markdown. Also I implore you to use <a href="http://www.rstudio.com/">R Studio</a> when writing your documents. The people behind R Studio created R Markdown, and because of their deep interest in the format they have provided many conveniences you’d miss if you tried authoring from your text editor and command line. These instructions were written assuming you’re using R Studio, if not you will have to determine some of the housekeeping steps for yourself.</p>
+</div>
+<div id="getting-started" class="section level2">
+<h2>Getting Started</h2>
+<p>Alright! Now let’s get authoring! First thing you’re going to want to do is create a new file in R Studio. If you click the new file button, you’ll notice that there are options other than R Script for the type of file to create. Below the R Script option is the R Markdown option, choose that one. This gives you the option to give your document a title and your name and choose the output format for your document. By default the Knitr knits (creates the final document) to .html, but it can also create .pdf’s and .doc’s if you’d like. R Studio puts some demonstration markdown in the document, you can go ahead and erase that, we’ll be writing our document from scratch. Now save this document somewhere, by default the document knits to the same directory as the file. The file now exists as a .rmd, pretty easy to remember and easy to keep separate from your R scripts.</p>
+</div>
+<div id="give-it-a-title" class="section level2">
+<h2>Give it a title!</h2>
+<p>R Markdown supports a couple of different heading schemes, the two I use rely on the number sign, the equal sign, and the dash. To give your document a title try one of the following:</p>
+<pre><code># My title</code></pre>
+<p>or</p>
+<pre><code>My title
+=========</code></pre>
+<p>Both work, but note, there can’t be a space between the beginning of the newline and the number sign or equal signs otherwise the special meaning of those characters is lost.</p>
+<p>To add sub-headings, either use</p>
+<pre><code>## My sub-heading</code></pre>
+<p>or</p>
+<pre><code>My sub-heading
+---------------</code></pre>
+<p>At first I tended to use the number sign method, but now I tend to use the underlining method. The advantage to the number sign method is that you can have greater than two heading levels (just keep adding number signs to represent deeper levels). I find I rarelly go deeper than two sub-headings, and the underlining method looks neater as you’re writing.</p>
+</div>
+<div id="write-a-paragraph" class="section level2">
+<h2>Write a paragraph</h2>
+<p>First thing to note about writing text paragraphs is that R Markdown <strong>does not</strong> honour your newline characters as you might imagine it would. Because scripting windows on differ in size, R Studio will auto-wrap long lines for you, and if you choose to manually break your lines it will ignore that when rendering the final document. To instruct R Markdown to honour a line break, either place two spaces at the end of the preceding line, or add a full empty line between the old and new paragraphs. Using more than one empty line to divide paragraphs when writing is perfectly acceptable and R Markdown will ignore additional newlines. This behaviour stems from markdown’s original mission: to produce documents that are readable as plain-text that produce well formatted documents when converted to other document types, so facillities exist to make plain-text look nicer (lots of stylistic white space).</p>
+<p>So go ahead an write a little bit about what you’ve learned about R Markdown so far (or whatever you want), hit the <code>knit HTML</code> button in the top of the scripting window. Now have a look at your beautiful handiwork, pretty snazzy right? Once you’ve patted yourself on the back lets move on to the next step, adding some code!</p>
+</div>
+<div id="add-some-code" class="section level2">
+<h2>Add some code</h2>
+<p>R Markdown has two primary modes of displaying code, there is inline code and code chunks. Inline code is primarily for small snippets, like variable names and parameter assignments. To denote an inline code segment, surround it with backticks (`, not ’).</p>
+<p>The more interesting way to display code are code chunks, these allow code, results, and figures to be presented together in text. In all honesty, if R Markdown was just a tool for making writing HTML a lot easier it probably wouldn’t have earned this post. Of course the markdown family is incredibly useful if you publish a lot of web content that you want to make available quickly, but the real beauty of R Markdown is its ability to display and execute code from a variety of different languages. Just last week I posted my adventure into adding ipython as an interpreter(engine) for Knitr, but you can include code from python, haskell, bash, c, and fortran just to name a few<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a><sup>,</sup><a href="#fn3" class="footnoteRef" id="fnref3"><sup>3</sup></a>.</p>
+<p>To add a code “chunk” into a document, you create a fenced code block like so</p>
+<p>```{r}<br /># My fantastic R code!<br />```</p>
+<p>What R Markdown (and eventually Knitr) does with your code chunk is highly customizable. You can have code that is shown but isn’t executed, code that is executed but isn’t shown, code that has its results saved so that it doesn’t have to be recalculated if your change the document, and a myriad of other potential customizations. So I think now is as good a time as any to introduce chunk options.</p>
+</div>
+<div id="customize-your-code-chunks" class="section level2">
+<h2>Customize your code chunks</h2>
+<p>One of the cryptic things I had to figure out when starting R Markdown is what do all of these chunk options do, and how to I use them. I’m going to cover five of the basic ones that will get a lot of use, and a few that may be useful more occaisonally.</p>
+<ul>
+<li><code>eval</code>: This option controls whether your carefully crafted code is executed while the document is being knit. Often I’m including demonstration code that doesn’t need to be run each time (or may not work out of context), so I’ll often set <code>eval = FALSE</code>, <code>eval</code> is <code>TRUE</code> by default.</li>
+<li><code>echo</code>: This option controls whether to display the code, often I’ll have a set-up chunk at the beginning of the document to do things like set my working directory, load packages, and import data. These aren’t interesting to a reader so I set <code>echo = FALSE</code>, <code>echo</code> is <code>TRUE</code> by default</li>
+<li><code>results</code>: This option controls whether to output the results of running the code into the document. Sometimes hiding the results of executed code makes sense, I often use <code>results = FALSE</code> with <code>echo = FALSE</code>, when my set-up chunk has output.</li>
+<li><code>cache</code>: This option allows Knitr to remember the results of executing a code chunk so that unless the code changes it doesn’t need to be re-run. This is useful when executing code that takes a while to run. R Markdown typically involves a lot of guess and check, so even a few minutes of execution time can make the authoring process unpleasant, for those code chunks set <code>cache = TRUE</code>, it is <code>FALSE</code> by default.</li>
+<li><code>engine</code>: This option allows you to choose another language engine to execute the code, perfect for presenting or comparing another language in your document. Just set <code>engine = &quot;name_of_engine&quot;</code> in the code chunk.</li>
+<li><code>message</code>,<code>warning</code>, and <code>error</code>: These options let you control whether Knitr should report messages, warnings, and errors in the document. Sometimes these are worth suppressing, by default they are shown (set to <code>FALSE</code> to suppress them).</li>
+</ul>
+<p>To set these options on a chunk-by-chunk basis, just include all your options in the curly braces at the top of the chunk like so</p>
+<p>```{r, eval = FALSE, echo = TRUE}<br />#Some code to be shown but not run<br />```</p>
+<p>If you find yourself using the exact same option in all of your code chunks, you can set document-wide defaults. These defaults will be overriden by individual chunk options, so you are not locked-in even if you do set a global option. As I mentioned above, I like to have a set-up chunk at the top of my document performing all the preparation necessary for my code to run smoothly, this is the ideal place to set global options. Global options are set with <code>opts_chunk$set(option = value)</code></p>
+<div id="sample-set-up-chunk" class="section level3">
+<h3>Sample set-up chunk</h3>
+<p>I highly recommend including a set-up chunk in all of your documents, this is an ideal place to put system specific code, because in most cases, no one but you needs to know where on your computer your files are located, no one but you needs to know what global knitr options you used, <em>et cetera</em>.</p>
+<p>```<br />setwd(“my/working/directory”)<br />myData &lt;- readRDS(“somePreparedData.rds”)</p>
+<p>library(knitr)<br />opts_chunk$set(echo = FALSE)<br />```</p>
+<p>This will set your working directory, pull in some data, and tell Knitr not to bother showing the code (this is useful if you want to use R Markdown to keep figures with text, without the cumbersome code). Unfortunately you do have to tell R to load the Knitr package, the code gets executed in its own environment and needs to be made aware of the opts_chunk object in Knitr.</p>
+</div>
+</div>
+<div id="did-i-mention-figures" class="section level2">
+<h2>Did I mention figures?!</h2>
+<p>Another supremely useful feature of R Markdown is the ability to generate and keed your figures in the document with your code and writing. R Markdown is pretty smart about figuring out what to do with plots. The following graph was created inside a normal code chunk, with no specific options set:</p>
+<pre class="r"><code>x &lt;- seq(-1,1, .01)
+plot(x, x^2, type = &quot;l&quot;, ylim = c(0,1.6), lwd = 3)
+points(c(-.65, .65), c(1.5,1.5), cex = 3)
+points(0, .9, pch = 2, cex = 2)</code></pre>
+<p><img src="startRMarkdown_files/figure-html/unnamed-chunk-1-1.png" title="" alt="" width="672" /></p>
+<p>And now I’ll always remember how to draw a creepy smiley face using base R’s plotting functionality. Perhaps you can see why suppressing the code for an intricate figure may be useful.</p>
+</div>
+<div id="math" class="section level2">
+<h2>Math</h2>
+<p>Often you’ll want to present equations in with your code to do this R Markdown allows your to write LaTeX directly in your document. Knitr automatically renders these as either LaTeX or Math Jax depending on your output format. Latex code can be specified as either inline or block, just like code. An inline math segment begins and ends with a dollar sign <code>$...$</code> and block latex uses two dollar signs <code>$$...$$</code>.</p>
+</div>
+<div id="links-and-footnotes" class="section level2">
+<h2>Links and Footnotes</h2>
+<p>Another benefit of R Markdown relative to keeping all your annotations as comments in your code is the ability to hyperlink. In R Markdown it’s really easy to add a link. Just include a web address in brackets and it will be rendered as a hyperlink</p>
+<p><code>(https://github.com/cfhammill)</code><br />For example a link to my github can be included in this document like that, or if I want to have the tag words be something else</p>
+<p><code>[my github](https://github.com/cfhammill)</code><br />I can do that.</p>
+<p>To add a footnote, just include square brackets with a caret and the footnote number like <code>[^1]</code><br />Then at the bottom of your document include <code>[^1]: Some note</code><br />and R Markdown will create the footnote for you.</p>
+</div>
+<div id="sharing-your-work-on-the-internet" class="section level2">
+<h2>Sharing your work (on the internet)</h2>
+<p>When I create an html report using R Markdown one of two things happen. The first and easiest is I <code>scp</code> the html file produced by <code>knit HTML</code> onto the server where my personal webpage lives. Or if I’m publishing to blogger (where this blog is hosted), I go through the rigmarole of copying the source code, removing extraneous tags, and pasting it into the html window of a post on blogger. Additionally you could share the file with the intended audience directly. But in any case, once you’ve created the html file, what you choose to do with it is up to you.</p>
+</div>
+<div id="take-aways" class="section level2">
+<h2>Take-Aways</h2>
+<p>So I hope this tutorial gave you a little bit of a primer on how to use R Markdown to keep your code, writing, and figures all together in one place, and I hope the benefit of doing so is apparent. I’d like to leave you with a few things:</p>
+<ul>
+<li>Author documents with R Markdown. It’s easy, relatively painless, and helps keep scatter-brains like me organized. I report to my bosses for two of my jobs with a web page I make with R Markdown. It allows them to see relevant snippets of my code and my analysis of what’s happening.</li>
+<li>Use a set-up chunk at the begining of your document, have a look at the sample above, it will make your document more compact and cleaner if all the mechanical stuff happens in the beginning behind the scenes.</li>
+<li>Know where to look for help, see the resources I posted at the top of this post, especially be aware that pandoc’s documentation has things that the R Markdown documentation missed.</li>
+<li>If your header/table/etc isn’t rendering properly, make sure it isn’t just an issue with a space after a newline. That space can deactivate all kinds of special meaning, so lookout.</li>
+<li>Use R Markdown as an excuse to write often about things that interest you, it’s a great way to keep sharp.</li>
+</ul>
+<p>If you have any questions please feel free to post them below, I’ll try my best to answer them. Also this document was made with R Markdown so I’ve made the <a href="https://drive.google.com/file/d/0B5MOuYjRSGYUVWd6QTZIZDU0RE0/view?usp=sharing">.rmd that produced this post</a> available for inspection.</p>
+<p>Happy authoring!</p>
+<p>Chris</p>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>Here I fall victim to using the buzzword, but its easier than “code/document integration” or anything else I could think of. Let it be known that I think these tools are more than just for making research reproducible, but also to facillitate sharing ideas, and authoring documents in an age where code can be as important as words<a href="#fnref1">↩</a></p></li>
+<li id="fn2"><p>You can see the full list of available engines with <code>library(knitr); names(knit_engines$get())</code><a href="#fnref2">↩</a></p></li>
+<li id="fn3"><p>I just noticed there’s no lisp engine! That needs to change<a href="#fnref3">↩</a></p></li>
+</ol>
+</div>
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,30 @@
+
+<style type="text/css">
+  /* padding for bootstrap navbar */
+  body {
+  padding-top: 1000px;
+  padding-bottom: 40px;
+  }
+  /* offset scroll position for anchor links (for fixed navbar)  */
+  .section h2 {
+  padding-top: 55px;
+  margin-top: -55px;
+  }
+  .section h3 {
+  padding-top: 55px;
+  margin-top: -55px;
+  }
+  /* don't use link color in navbar */
+  .dropdown-menu>li>a {
+  color: black;
+  }
+</style>
+
+<script>
+  $(document).ready(function(){
+  $.get("_posts/statsvsdata.html", function(data, status){
+    var blogPost = $(data).find("body");
+    $("#blogpost").append(blogPost.remove(".navbar"));
+  });
+});
+</script>
