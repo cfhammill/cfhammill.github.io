@@ -24,8 +24,8 @@
   $(document).ready(function(){
   $.get("_posts/statsvsdata.html", function(data, status){
   var blogPost = $(data);
-  console.log(data);
-  $("#blogpost").html(blogPost.remove(".navbar").innerHTML);
+  console.log(blogPost.find("body").html());
+  $("#blogpost").html(blogPost.remove(".navbar").html());
   });
 });
 </script>
