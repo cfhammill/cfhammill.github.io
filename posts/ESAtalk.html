@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="author" content="Chris Hammill" />
+
+<meta name="date" content="2014-08-11" />
+
+<title>ESA Talk</title>
+
+<script src="libs/jquery-1.11.0/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap-3.3.1/css/flatly.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.1/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.1/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.1/shim/respond.min.js"></script>
+
+<style type="text/css">
+  /* padding for bootstrap navbar */
+  body {
+  padding-top: 50px;
+  padding-bottom: 40px;
+  }
+  /* offset scroll position for anchor links (for fixed navbar)  */
+  .section h2 {
+  padding-top: 55px;
+  margin-top: -55px;
+  }
+  .section h3 {
+  padding-top: 55px;
+  margin-top: -55px;
+  }
+  /* don't use link color in navbar */
+  .dropdown-menu>li>a {
+  color: black;
+  }
+</style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<link rel="stylesheet"
+      href="libs/highlight/textmate.css"
+      type="text/css" />
+<script src="libs/highlight/highlight.js"></script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img { 
+  max-width:100%; 
+  height: auto; 
+}
+</style>
+<div class="container-fluid main-container">
+
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+	<span class="icon-bar"></span>
+	<span class="icon-bar"></span>
+	<span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">Datamancy</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+	<li><a href="/">Home</a></li>
+	<li><a href="authoring">Blog</a></li>
+  <li><a href="/">About Me</a></li>
+	<li class="dropdown">
+	  <a href="formats" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Tutorials <span class="caret"></span></a>
+	  <ul class="dropdown-menu" role="menu">
+	    <li class="dropdown-header">Tutorials</li>
+	    <li><a href="html_document_format.html">Getting Started With R Markdown</a></li>
+	    <li><a href="r_notebook_format.html">Breaking Up With Powerpoint</a></li>
+      <li><a href="">Regular Expressions in R</a></li>
+      <li><a href="">Overlays with ggplot2</a></li>
+	  </ul>
+	</li>
+  <li class="dropdown">
+    <a href="formats" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Data Viz <span class="caret"></span></a>
+	  <ul class="dropdown-menu" role="menu">
+	    <li class="dropdown-header">Graphics</li>
+	    <li><a href="html_document_format.html">Networks</a></li>
+	    <li><a href="r_notebook_format.html">Topography Plots</a></li>
+	  </ul>
+	</li>
+  <li class="dropdown">
+    <a href="formats" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Diversions <span class="caret"></span></a>
+    <ul class="dropdown-menu" role="menu">
+	    <li class="dropdown-header">Drink Name Generator</li>
+	  </ul>
+	</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+<h1 class="title">ESA Talk</h1>
+<h4 class="author"><em>Chris Hammill</em></h4>
+<h4 class="date"><em>08/11/2014</em></h4>
+</div>
+
+
+<p>Coming to you live from Sacramento California, it’s Datamancy on the Road!</p>
+<p>I’m posting this with extreme pre-talk jitters, I will be presenting tomorrow morning in conference room 314 at the Sacramento conference centre. I’m hoping for the best.</p>
+<p>If you’re reading this after the fact and have come to have another look at my slides, thanks for your interest! I really love what I do and enjoy sharing it just as much, skip to the bottom to get to the slides.</p>
+<div id="conference-recap" class="section level1">
+<h1>Conference Recap</h1>
+<div id="environmental-sequencing-workshop" class="section level2">
+<h2>Environmental Sequencing Workshop</h2>
+<p>The ESA 2014 annual meeting has been a whirlwind of wonderful science and people. I was lucky enough to get to sit in on a wonderful workshop lead by Holy Bik, Kelley Thomas, Dorota Porazinska, and Simon Creer on environmental sequencing approaches. It was a blast to hear from such passionate people in such an interesting field.</p>
+<p>I went in to the session hoping to learn a little more about the state of the field in order to hopefully answer a irksome problem my supervisor has been grappling with. Our model species (<em>Splachnum ampullaceum</em> and <em>Splachnum pensylvanicum</em>) are poorly studied genetically so efficient markers don’t exist for detecting their spores in the environment. I wanted to tap into the thoughts of people who deal with this kind of problem daily.</p>
+<p>I’ve been inspired to revist the prior work that has been done on developing markers for our species, and perhaps employ some more modern techniques for identifying them. So kudos to the leaders for putting the workshop together.</p>
+</div>
+<div id="talks-talks-posters-and-more-talks" class="section level2">
+<h2>Talks, Talks, Posters, and More Talks</h2>
+<p>I really enjoyed getting a whirlwind tour of what’s going on in ecology research. I focused mostly on catching community ecology and modelling talks. I saw many other young scientists put themselves on display for what must have been an intimidating crowd.</p>
+<p>I really enjoyed talks from</p>
+<p><a href="http://asdavid.wordpress.com/">Aaron David</a> on microbe innoculation sources for new plants. Interesting work in teasing out whether new plant roots gain their fungal endophytes from the parent plant, conspecific neighbours, or the surrounding soil.</p>
+<p><a href="http://eebweb.arizona.edu/Faculty/chesson/index.htm#Max">Yue “Max” Li</a> from the Chesson lab, looked at coexistence using a long-standing field experiment.</p>
+<p>Jiaqi Tan looked at coexistence mechanisms amongst protists. He used a cool strategy to identify dietary strategy amongst the protist, then used dietary preference as a proxy for niche to estimate niche differentiation (amongst other things).</p>
+<p>Dan Scholes from Ken Paige’s lab in Illinois looking at the genetic basis of plant overcompensation in response to herbivory. I had the pleasure of having dinner with Dan and Ken, fascinating work that reminded me of the Arabidopsis days of my undergrad.</p>
+<p>Those are just a few of my highlights, I’d continue but it is exhausting looking for personal websites for young scientists.</p>
+</div>
+</div>
+<div id="slides" class="section level1">
+<h1>Slides!</h1>
+</div>
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

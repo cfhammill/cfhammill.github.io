@@ -1,0 +1,35 @@
+---
+---
+
+<script>
+  $(document).ready(function(){
+  
+  $.get("../posts/statsvsdata.html", function(data, status){
+  var bp = $("#post1").append(data);
+  $("#post1").html(bp.find("div.container-fluid").html());
+  });
+  
+  $.get("../posts/statsvsdata.html", function(data, status){
+  var bp = $("#post2").append(data);
+  $("#post2").html(bp.find("div.container-fluid").html());
+  });
+  
+  $.get("../posts/statsvsdata.html", function(data, status){
+  var bp = $("#post3").append(data);
+  $("#post3").html(bp.find("div.container-fluid").html());
+  });
+  
+  $.get("../posts/statsvsdata.html", function(data, status){
+  var bp = $("#post4").append(data);
+  $("#post4").html(bp.find("div.container-fluid").html());
+  });
+  
+});
+</script>
+
+<div id='post1'></div>
+<div id='post2'></div>
+<div id='post3'></div>
+<div id="post4'></div>
+
+Want older content? Check out the [archive](posts/archive.html)

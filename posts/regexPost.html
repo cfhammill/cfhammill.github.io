@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="author" content="Chris Hammill" />
+
+<meta name="date" content="2014-08-06" />
+
+<title>Regex in R</title>
+
+<script src="libs/jquery-1.11.0/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap-3.3.1/css/flatly.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.1/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.1/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.1/shim/respond.min.js"></script>
+
+<style type="text/css">
+  /* padding for bootstrap navbar */
+  body {
+  padding-top: 50px;
+  padding-bottom: 40px;
+  }
+  /* offset scroll position for anchor links (for fixed navbar)  */
+  .section h2 {
+  padding-top: 55px;
+  margin-top: -55px;
+  }
+  .section h3 {
+  padding-top: 55px;
+  margin-top: -55px;
+  }
+  /* don't use link color in navbar */
+  .dropdown-menu>li>a {
+  color: black;
+  }
+</style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<link rel="stylesheet"
+      href="libs/highlight/textmate.css"
+      type="text/css" />
+<script src="libs/highlight/highlight.js"></script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img { 
+  max-width:100%; 
+  height: auto; 
+}
+</style>
+<div class="container-fluid main-container">
+
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+	<span class="icon-bar"></span>
+	<span class="icon-bar"></span>
+	<span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">Datamancy</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+	<li><a href="/">Home</a></li>
+	<li><a href="authoring">Blog</a></li>
+  <li><a href="/">About Me</a></li>
+	<li class="dropdown">
+	  <a href="formats" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Tutorials <span class="caret"></span></a>
+	  <ul class="dropdown-menu" role="menu">
+	    <li class="dropdown-header">Tutorials</li>
+	    <li><a href="html_document_format.html">Getting Started With R Markdown</a></li>
+	    <li><a href="r_notebook_format.html">Breaking Up With Powerpoint</a></li>
+      <li><a href="">Regular Expressions in R</a></li>
+      <li><a href="">Overlays with ggplot2</a></li>
+	  </ul>
+	</li>
+  <li class="dropdown">
+    <a href="formats" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Data Viz <span class="caret"></span></a>
+	  <ul class="dropdown-menu" role="menu">
+	    <li class="dropdown-header">Graphics</li>
+	    <li><a href="html_document_format.html">Networks</a></li>
+	    <li><a href="r_notebook_format.html">Topography Plots</a></li>
+	  </ul>
+	</li>
+  <li class="dropdown">
+    <a href="formats" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Diversions <span class="caret"></span></a>
+    <ul class="dropdown-menu" role="menu">
+	    <li class="dropdown-header">Drink Name Generator</li>
+	  </ul>
+	</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+<h1 class="title">Regex in R</h1>
+<h4 class="author"><em>Chris Hammill</em></h4>
+<h4 class="date"><em>08/06/2014</em></h4>
+</div>
+
+
+<div id="preamble" class="section level2">
+<h2>Preamble</h2>
+<p>Hi readers,</p>
+<p>Sorry for the delay in posting, I’ve been hard at work getting my talk ready for the ESA annual meeting in Sacramento next week. I’ll definitely post a recap and link to my slides after the conference.</p>
+<p>I’m on a workacation on Lake of Bays in Ontario (my home province) at the moment, enjoying the lake-side life on my breaks.</p>
+<p>I’m continuing work on my Build Your Bar project, dabbling in natural language processing. I find myself using regular expressions (regex) frequently enough to think it warrants a post. The R help on Regex <code>?regex</code> is long and technical and makes no attempt to convince you of it’s importance. So here is a quick primer on using regex in R, the focus will be on perl-like regular expressions.</p>
+</div>
+<div id="history" class="section level2">
+<h2>History</h2>
+<p>Regular Expressions have been a part of computing since the early days of home computing. When the primary input-output interface to a computer was text, an efficient means of finding the exact text you were interested in was necessary. “Simple” shorthands for complicated series of characters were developed. The idea for regular expressions originated in the work of Stephen Kleene(1956) on regular sets. Just over a decade later, Ken Thompson imported the ideas into the Unix operating system via the text editing software QED. For a more detailed history of regex I suggest reading <a href="http://blog.staffannoteberg.com/2013/01/30/regular-expressions-a-brief-history/">Staffan Noteberg’s</a> brief review.</p>
+</div>
+<div id="rs-native-regex" class="section level2">
+<h2>R’s Native Regex</h2>
+<p>R supports two, or imprecisely three, regex schemes. The two true regex schemes are <strong>Extended</strong> which follows the POSIX 1003.2 standard and <strong>Perl-Like</strong> my personal favourite that adapts the incredibly powerful regex syntax of the perl programming language. The last scheme is <strong>Fixed</strong> which is less of a regex style than a lack thereof, fixed mode will take characters absolutely literally, except for R’s own escape characters.</p>
+<p>By default R uses extended regex, the unfortunate consequence is if you choose to follow my lead and use perl-style regex, you have to be a bit more verbose in your code and specify <code>perl = TRUE</code> each time you use a regex function<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>. I however feel it’s a small price to pay for getting to use perl-like regex.</p>
+</div>
+<div id="more-about-perl-like" class="section level2">
+<h2>More about Perl-Like</h2>
+<p>The help file for regex offers the advice to head to <a href="http://www.pcre.org">pcre</a> web page, but you will likely want to go straight to the source: <a href="http://perldoc.perl.org/perlre.html" class="uri">http://perldoc.perl.org/perlre.html</a>. The perl documentation page on the current state of their regex syntax is a handy reference for anyone who plans on using perl-like regex.</p>
+<p>Unfortunately for us R users, many of perl’s really handy regex features aren’t available to us. Native perl regex allow for concurrent search and accession, meaning you can search for multiple tokens within a string and access the returned tokens without storing the matches in an intermediary object first. More simply, in perl, searching and editing a string is essentially the same action. In R, searching and accession are handled by completely seperate functions, and regular expressions aren’t tokenized to allow multiple operations on the same search criterion.</p>
+<p>These differences are due to the fact that perl was designed for text manipulation, it is self-described as the “swiss army knife” of scripting languages allowing you to functionality from multiple languages with perl as the middle-man. The <em>lingua franca</em> of all programming languages is the source code, which perl can elegantly cut, trim, and glue together. R was built for statistics, and so string manipulation is more of an acquired skill. However, let it never be said you can’t do powerful string manipulation in R, it’s just not true. String manipulation in R is clunky, maybe, but powerful enough to do anything you need.</p>
+</div>
+<div id="finding-that-special-string" class="section level2">
+<h2>Finding That Special String</h2>
+<p>I love string manipulation because it appeals to my love of puzzle solving. Finding just the right regex to get what you’re looking for really gives me the thrill of the hunt.</p>
+<ul>
+<li>So you want to find a number in the middle of a word, but only after an m and only in the last word of string: <strong>REGEX</strong></li>
+<li>So you want to trim whitespace from the end of the string but only if there are 3 or more spaces: <strong>REGEX</strong><br /></li>
+<li>Want to find brand names with between one and three capitalized words in a list of drink ingredients <strong>REGEX</strong></li>
+</ul>
+<p>Hopefully your interest is piqued and you now want to learn all about using regex like a wizard. If so, great, because I’m going to show you how! But first, a key R idiosyncracy that needs to be addressed.</p>
+<div id="r-idiosyncracy" class="section level3">
+<h3>R Idiosyncracy</h3>
+<p>R by default recognizes backslashes “\” as the beginning of an escape sequence, also called a metacharacter. Perl also uses a backslash to indicate a metacharacter so there is a clash. In native perl “\d” is a metacharacter meaning all digits, but when R sees “\d” it thinks you’re invoking the metacharacter in an inappropriate way. To get the behaviour you’d expect, you need to escape the behaviour of the backslash to have it pass the un-escaped regex. You do this by adding an extra backslash “\\d” behaves exactly as you’d expect “\d” to.</p>
+<p>This situation gets particularly comical when you want to use a literal backslash in a regular expression. In native perl “\\” gets you a literal backslash, but in R you need to escape <strong>BOTH</strong> backslashes to get the desired behaviour “\\\\” gets you a literal backslash (as I am typing this in R markdown which by default follows R escaping rules, I just typed 8 backslashes to show you four, ugh).</p>
+</div>
+</div>
+<div id="first-steps-wild-cards-and-quantifiers" class="section level2">
+<h2>First Steps (Wild-Cards and Quantifiers)</h2>
+<p>The first things you’re going to need to learn to become a Perl-Like regex master is to use wild-cards and quantifiers. You may have run into wild-cards in any number of different places, google used to support them for example. Wild-cards are regex speak for “just give me anything”.</p>
+<p>Unless you’ve worked with regex before you’ve probably never worked closely with quantifiers. Quantifiers are regex speak for “give me some number of these”. If you’ve seen the wild-cards “*” and “?” from DOS, “?” is a wild-card meaning any one character, “*” is a wild-card with an indefinite quantifier meaning give me any number of any character.</p>
+<table>
+<colgroup>
+<col width="18%" />
+<col width="58%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Character</th>
+<th align="left">Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">.</td>
+<td align="left">Match any 1 character</td>
+</tr>
+<tr class="even">
+<td align="center">*</td>
+<td align="left">Match ZERO or more of the previous character</td>
+</tr>
+<tr class="odd">
+<td align="center">+</td>
+<td align="left">Match ONE or more of the previous character</td>
+</tr>
+<tr class="even">
+<td align="center">?</td>
+<td align="left">Match ZERO or ONE of the previous character</td>
+</tr>
+<tr class="odd">
+<td align="center">{N, M}</td>
+<td align="left">Match atleast N but fewer than M of the previous character<br> Leaving M empty ({N,}) means N or more</td>
+</tr>
+</tbody>
+</table>
+<p>With these tools at your disposal you can begin your oddessey into the world of pattern matching. Let’s see some examples</p>
+<table>
+<colgroup>
+<col width="18%" />
+<col width="80%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Regex</th>
+<th align="left">Sample Matches</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">&quot;Al.*&quot;</td>
+<td align="left">&quot;Alfred&quot;, &quot;Albert&quot;, &quot;Alphonso&quot;, &quot;Alex likes going to the movies&quot;</td>
+</tr>
+<tr class="even">
+<td align="center">&quot;5? ?Apples&quot;</td>
+<td align="left">&quot;5 Apples&quot;, &quot;5Apples&quot;, &quot; Apples&quot;, &quot;Apples&quot;</td>
+</tr>
+<tr class="odd">
+<td align="center">&quot;(Na )+Batman!&quot;</td>
+<td align="left">&quot;Na Na Na Na Na Na Na Na Batman!&quot; but not &quot;Batman!&quot;</td>
+</tr>
+</tbody>
+</table>
+<p>As you may have noticed, the special quantifiers (“*“,”+“, and”?“) are all just convenient shorthands for (”{0,}“,”{1,}“, and”{0,1}“), you’ll find you use the special quantifiers more frequently.</p>
+</div>
+<div id="brackets-groups-and-alternation" class="section level2">
+<h2>Brackets, Groups, and Alternation</h2>
+<p>I’ve hinted at this next group of behaviours in the previous set of examples. The “(Na )+” I used to match the batman theme song is an example of grouping. Using parantheses groups a series of characters such that they can be quantified like a single character. The above regex states that I want one or more sets of the sequence “Na”.</p>
+<p>Suppose you weren’t satisfied that you found all the ways people transcribe the batman theme, for example you have a friend use the phoneme “Da” to represent the notes in the song. Never fear, bracketed character classes to the rescue. You can allow the regular expression to choose one of several characters. Bracketed character classes are denoted with square braces “[]”.</p>
+<p>Lastly, maybe the vowel is all wrong too. Maybe you think people might be using phonemes like “Duh” or “Nah”. You can specify these specific combinations within a group, and let the regex match any group with an alternation. Alternations are specified with “|”.</p>
+<table>
+<colgroup>
+<col width="29%" />
+<col width="70%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Regex</th>
+<th align="left">Sample Matches</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">&quot;(Na )+Batman!&quot;</td>
+<td align="left">&quot;Na Na Na Na Na Na Na Na Batman!&quot;</td>
+</tr>
+<tr class="even">
+<td align="center">&quot;([ND]a )+Batman!&quot;</td>
+<td align="left">&quot;Na Na Na Na Na Na Na Na Batman!&quot; and &quot;Da Na Na Na Da Na Na Na Batman!&quot;</td>
+</tr>
+<tr class="odd">
+<td align="center">&quot;[ND]<meta>((a)|(uh)|(ah))&quot;</td>
+<td align="left">&quot;Duh&quot;, &quot;Na&quot;, &quot;Dah&quot;</td>
+</tr>
+</tbody>
+</table>
+<p>Now you should be able to get just about any set of characters, and in any amount as you could possibly want.</p>
+</div>
+<div id="positioning-and-quantifier-modification" class="section level2">
+<h2>Positioning and Quantifier Modification</h2>
+<p>Another useful tool is the ability to specificy where in a string you’d like to match. Two handy positioning modifiers are allowed in a regular experession. You can specify the beginning of a string “^” and the end of a string “$”</p>
+<table>
+<colgroup>
+<col width="18%" />
+<col width="80%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Regex</th>
+<th align="left">Sample Matches</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">&quot;^Hi&quot;</td>
+<td align="left">&quot;Hi there reader&quot; but not &quot;You there reader, Hi&quot;</td>
+</tr>
+<tr class="even">
+<td align="center">&quot;Goodbye$&quot;</td>
+<td align="left">&quot;Dear reader, Goodbye&quot; but not &quot;Goodbye dear reader&quot;</td>
+</tr>
+</tbody>
+</table>
+<p>Quantifier modification is a topic I’ve touched on in a <a href="http://datamancy.blogspot.ca/2014/07/build-your-bar-project-introduction-and.html">previous post</a> where I demonstrated how to process html to extract tag values. The question mark has a double meaning depending on where it is found in a regular expression. Normally it is a treated as a quantifier meaning {0,1}, however when it appears immediately after another quantifier, it instructs that quantifier to behave non-greedily.</p>
+<p>Greedy is a reference to a quantifier’s habit of trying to capture as many characters as possible. If given a choice between matching one or seven characters, it will choose seven. We can modify this behaviour to just take one.</p>
+<p>Take for example the body of a very simple html document</p>
+<p>&lt;body&gt;<br />&lt;p&gt; Generic things on the &lt;b&gt;Internet&lt;b&gt; have grown &lt;b&gt; tiresome&lt;/b&gt;&lt;/p&gt;<br />&lt;/body&gt;</p>
+<p>If I was curious about all the things the author thought worthy of bolding, I might first try the regex<br />&quot;&lt;b&gt;.+&lt;/b&gt;&quot;</p>
+<p>But I would get one match &lt;b&gt;Internet&lt;b&gt; have grown &lt;b&gt; tiresome&lt;/b&gt;</p>
+<p>My indefinite quantifier would match all the way to the very last &lt;/b&gt; in the document, obviously not what I wanted. So instead I should tell the “+” quantifier to not be so greedy &quot;&lt;b&gt;.+?&lt;/b&gt;&quot;</p>
+<p>Then it would correctly match &quot;&lt;b&gt;Internet&lt;/b&gt;&quot; and &quot;&lt;b&gt;Tiresome&lt;/b&gt;&quot;.</p>
+</div>
+<div id="special-characters" class="section level2">
+<h2>Special Characters</h2>
+<p>The last type of metacharacter I’d like to show you are the special character classes, useful in bracketed character classes and on there own or combined with quantifiers. Some useful character class metacharacters are</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Character</th>
+<th align="left">Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">\w</td>
+<td align="left">any word character - all numbers, letters, and underscores</td>
+</tr>
+<tr class="even">
+<td align="left">\W</td>
+<td align="left">non-word character - anything except the above</td>
+</tr>
+<tr class="odd">
+<td align="left">\d</td>
+<td align="left">any single digit number</td>
+</tr>
+<tr class="even">
+<td align="left">\s</td>
+<td align="left">any space character (regular space or tab)</td>
+</tr>
+</tbody>
+</table>
+<p>And with that you should be able to match just about any pattern in a string that your heart desires, here are a few interesting examples.</p>
+<p>Stringr comes pre-loaded with a method to trim whitespace from a string, with regex we can do that by saying match some number of whitespaces at the beginning or end of the string like so:</p>
+<p><code>gsub(pattern = \&quot;(^ +)|( +$)\&quot;, replacement = &quot;&quot;, string)</code><a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a></p>
+<p>Or as I mentioned earlier, maybe you want to find brand names in a set of ingredients, the ingredient set was comma delimited, and brands of note were tagged with ® the html code for the tm symbol. Brand names also have each word capitalized and tend to be between 1-4 words and may include hyphens. To pull out each brand in the ingredient list you could do this:</p>
+<p><code>matchPull(pattern = &quot;([A-Z][\\w-']*? ){0,3}[A-Z][\\w-']+?&amp;reg;&quot;)</code><a href="#fn3" class="footnoteRef" id="fnref3"><sup>3</sup></a></p>
+<p>The one thing you may not recognize is the bracketed character class &quot;[A-Z]&quot; which means exactly what it looks, all the capitals from A through Z.</p>
+</div>
+<div id="outro" class="section level2">
+<h2>Outro</h2>
+<p>I hope from this post you’ve learned a little bit about the application of regular expressions in R and can see some opportunities to use them in your own work. The ability to precisely and effectively specify exactly the string you’re interested makes performing any text mining tast orders of magnitude easier. Also if you’re just interested in organizing and curating data sets for thesis work for example the ability to accurately edit information stored in strings is a massive advantage over doing manual edits in software such as excel.</p>
+<p>As always, thanks for reading!</p>
+<p>-Chris</p>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>I recently discovered the wonderful package <a href="http://cran.r-project.org/web/packages/stringr/index.html">stringr</a> another of Hadley Wickham’s packages. The syntax for specifying perl-like mode with stringr functions is different, you just wrap your regex string in a call to the <code>perl</code> function like so: <code>stringr_foo(&quot;string&quot;, pattern = perl(&quot;pattern&quot;))</code>. Stringr is a dependency of several of Wickham’s other packages so you likely already have it installed.<a href="#fnref1">↩</a></p></li>
+<li id="fn2"><p>The function gsub is R’s equivalent of find and replace all<a href="#fnref2">↩</a></p></li>
+<li id="fn3"><p>The matchPull function is my convenience function for finding and extracting a matched text from a string. Similar in idea to str_extract from stringr, but I wrote matchPull before I knew about stringr, and I’m too lazy to learn someone else’s convenience function when I have my own. Plus as a hold over from my days coding in java I think underscores in function names are yucky. Code for matchPull is available in my post <a href="http://datamancy.blogspot.ca/2014/07/build-your-bar-project-introduction-and.html">here</a> and also comes in my <a href="&quot;https:github.com//cfhammill/friendlyshiny&quot;">friendlyShiny package</a>.<a href="#fnref3">↩</a></p></li>
+</ol>
+</div>
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

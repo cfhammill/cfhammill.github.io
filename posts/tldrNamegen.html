@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="author" content="Chris Hammill" />
+
+<meta name="date" content="2014-07-12" />
+
+<title>tldrNamgen</title>
+
+<script src="libs/jquery-1.11.0/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap-3.3.1/css/flatly.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.1/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.1/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.1/shim/respond.min.js"></script>
+
+<style type="text/css">
+  /* padding for bootstrap navbar */
+  body {
+  padding-top: 50px;
+  padding-bottom: 40px;
+  }
+  /* offset scroll position for anchor links (for fixed navbar)  */
+  .section h2 {
+  padding-top: 55px;
+  margin-top: -55px;
+  }
+  .section h3 {
+  padding-top: 55px;
+  margin-top: -55px;
+  }
+  /* don't use link color in navbar */
+  .dropdown-menu>li>a {
+  color: black;
+  }
+</style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<link rel="stylesheet"
+      href="libs/highlight/textmate.css"
+      type="text/css" />
+<script src="libs/highlight/highlight.js"></script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img { 
+  max-width:100%; 
+  height: auto; 
+}
+</style>
+<div class="container-fluid main-container">
+
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+	<span class="icon-bar"></span>
+	<span class="icon-bar"></span>
+	<span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">Datamancy</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+	<li><a href="/">Home</a></li>
+	<li><a href="authoring">Blog</a></li>
+  <li><a href="/">About Me</a></li>
+	<li class="dropdown">
+	  <a href="formats" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Tutorials <span class="caret"></span></a>
+	  <ul class="dropdown-menu" role="menu">
+	    <li class="dropdown-header">Tutorials</li>
+	    <li><a href="html_document_format.html">Getting Started With R Markdown</a></li>
+	    <li><a href="r_notebook_format.html">Breaking Up With Powerpoint</a></li>
+      <li><a href="">Regular Expressions in R</a></li>
+      <li><a href="">Overlays with ggplot2</a></li>
+	  </ul>
+	</li>
+  <li class="dropdown">
+    <a href="formats" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Data Viz <span class="caret"></span></a>
+	  <ul class="dropdown-menu" role="menu">
+	    <li class="dropdown-header">Graphics</li>
+	    <li><a href="html_document_format.html">Networks</a></li>
+	    <li><a href="r_notebook_format.html">Topography Plots</a></li>
+	  </ul>
+	</li>
+  <li class="dropdown">
+    <a href="formats" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Diversions <span class="caret"></span></a>
+    <ul class="dropdown-menu" role="menu">
+	    <li class="dropdown-header">Drink Name Generator</li>
+	  </ul>
+	</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+<h1 class="title">tldrNamgen</h1>
+<h4 class="author"><em>Chris Hammill</em></h4>
+<h4 class="date"><em>07/12/2014</em></h4>
+</div>
+
+
+<p><em>Here’s the generator!</em></p>
+<iframe src="https://datamancy.shinyapps.io/drinkNameGenerator/" style="border: none; width: 440px; height: 500px">
+</iframe>
+<div id="recap" class="section level2">
+<h2>Recap</h2>
+<p>I have been looking at a data set containing names and recipes for ~17000 cocktails. The original goal of the project was to use publicly available recipe data to inform a descision of what drinks to buy for a small home bar. The project since spun out of control because I realized the wealth of interesting trivia in the data.</p>
+</div>
+<div id="how-do-people-name-their-cocktails" class="section level2">
+<h2>How Do People Name Their Cocktails</h2>
+<p>Conceptually it might be worthwhile to separate out drinks into several naming classes based on their popularity. There are popular drinks that can be found at nearly any bar worth its salt, there are specialty drinks which are often variants of a popular drink with ingredient tweaks, and there are unique drinks that are unlikely to be found at any bar and will require a recipe if you want one. Each class is generally named differently. Popular drinks have readily recognizable names. Specialty drinks often have parts of a popular drink name with additional words indicating the variations involved. The unique drinks do not follow a pattern as closely as the other two, reflecting the heterogeneity of people creating these unique drinks.</p>
+<p>In order to learn a bit about how words are distributed within drink names I collated all the drink names in my data set and performed some simple analyses. After clean-up, I made a word cloud containing the top 100 words used in drink names. This analysis does not consider the popularity of the drink itself, but the data does contain some indication of popularity (e.g. more popular drinks are more likely to have multiple recipes with the same name).</p>
+<p>An interesting follow up to this analysis would be to re-weight the word frequencies according to how popular the drinks they are found in are. This will make the data look more like what you might see on a cocktail menu.</p>
+</div>
+<div id="drink-name-generator" class="section level2">
+<h2>Drink Name Generator</h2>
+<p>Part of the data exploration I calculated the frequencies of the top 500 words, as well as the distribution of the number of words in a cocktail name. The largest name in my data set was 8 words, with two being the most frequent. I contrained my drink name generator to produce drink names between 2 and 5 words. The generator generates a random number between 0 and 1, it compares that number to a look-up table corresponding to the cummulative distribution function (cdf) of word number frequencies. That number of words is generated using the same method but from the cdf of word name frequencies. The generator then returns your new drink name. The app was written using <a href="http://shiny.rstudio.com/">shiny</a>, a way to write small apps using R, which I will probably talk about in a future post.</p>
+</div>
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
