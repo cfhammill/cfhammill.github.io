@@ -1,9 +1,22 @@
 ---
 ---
 
+<script>
+  $(document).ready(function(){
+  $.get("posts/statsvsdata.html", function(data, status){
+  var bp = $("#blogpost").append(data);
+  $("#blogpost").html(bp.find("div.container-fluid").html());
+  });
+});
+</script>
+
+
 Welcome to the New and Improved Datamancy Blog!
+-----------------------------------------------
 
 Here you'll find a collection of musings on all things data related.
+
+<br>
 
 Hot Off The Presses
 ----------------------

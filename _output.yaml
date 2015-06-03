@@ -3,7 +3,7 @@ html_document:
   theme: flatly
   highlight: textmate
   toc_depth: 2
-  lib_dir: _posts/libs
+  lib_dir: ./libs
   includes:
-    in_header: include/index_header.html
+    in_header: include/in_header.html
     before_body: include/before_body.html
