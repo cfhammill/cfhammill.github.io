@@ -42,6 +42,14 @@
   }
 </style>
 
+<script>
+$(function () {
+  $('.navbar-collapse ul li a:not(.dropdown-toggle)').bind('click touchstart', function () {
+   $('.navbar-toggle:visible').click();
+  });
+});
+</script>
+
 <style type="text/css">code{white-space: pre;}</style>
 <link rel="stylesheet"
       href="libs/highlight/textmate.css"
@@ -135,8 +143,9 @@ img {
 
 
 <p><em>Here’s the generator!</em></p>
-<iframe src="https://datamancy.shinyapps.io/drinkNameGenerator/" style="border: none; width: 440px; height: 500px">
-</iframe>
+<iframe src="https://datamancy.shinyapps.io/drinkNameGenerator/" style="border: none; width: 440px; height: 500px"></iframe>
+
+
 <div id="recap" class="section level2">
 <h2>Recap</h2>
 <p>I have been looking at a data set containing names and recipes for ~17000 cocktails. The original goal of the project was to use publicly available recipe data to inform a descision of what drinks to buy for a small home bar. The project since spun out of control because I realized the wealth of interesting trivia in the data.</p>

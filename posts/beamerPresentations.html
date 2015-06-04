@@ -42,6 +42,14 @@
   }
 </style>
 
+<script>
+$(function () {
+  $('.navbar-collapse ul li a:not(.dropdown-toggle)').bind('click touchstart', function () {
+   $('.navbar-toggle:visible').click();
+  });
+});
+</script>
+
 <style type="text/css">code{white-space: pre;}</style>
 <link rel="stylesheet"
       href="libs/highlight/textmate.css"
@@ -140,8 +148,7 @@ img {
 <h2>Background</h2>
 <p>If you’re not familiar yet with R Markdown, I recommend you go back and read my <a href="http://www.datamancy.blogspot.ca/2015/03/getting-started-with-r-markdown.html">introduction to Knitr and R Markdown</a>. It has become so natural to do the bulk of my work without leaving the comfortable confines of R Studio that I keep looking for more tasks I can do without switching software. Presentations were a logical next step. Previously I had dipped my toes into the problem of authoring presentations with markdown. I used ioslides (another presentation format offered by R Markdown), but was unsatisfied with the level of customization I could achieve (with my primitive knowledge of javascript). So I tried again, but this time with beamer. Beamer for those who haven’t spent much time swimming in the LaTeX pools is a convenient package for rendering LaTeX code as pdf slide-decks. I encountered beamer for first when I tried learning LaTeX originally but never had enough time or drive to master it. However, now with the added ease offered by R Markdown I decided to give it another shot.</p>
 <p>These are the results:</p>
-<iframe src="http://www.slideshare.net/slideshow/embed_code/46955120" width="425" height="355" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen>
-</iframe>
+<iframe src="http://www.slideshare.net/slideshow/embed_code/46955120" width="425" height="355" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe> 
 <div style="margin-bottom:5px">
 <strong> <a href="http://www.slideshare.net/chammill1/introduction-to-igraph-and-shiny" title="Introduction To Igraph and Shiny">Introduction To Igraph and Shiny</a> </strong> from <strong><a href="http://www.slideshare.net/chammill1">Chris Hammill</a></strong>
 </div>

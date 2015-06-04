@@ -42,6 +42,14 @@
   }
 </style>
 
+<script>
+$(function () {
+  $('.navbar-collapse ul li a:not(.dropdown-toggle)').bind('click touchstart', function () {
+   $('.navbar-toggle:visible').click();
+  });
+});
+</script>
+
 <style type="text/css">code{white-space: pre;}</style>
 <link rel="stylesheet"
       href="libs/highlight/textmate.css"
@@ -152,7 +160,7 @@ img {
 </div>
 <div id="more-about-perl-like" class="section level2">
 <h2>More about Perl-Like</h2>
-<p>The help file for regex offers the advice to head to <a href="http://www.pcre.org">pcre</a> web page, but you will likely want to go straight to the source: <a href="http://perldoc.perl.org/perlre.html" class="uri">http://perldoc.perl.org/perlre.html</a>. The perl documentation page on the current state of their regex syntax is a handy reference for anyone who plans on using perl-like regex.</p>
+<p>The help file for regex offers the advice to head to <a href="http://www.pcre.org">pcre</a> web page, but you will likely want to go straight to the source: <a href="http://perldoc.perl.org/perlre.html">http://perldoc.perl.org/perlre.html</a>. The perl documentation page on the current state of their regex syntax is a handy reference for anyone who plans on using perl-like regex.</p>
 <p>Unfortunately for us R users, many of perl’s really handy regex features aren’t available to us. Native perl regex allow for concurrent search and accession, meaning you can search for multiple tokens within a string and access the returned tokens without storing the matches in an intermediary object first. More simply, in perl, searching and editing a string is essentially the same action. In R, searching and accession are handled by completely seperate functions, and regular expressions aren’t tokenized to allow multiple operations on the same search criterion.</p>
 <p>These differences are due to the fact that perl was designed for text manipulation, it is self-described as the “swiss army knife” of scripting languages allowing you to functionality from multiple languages with perl as the middle-man. The <em>lingua franca</em> of all programming languages is the source code, which perl can elegantly cut, trim, and glue together. R was built for statistics, and so string manipulation is more of an acquired skill. However, let it never be said you can’t do powerful string manipulation in R, it’s just not true. String manipulation in R is clunky, maybe, but powerful enough to do anything you need.</p>
 </div>
@@ -352,7 +360,7 @@ img {
 <ol>
 <li id="fn1"><p>I recently discovered the wonderful package <a href="http://cran.r-project.org/web/packages/stringr/index.html">stringr</a> another of Hadley Wickham’s packages. The syntax for specifying perl-like mode with stringr functions is different, you just wrap your regex string in a call to the <code>perl</code> function like so: <code>stringr_foo(&quot;string&quot;, pattern = perl(&quot;pattern&quot;))</code>. Stringr is a dependency of several of Wickham’s other packages so you likely already have it installed.<a href="#fnref1">↩</a></p></li>
 <li id="fn2"><p>The function gsub is R’s equivalent of find and replace all<a href="#fnref2">↩</a></p></li>
-<li id="fn3"><p>The matchPull function is my convenience function for finding and extracting a matched text from a string. Similar in idea to str_extract from stringr, but I wrote matchPull before I knew about stringr, and I’m too lazy to learn someone else’s convenience function when I have my own. Plus as a hold over from my days coding in java I think underscores in function names are yucky. Code for matchPull is available in my post <a href="http://datamancy.blogspot.ca/2014/07/build-your-bar-project-introduction-and.html">here</a> and also comes in my <a href="&quot;https:github.com//cfhammill/friendlyshiny&quot;">friendlyShiny package</a>.<a href="#fnref3">↩</a></p></li>
+<li id="fn3"><p>The matchPull function is my convenience function for finding and extracting a matched text from a string. Similar in idea to str_extract from stringr, but I wrote matchPull before I knew about stringr, and I’m too lazy to learn someone else’s convenience function when I have my own. Plus as a hold over from my days coding in java I think underscores in function names are yucky. Code for matchPull is available in my post <a href="http://datamancy.blogspot.ca/2014/07/build-your-bar-project-introduction-and.html">here</a> and also comes in my <a href="" title="https:github.com//cfhammill/friendlyshiny">friendlyShiny package</a>.<a href="#fnref3">↩</a></p></li>
 </ol>
 </div>
 

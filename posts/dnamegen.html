@@ -40,6 +40,14 @@
   }
 </style>
 
+<script>
+$(function () {
+  $('.navbar-collapse ul li a:not(.dropdown-toggle)').bind('click touchstart', function () {
+   $('.navbar-toggle:visible').click();
+  });
+});
+</script>
+
 <style type="text/css">code{white-space: pre;}</style>
 <link rel="stylesheet"
       href="libs/highlight/textmate.css"
@@ -161,7 +169,7 @@ img {
 <li>Keywords</li>
 <li>Number of ratings</li>
 <li>Average rating (out of 10)</li>
-<li><span style="font-variant: small-caps;">URL</span></li>
+<li><span style="font-variant:small-caps;">URL</span></li>
 </ol>
 <p>In order to get at these values I need to design a regular expression that will only capture the tag of interest. I discussed regular expressions briefly in my previous post, we will rely heavily on the non-greedy quantifier “.+?” I discussed <a href="http://datamancy.blogspot.ca/2014/07/build-your-bar-project-introduction-and.html#1">here</a>.</p>
 </div>
@@ -310,6 +318,13 @@ dev.off()</code></pre>
 <h4>Booze Cloud!</h4>
 <p><a href = "https://lh3.googleusercontent.com/rlpFcl6kg0Nzcu4yY4LUuUwLqPkIm9Wm7BGjYSONtU_RQQi6cOaC_xG6qa_tA_5sXDxn-GS-fyUxhfR3A2KeVYWN4i0UnQZVZVSwBiC3Qtr3BJMpTbnkz2F-tRkYrCc6cw"><img src="https://lh3.googleusercontent.com/rlpFcl6kg0Nzcu4yY4LUuUwLqPkIm9Wm7BGjYSONtU_RQQi6cOaC_xG6qa_tA_5sXDxn-GS-fyUxhfR3A2KeVYWN4i0UnQZVZVSwBiC3Qtr3BJMpTbnkz2F-tRkYrCc6cw" style="width: 400px; height: 400px;"></a> Click to embignify</p>
 <!--<iframe src="https://datamancy.shinyapps.io/drinkNameGenerator/" style="border: none; width: 440px; height: 500px"></iframe>-->
+
+
+
+
+
+
+
 </div>
 </div>
 
