@@ -27,9 +27,12 @@
 });
 </script>
 
-<div id='post1'></div>
-<div id='post2'></div>
-<div id='post3'></div>
-<div id="post4'></div>
-
+<div id='post1' class = "well"></div>
+<br><hr>
+<div id='post2' class = "well"></div>
+<br><hr>
+<div id='post3' class = "well"></div>
+<br><hr>
+<div id="post4' class = "well"></div>
+<br><hr>
 Want older content? Check out the [archive](posts/archive.html)
