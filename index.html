@@ -48,6 +48,14 @@ $(function () {
 });
 </script>
 
+<script>
+  $(function () {
+  $('.navbar-collapse ul li a:not(.dropdown-toggle)').click(function () {
+  $('.navbar-toggle:visible').click();
+  });
+  });
+</script>
+
 <style type="text/css">code{white-space: pre;}</style>
 <link rel="stylesheet"
       href="libs/highlight/textmate.css"
@@ -143,6 +151,8 @@ img {
   });
 });
 </script>
+
+
 <div id="welcome-to-the-new-and-improved-datamancy-blog" class="section level2">
 <h2>Welcome to the New and Improved Datamancy Blog!</h2>
 <p>Here you’ll find a collection of musings on all things data related.</p>
