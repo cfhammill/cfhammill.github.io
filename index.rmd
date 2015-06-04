@@ -3,11 +3,11 @@
 
 <script>
   $(document).ready(function(){
-  $.get("posts/statsvsdata.html", function(data, status){
-  var bp = $("#blogpost").append(data);
-  $("#blogpost").html(bp.find("div.container-fluid").html());
+    $("#blogpost").load("posts/statsvsdata.html div.main-container",
+    function(){
+      $("#blogpost").find(".navbar").remove();
+    });
   });
-});
 </script>
 
 
