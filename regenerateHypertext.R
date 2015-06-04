@@ -10,6 +10,6 @@ invisible(lapply(posts, rmarkdown::render, output_dir = "../posts"))
 rmarkdown::render("index.rmd")
 
 # Pages
-pages <- paste0("pages/", list.files(path = "pages/", pattern = "*.[rR]md"))
+pages <- paste0("_rawPages/", list.files(path = "_rawPages/", pattern = "*.[rR]md"))
 invisible(lapply(pages, rmarkdown::render, output_dir = "../pages"))
 

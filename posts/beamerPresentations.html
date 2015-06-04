@@ -8,9 +8,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 
-<meta name="author" content="Chris" />
 
-<meta name="date" content="2015-04-13" />
 
 <title>Breaking Up With Powerpoint</title>
 
@@ -110,10 +108,10 @@ img {
 	  <a href="Tutorials" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Tutorials <span class="caret"></span></a>
 	  <ul class="dropdown-menu" role="menu">
 	    <li class="dropdown-header">Tutorials</li>
-	    <li><a href="html_document_format.html">Getting Started With R Markdown</a></li>
-	    <li><a href="r_notebook_format.html">Breaking Up With Powerpoint</a></li>
-	    <li><a href="">Regular Expressions in R</a></li>
-	    <li><a href="">Overlays with ggplot2</a></li>
+	    <li><a href="/posts/startRMarkdown.html">Getting Started With R Markdown</a></li>
+	    <li><a href="/posts/beamerPresentations.html">Breaking Up With Powerpoint</a></li>
+	    <li><a href="/posts/regexPost.html">Regular Expressions in R</a></li>
+	    <li><a href="/posts/watermarkPost.html">Overlays with ggplot2</a></li>
 	  </ul>
 	</li>
 	<li class="dropdown">
@@ -127,7 +125,7 @@ img {
 	<li class="dropdown">
 	  <a href="Diversions" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Diversions <span class="caret"></span></a>
 	  <ul class="dropdown-menu" role="menu">
-	    <li class="dropdown-header">Drink Name Generator</li>
+	    <li class="dropdown-header"><a href="/pages/tldrNamegen.html">Drink Name Generator</a></li>
 	  </ul>
 	</li>
       </ul>
@@ -137,8 +135,6 @@ img {
 
 <div id="header">
 <h1 class="title">Breaking Up With Powerpoint</h1>
-<h4 class="author"><em>Chris</em></h4>
-<h4 class="date"><em>2015-04-13</em></h4>
 </div>
 
 
@@ -146,13 +142,13 @@ img {
 <p>Two weeks ago I did something new, I wrote and delivered a presentation on graph theory and interactive data analysis to a mixed crowd of upper year undergrads and grad students. What was special about this presentation was that powerpoint was nowhere to be seen, not a familiar microsoft trapping in sight. This presentation was a beamer presentation. I wrote it in R Markdow supplemented with some raw LaTeX, and now I don’t think I can ever back. I’m breaking up with powerpoint, and I think you should too. <br></p>
 <div id="background" class="section level2">
 <h2>Background</h2>
-<p>If you’re not familiar yet with R Markdown, I recommend you go back and read my <a href="http://www.datamancy.blogspot.ca/2015/03/getting-started-with-r-markdown.html">introduction to Knitr and R Markdown</a>. It has become so natural to do the bulk of my work without leaving the comfortable confines of R Studio that I keep looking for more tasks I can do without switching software. Presentations were a logical next step. Previously I had dipped my toes into the problem of authoring presentations with markdown. I used ioslides (another presentation format offered by R Markdown), but was unsatisfied with the level of customization I could achieve (with my primitive knowledge of javascript). So I tried again, but this time with beamer. Beamer for those who haven’t spent much time swimming in the LaTeX pools is a convenient package for rendering LaTeX code as pdf slide-decks. I encountered beamer for first when I tried learning LaTeX originally but never had enough time or drive to master it. However, now with the added ease offered by R Markdown I decided to give it another shot.</p>
+<p>If you’re not familiar yet with R Markdown, I recommend you go back and read my <a href="/posts/startRMarkdown.html">introduction to Knitr and R Markdown</a>. It has become so natural to do the bulk of my work without leaving the comfortable confines of R Studio that I keep looking for more tasks I can do without switching software. Presentations were a logical next step. Previously I had dipped my toes into the problem of authoring presentations with markdown. I used ioslides (another presentation format offered by R Markdown), but was unsatisfied with the level of customization I could achieve (with my primitive knowledge of javascript). So I tried again, but this time with beamer. Beamer for those who haven’t spent much time swimming in the LaTeX pools is a convenient package for rendering LaTeX code as pdf slide-decks. I encountered beamer for first when I tried learning LaTeX originally but never had enough time or drive to master it. However, now with the added ease offered by R Markdown I decided to give it another shot.</p>
 <p>These are the results:</p>
 <iframe src="http://www.slideshare.net/slideshow/embed_code/46955120" width="425" height="355" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe> 
 <div style="margin-bottom:5px">
 <strong> <a href="http://www.slideshare.net/chammill1/introduction-to-igraph-and-shiny" title="Introduction To Igraph and Shiny">Introduction To Igraph and Shiny</a> </strong> from <strong><a href="http://www.slideshare.net/chammill1">Chris Hammill</a></strong>
 </div>
-<p>The code is available from <a href="https://gist.github.com/cfhammill/62ac9f7705fe0607c327">my github</a></p>
+<p>The code is available from <a href="https://gist.github.com/datamancy/62ac9f7705fe0607c327">my github</a></p>
 <p>Other than the relatively uninspiring title page the document came out beautifully. Figures rendered wonderfully, code seamlessly integrated into the slides, natural sub-sectioning, I can’t wait to write more like it. I recommend you quickly scroll through the document to see just how simple the document turned out to be (after code headers).<br></p>
 </div>
 <div id="getting-started" class="section level2">
@@ -165,7 +161,7 @@ img {
 <h2>First Gotcha, YAML Headers, and Themes</h2>
 <p>A problem I ran in to (yet haven’t done my due dilligence and reported it) was that I couldn’t resize the code in my document. As there isn’t a burgeoning community of R Markdown –&gt; Knitr –&gt; Beamer users, tracking down which component of the pipeline isn’t working right and finding a fix is challenging. I found references to a workaround by Yuihui Xie (the creator of Knitr) for getting the code to the right size, but it didn’t work for me, and supposedly is no longer necessary anyway. He was using Knitr –&gt; Beamer so the issue could be in R Markdown. I created a work-around that made the code font smaller but left the output font gargantuan, it was sufficient for my purposes. You can grab the modified template I used from my github by running:</p>
 <pre><code>library(RCurl)
-gistUrl &lt;- &quot;https://gist.githubusercontent.com/cfhammill/b5ba7767d7729bd676a2/raw/987d43694eda1fc263efdd38af03f846db80e690/resizeTemplate.beamer&quot;
+gistUrl &lt;- &quot;https://gist.githubusercontent.com/datamancy/b5ba7767d7729bd676a2/raw/987d43694eda1fc263efdd38af03f846db80e690/resizeTemplate.beamer&quot;
 
 write(getURL(gistUrl), &quot;resizeTemplate.beamer&quot;) </code></pre>
 <p>Then you can add <code>template: resizeTemplate.beamer</code> to your yaml header. Also if you’re interested in using a theme to beautify your document you can add that in the header as well:</p>
@@ -237,7 +233,7 @@ Untitled slide 2</code></pre>
 <h2>Outro</h2>
 <p>With that you now know about as much as I do about creating presentations with Beamer via Knitr via R Markdown. It’s pretty straight forward, if you ever do presentations that involve code, equations, and figures I can’t recommend it enough. I hope you’re inspired to try your next presentation without powerpoint.</p>
 <p>-Chris</p>
-<p>Bonus Trick For Those interested: in the presentation, the red X and green check mark were made using grid graphics directly from within R. I previously wrote a little about <a href="http://www.datamancy.blogspot.ca/2014/07/advanced-ggplot2-how-to-add-overlays.html">using ggplot2 in unexpected ways</a>, this used some of those lessons. By using the <code>grid</code> package directly you can draw whatever you like on a plot canvas, check out the presentation code for how I did it.</p>
+<p>Bonus Trick For Those interested: in the presentation, the red X and green check mark were made using grid graphics directly from within R. I previously wrote a little about <a href="/posts/watermarkPost.html">using ggplot2 in unexpected ways</a>, this used some of those lessons. By using the <code>grid</code> package directly you can draw whatever you like on a plot canvas, check out the presentation code for how I did it.</p>
 </div>
 <div class="footnotes">
 <hr />

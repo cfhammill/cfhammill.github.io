@@ -10,7 +10,7 @@
 
 
 
-<title>ESA Talk</title>
+<title>Drink Name Generator</title>
 
 <script src="libs/jquery-1.11.0/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -134,34 +134,27 @@ img {
 </div><!--/.navbar -->
 
 <div id="header">
-<h1 class="title">ESA Talk</h1>
+<h1 class="title">Drink Name Generator</h1>
 </div>
 
 
-<p>Coming to you live from Sacramento California, it’s Datamancy on the Road!</p>
-<p>I’m posting this with extreme pre-talk jitters, I will be presenting tomorrow morning in conference room 314 at the Sacramento conference centre. I’m hoping for the best.</p>
-<p>If you’re reading this after the fact and have come to have another look at my slides, thanks for your interest! I really love what I do and enjoy sharing it just as much, skip to the bottom to get to the slides.</p>
-<div id="conference-recap" class="section level1">
-<h1>Conference Recap</h1>
-<div id="environmental-sequencing-workshop" class="section level2">
-<h2>Environmental Sequencing Workshop</h2>
-<p>The ESA 2014 annual meeting has been a whirlwind of wonderful science and people. I was lucky enough to get to sit in on a wonderful workshop lead by Holy Bik, Kelley Thomas, Dorota Porazinska, and Simon Creer on environmental sequencing approaches. It was a blast to hear from such passionate people in such an interesting field.</p>
-<p>I went in to the session hoping to learn a little more about the state of the field in order to hopefully answer a irksome problem my supervisor has been grappling with. Our model species (<em>Splachnum ampullaceum</em> and <em>Splachnum pensylvanicum</em>) are poorly studied genetically so efficient markers don’t exist for detecting their spores in the environment. I wanted to tap into the thoughts of people who deal with this kind of problem daily.</p>
-<p>I’ve been inspired to revist the prior work that has been done on developing markers for our species, and perhaps employ some more modern techniques for identifying them. So kudos to the leaders for putting the workshop together.</p>
+<p><em>Here’s the generator!</em></p>
+<iframe src="https://datamancy.shinyapps.io/drinkNameGenerator/" style="border: none; width: 440px; height: 200px"></iframe>
+
+
+<div id="recap" class="section level2">
+<h2>Recap</h2>
+<p>I have been looking at a data set containing names and recipes for ~17000 cocktails. The original goal of the project was to use publicly available recipe data to inform a descision of what drinks to buy for a small home bar. The project since spun out of control because I realized the wealth of interesting trivia in the data.</p>
 </div>
-<div id="talks-talks-posters-and-more-talks" class="section level2">
-<h2>Talks, Talks, Posters, and More Talks</h2>
-<p>I really enjoyed getting a whirlwind tour of what’s going on in ecology research. I focused mostly on catching community ecology and modelling talks. I saw many other young scientists put themselves on display for what must have been an intimidating crowd.</p>
-<p>I really enjoyed talks from</p>
-<p><a href="http://asdavid.wordpress.com/">Aaron David</a> on microbe innoculation sources for new plants. Interesting work in teasing out whether new plant roots gain their fungal endophytes from the parent plant, conspecific neighbours, or the surrounding soil.</p>
-<p><a href="http://eebweb.arizona.edu/Faculty/chesson/index.htm#Max">Yue “Max” Li</a> from the Chesson lab, looked at coexistence using a long-standing field experiment.</p>
-<p>Jiaqi Tan looked at coexistence mechanisms amongst protists. He used a cool strategy to identify dietary strategy amongst the protist, then used dietary preference as a proxy for niche to estimate niche differentiation (amongst other things).</p>
-<p>Dan Scholes from Ken Paige’s lab in Illinois looking at the genetic basis of plant overcompensation in response to herbivory. I had the pleasure of having dinner with Dan and Ken, fascinating work that reminded me of the Arabidopsis days of my undergrad.</p>
-<p>Those are just a few of my highlights, I’d continue but it is exhausting looking for personal websites for young scientists.</p>
+<div id="how-do-people-name-their-cocktails" class="section level2">
+<h2>How Do People Name Their Cocktails</h2>
+<p>Conceptually it might be worthwhile to separate out drinks into several naming classes based on their popularity. There are popular drinks that can be found at nearly any bar worth its salt, there are specialty drinks which are often variants of a popular drink with ingredient tweaks, and there are unique drinks that are unlikely to be found at any bar and will require a recipe if you want one. Each class is generally named differently. Popular drinks have readily recognizable names. Specialty drinks often have parts of a popular drink name with additional words indicating the variations involved. The unique drinks do not follow a pattern as closely as the other two, reflecting the heterogeneity of people creating these unique drinks.</p>
+<p>In order to learn a bit about how words are distributed within drink names I collated all the drink names in my data set and performed some simple analyses. After clean-up, I made a word cloud containing the top 100 words used in drink names. This analysis does not consider the popularity of the drink itself, but the data does contain some indication of popularity (e.g. more popular drinks are more likely to have multiple recipes with the same name).</p>
+<p>An interesting follow up to this analysis would be to re-weight the word frequencies according to how popular the drinks they are found in are. This will make the data look more like what you might see on a cocktail menu.</p>
 </div>
-</div>
-<div id="slides" class="section level1">
-<h1>Slides!</h1>
+<div id="drink-name-generator" class="section level2">
+<h2>Drink Name Generator</h2>
+<p>Part of the data exploration I calculated the frequencies of the top 500 words, as well as the distribution of the number of words in a cocktail name. The largest name in my data set was 8 words, with two being the most frequent. I contrained my drink name generator to produce drink names between 2 and 5 words. The generator generates a random number between 0 and 1, it compares that number to a look-up table corresponding to the cummulative distribution function (cdf) of word number frequencies. That number of words is generated using the same method but from the cdf of word name frequencies. The generator then returns your new drink name. The app was written using <a href="http://shiny.rstudio.com/">shiny</a>, a way to write small apps using R, which I will probably talk about in a future post.</p>
 </div>
 
 

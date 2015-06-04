@@ -6,6 +6,9 @@
     $("#blogpost").load("posts/statsvsdata.html div.main-container",
     function(){
       $("#blogpost").find(".navbar").remove();
+      $('pre code').each(function(i, block) {
+        hljs.highlightBlock(block);
+      });
     });
   });
 </script>

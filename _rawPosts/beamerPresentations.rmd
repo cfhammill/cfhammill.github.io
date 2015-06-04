@@ -1,8 +1,5 @@
 ---
 title: "Breaking Up With Powerpoint"
-author: "Chris"
-date: '2015-04-13'
-output: html_document
 ---
 
 I'm breaking up with powerpoint. I've known this day would come for a while now, but its shocking its finally here. There are academic arguments for its abandonment, but none really compelled me. The honest truth is I've finally found something better.  
@@ -12,13 +9,13 @@ Two weeks ago I did something new, I wrote and delivered a presentation on graph
 Background
 -----------
 
-If you're not familiar yet with R Markdown, I recommend you go back and read my [introduction to Knitr and R Markdown](http://www.datamancy.blogspot.ca/2015/03/getting-started-with-r-markdown.html). It has become so natural to do the bulk of my work without leaving the comfortable confines of R Studio that I keep looking for more tasks I can do without switching software. Presentations were a logical next step. Previously I had dipped my toes into the problem of authoring presentations with markdown. I used ioslides (another presentation format offered by R Markdown), but was unsatisfied with the level of customization I could achieve (with my primitive knowledge of javascript). So I tried again, but this time with beamer. Beamer for those who haven't spent much time swimming in the LaTeX pools is a convenient package for rendering LaTeX code as pdf slide-decks. I encountered beamer for first when I tried learning LaTeX originally but never had enough time or drive to master it. However, now with the added ease offered by R Markdown I decided to give it another shot.  
+If you're not familiar yet with R Markdown, I recommend you go back and read my [introduction to Knitr and R Markdown](/posts/startRMarkdown.html). It has become so natural to do the bulk of my work without leaving the comfortable confines of R Studio that I keep looking for more tasks I can do without switching software. Presentations were a logical next step. Previously I had dipped my toes into the problem of authoring presentations with markdown. I used ioslides (another presentation format offered by R Markdown), but was unsatisfied with the level of customization I could achieve (with my primitive knowledge of javascript). So I tried again, but this time with beamer. Beamer for those who haven't spent much time swimming in the LaTeX pools is a convenient package for rendering LaTeX code as pdf slide-decks. I encountered beamer for first when I tried learning LaTeX originally but never had enough time or drive to master it. However, now with the added ease offered by R Markdown I decided to give it another shot.  
 
 These are the results:
 
 <iframe src="http://www.slideshare.net/slideshow/embed_code/46955120" width="425" height="355" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe> <div style="margin-bottom:5px"> <strong> <a href="http://www.slideshare.net/chammill1/introduction-to-igraph-and-shiny" title="Introduction To Igraph and Shiny">Introduction To Igraph and Shiny</a> </strong> from <strong><a href="http://www.slideshare.net/chammill1">Chris Hammill</a></strong> </div>
 
-The code is available from [my github](https://gist.github.com/cfhammill/62ac9f7705fe0607c327)  
+The code is available from [my github](https://gist.github.com/datamancy/62ac9f7705fe0607c327)  
 
 Other than the relatively uninspiring title page the document came out beautifully. Figures rendered wonderfully, code seamlessly integrated into the slides, natural sub-sectioning, I can't wait to write more like it. I recommend you quickly scroll through the document to see just how simple the document turned out to be (after code headers).<br>   
 
@@ -38,7 +35,7 @@ A problem I ran in to (yet haven't done my due dilligence and reported it) was t
 
 ```
 library(RCurl)
-gistUrl <- "https://gist.githubusercontent.com/cfhammill/b5ba7767d7729bd676a2/raw/987d43694eda1fc263efdd38af03f846db80e690/resizeTemplate.beamer"
+gistUrl <- "https://gist.githubusercontent.com/datamancy/b5ba7767d7729bd676a2/raw/987d43694eda1fc263efdd38af03f846db80e690/resizeTemplate.beamer"
 
 write(getURL(gistUrl), "resizeTemplate.beamer") 
 ```
@@ -149,6 +146,6 @@ With that you now know about as much as I do about creating presentations with B
 
 -Chris  
 
-Bonus Trick For Those interested: in the presentation, the red X and green check mark were made using grid graphics directly from within R. I previously wrote a little about [using ggplot2 in unexpected ways](http://www.datamancy.blogspot.ca/2014/07/advanced-ggplot2-how-to-add-overlays.html), this used some of those lessons. By using the `grid` package directly you can draw whatever you like on a plot canvas, check out the presentation code for how I did it.
+Bonus Trick For Those interested: in the presentation, the red X and green check mark were made using grid graphics directly from within R. I previously wrote a little about [using ggplot2 in unexpected ways](/posts/watermarkPost.html), this used some of those lessons. By using the `grid` package directly you can draw whatever you like on a plot canvas, check out the presentation code for how I did it.
 
 [^1]: "Gotcha" is a programming term for a little irksome quirk of a language or tool that cause it to perform in unexpected or counter intuitive ways

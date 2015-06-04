@@ -1,0 +1,37 @@
+---
+---
+
+<script>
+var mostRecentFour = ["statsvsdata.html",
+                      "beamerPresentations.html",
+                      "startRMarkdown.html",
+                      "knitEnginePost.html"];
+
+  function loadPost(ind, post){
+  $("#post" + ind).load("../posts/" + post + " div.main-container",
+    function(){
+      $("#post" + ind).find(".navbar").remove();
+      $('pre code').each(function(i, block) {
+        hljs.highlightBlock(block);
+      });
+    });
+  };
+  
+  $(document).ready(function(){
+  
+  loadPost(1, mostRecentFour[0]);
+  loadPost(2, mostRecentFour[1]);
+  
+});
+</script>
+
+<div id='post1'></div>
+<br><hr>
+<div id='post2' onmouseover="loadPost(3, mostRecentFour[2])"></div>
+<br><hr>
+<div id='post3' onmouseover="loadPost(4, mostRecentFour[3])"></div>
+<br><hr>
+<div id='post4'></div>
+<br><hr>
+
+Want older content? Check out the [archive](/pages/archive.html)

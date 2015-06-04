@@ -1,14 +1,11 @@
 ---
-output: html_document
+title: Writing a Knitr Engine to run code through an interpreter of your choice!
 ---
 
 ```{r, echo=FALSE, message=FALSE}
 library(knitr)
 opts_chunk$set(eval = FALSE)
 ```
-
-Writing a Knitr Engine to run code through an interpreter of your choice!
---------------------------------------------------------------------------
 
 Recently I took a job with the Department of Fisheries and Oceans translating some statistical software from python into R. The package uses kernel smoothing to estimate the probability distribution of a variable of interest relative to one or more covariates. I'm employed for the next month or so, and hopefully by the end we'll be submitting the package to CRAN. I'll write a little more about that as it gets closer to happening.
 
@@ -136,6 +133,6 @@ with impunity and it works like a charm!.
 Wrap-Up
 ---------
 
-I hope you liked this little tutorial. If you like to say "nuts to writing my own, I'll just use yours" you can find all this code in a convenient format on [github](https://gist.github.com/cfhammill/a3aa805350d4b6c59f79).
+I hope you liked this little tutorial. If you like to say "nuts to writing my own, I'll just use yours" you can find all this code in a convenient format on [github](https://gist.github.com/datamancy/a3aa805350d4b6c59f79).
 
 Chris

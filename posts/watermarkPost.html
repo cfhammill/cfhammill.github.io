@@ -8,9 +8,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 
-<meta name="author" content="Chris Hammill" />
 
-<meta name="date" content="2014-07-23" />
 
 <title>Advanced ggplot2: Watermarks and Overlays</title>
 
@@ -110,10 +108,10 @@ img {
 	  <a href="Tutorials" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Tutorials <span class="caret"></span></a>
 	  <ul class="dropdown-menu" role="menu">
 	    <li class="dropdown-header">Tutorials</li>
-	    <li><a href="html_document_format.html">Getting Started With R Markdown</a></li>
-	    <li><a href="r_notebook_format.html">Breaking Up With Powerpoint</a></li>
-	    <li><a href="">Regular Expressions in R</a></li>
-	    <li><a href="">Overlays with ggplot2</a></li>
+	    <li><a href="/posts/startRMarkdown.html">Getting Started With R Markdown</a></li>
+	    <li><a href="/posts/beamerPresentations.html">Breaking Up With Powerpoint</a></li>
+	    <li><a href="/posts/regexPost.html">Regular Expressions in R</a></li>
+	    <li><a href="/posts/watermarkPost.html">Overlays with ggplot2</a></li>
 	  </ul>
 	</li>
 	<li class="dropdown">
@@ -127,7 +125,7 @@ img {
 	<li class="dropdown">
 	  <a href="Diversions" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Diversions <span class="caret"></span></a>
 	  <ul class="dropdown-menu" role="menu">
-	    <li class="dropdown-header">Drink Name Generator</li>
+	    <li class="dropdown-header"><a href="/pages/tldrNamegen.html">Drink Name Generator</a></li>
 	  </ul>
 	</li>
       </ul>
@@ -137,13 +135,11 @@ img {
 
 <div id="header">
 <h1 class="title">Advanced ggplot2: Watermarks and Overlays</h1>
-<h4 class="author"><em>Chris Hammill</em></h4>
-<h4 class="date"><em>07/23/2014</em></h4>
 </div>
 
 
 <p>Hi Readers,</p>
-<p><a href="http://datamancy.blogspot.ca/2014/07/introducing-friendlyshiny-package-to.html">Previously</a> I mentioned I’m working on a contract for the Newfoundland government. For this contract I’ve had to make a number of figures for a report that’s coming out in the near future on the state of Caribou in the province. When I began the contract I was new to <a href="http://ggplot2.org/">ggplot2</a>, a nice graphics package by R guru <a href="http://had.co.nz/">Hadley Wickham</a> which has become <em>de rigueur</em> in the circles I find myself in. Now I use it all the time when I want to make high quality figures.</p>
+<p><a href="/posts/fS_blogPost.html">Previously</a> I mentioned I’m working on a contract for the Newfoundland government. For this contract I’ve had to make a number of figures for a report that’s coming out in the near future on the state of Caribou in the province. When I began the contract I was new to <a href="http://ggplot2.org/">ggplot2</a>, a nice graphics package by R guru <a href="http://had.co.nz/">Hadley Wickham</a> which has become <em>de rigueur</em> in the circles I find myself in. Now I use it all the time when I want to make high quality figures.</p>
 <p>For its many virtues there are drawbacks that come with producing figures with ggplot2. The primary difficulty is the syntax is inobvious without having read <a href="http://www.amazon.ca/ggplot2-Elegant-Graphics-Data-Analysis/dp/0387981403">Wickham’s book</a> (or the <a href="http://www.amazon.ca/Grammar-Graphics-Leland-Wilkinson/dp/0387245448/ref=sr_1_1?s=books&amp;ie=UTF8&amp;qid=1406139836&amp;sr=1-1&amp;keywords=leland+grammar">Wilkinson book</a> that inspired it). Additionally there is an unfortunate dearth of documentation on the finer points of package.</p>
 <p>Like many attempts to simplify tricky topics, the simplification adds its own baggage that confounds its initial objective. However, ggplot2 is immensely powerful and for most applications it is the best option available, I recommend it, but be sure to devote some time to learning it.</p>
 <p>In this post I want to walk you through how to make a watermarked plot. Sometimes a bit of background information can keep a viewer in tune with the message of the figure.</p>

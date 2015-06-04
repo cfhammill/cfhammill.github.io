@@ -1,8 +1,5 @@
 ---
-title: "Regex in R"
-author: "Chris Hammill"
-date: "08/06/2014"
-output: html_document
+title: Regex in R
 ---
 
 ##Preamble
@@ -197,4 +194,4 @@ As always, thanks for reading!
 
 [^2]: The function gsub is R's equivalent of find and replace all
 
-[^3]: The matchPull function is my convenience function for finding and extracting a matched text from a string. Similar in idea to str_extract from stringr, but I wrote matchPull before I knew about stringr, and I'm too lazy to learn someone else's convenience function when I have my own. Plus as a hold over from my days coding in java I think underscores in function names are yucky. Code for matchPull is available in my post [here](http://datamancy.blogspot.ca/2014/07/build-your-bar-project-introduction-and.html) and also comes in my [friendlyShiny package]("https:github.com//cfhammill/friendlyshiny").
+[^3]: The matchPull function is my convenience function for finding and extracting a matched text from a string. Similar in idea to str_extract from stringr, but I wrote matchPull before I knew about stringr, and I'm too lazy to learn someone else's convenience function when I have my own. Plus as a hold over from my days coding in java I think underscores in function names are yucky. Code for matchPull is available in my post [here](http://datamancy.blogspot.ca/2014/07/build-your-bar-project-introduction-and.html) and also comes in my [friendlyShiny package]("https:github.com/datamancy/friendlyshiny").

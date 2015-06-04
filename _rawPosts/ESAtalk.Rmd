@@ -1,8 +1,5 @@
 ---
 title: "ESA Talk"
-author: "Chris Hammill"
-date: "08/11/2014"
-output: html_document
 ---
 
 Coming to you live from Sacramento California, it's Datamancy on the Road!

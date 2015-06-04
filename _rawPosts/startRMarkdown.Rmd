@@ -1,8 +1,11 @@
+---
+title: Get Started With R Markdown
+---
 
 Intro
 --------------------
 
-For today's post, I'd like to continue on the R Markdown theme started in my last post, and give a brief introduction to authoring documents using R Markdown and Knitr. If you're completely new to Knitr and R Markdown I recommend reading the "Back to basics" paragraph in my [last post](http://datamancy.blogspot.com/2015/02/writing-knitr-engine-to-run-code.html) to get a feel for the context and purposes of these tools. 
+For today's post, I'd like to continue on the R Markdown theme started in my last post, and give a brief introduction to authoring documents using R Markdown and Knitr. If you're completely new to Knitr and R Markdown I recommend reading the "Back to basics" paragraph in my [last post](/posts/knitEnginePost.html) to get a feel for the context and purposes of these tools. 
 
 These tools fill essentially the same niche for the R community as ipython notebooks do in the python community. My experience with ipython notebooks is minimal relative to my markdown experience and so I don't feel qualified to compare the two, but I will say that ipython notebooks aren't the only way to share code and rationale all in one document.
 

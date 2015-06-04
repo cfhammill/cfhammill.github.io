@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+<title>Shiny but Friendly</title>
+
+<script src="libs/jquery-1.11.0/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap-3.3.1/css/flatly.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.1/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.1/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.1/shim/respond.min.js"></script>
+
+<style type="text/css">
+  /* padding for bootstrap navbar */
+  body {
+  padding-top: 80px;
+  padding-bottom: 40px;
+  }
+  /* offset scroll position for anchor links (for fixed navbar)  */
+  .section h2 {
+  padding-top: 55px;
+  margin-top: -55px;
+  }
+  .section h3 {
+  padding-top: 55px;
+  margin-top: -55px;
+  }
+  /* don't use link color in navbar */
+  .dropdown-menu>li>a {
+  color: black;
+  }
+</style>
+
+<script>
+  $(document).on('click','.navbar-collapse.in',function(e) {
+  if( $(e.target).is('a') && $(e.target).attr('class') != 'dropdown-toggle' ) {
+  $(this).collapse('hide');
+  }
+  });
+</script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<link rel="stylesheet"
+      href="libs/highlight/textmate.css"
+      type="text/css" />
+<script src="libs/highlight/highlight.js"></script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img { 
+  max-width:100%; 
+  height: auto; 
+}
+</style>
+<div class="container-fluid main-container">
+
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+	<span class="icon-bar"></span>
+	<span class="icon-bar"></span>
+	<span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">Datamancy</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+	<li><a href="/index.html">Home</a></li>
+	<li><a href="/pages/blog.html">Blog</a></li>
+	<li><a href="AboutMe.html">About Me</a></li>
+	<li class="dropdown">
+	  <a href="Tutorials" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Tutorials <span class="caret"></span></a>
+	  <ul class="dropdown-menu" role="menu">
+	    <li class="dropdown-header">Tutorials</li>
+	    <li><a href="/posts/startRMarkdown.html">Getting Started With R Markdown</a></li>
+	    <li><a href="/posts/beamerPresentations.html">Breaking Up With Powerpoint</a></li>
+	    <li><a href="/posts/regexPost.html">Regular Expressions in R</a></li>
+	    <li><a href="/posts/watermarkPost.html">Overlays with ggplot2</a></li>
+	  </ul>
+	</li>
+	<li class="dropdown">
+	  <a href="Graphics" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Data Viz <span class="caret"></span></a>
+	  <ul class="dropdown-menu" role="menu">
+	    <li class="dropdown-header">Graphics</li>
+	    <li><a href="html_document_format.html">Networks</a></li>
+	    <li><a href="r_notebook_format.html">Topography Plots</a></li>
+	  </ul>
+	</li>
+	<li class="dropdown">
+	  <a href="Diversions" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Diversions <span class="caret"></span></a>
+	  <ul class="dropdown-menu" role="menu">
+	    <li class="dropdown-header"><a href="/pages/tldrNamegen.html">Drink Name Generator</a></li>
+	  </ul>
+	</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+<h1 class="title">Shiny but Friendly</h1>
+</div>
+
+
+<div id="friendlyshiny" class="section level1">
+<h1>friendlyShiny</h1>
+<p><em>Much of this post is borrowed from the README of my new project on GitHub</em> <em>Find the project here (<a href="http://www.github.com/datamancy/friendlyShiny">http://www.github.com/datamancy/friendlyShiny</a>)</em></p>
+<p>I currently am working on a contract for the Government of Newfoundland and Labradour’s Department of Environment &amp; Conservation, and they have me making graphics for an upcoming report. While working on these graphics I repeatedly find myself fixing graphic parameters to try to improve the aesthetic appeal. It’s a tedious process including a lot more “guess-and-check” thank I’d really like to admit.</p>
+<p>If you’ve read a few of my other posts you’d have caught that I recently learned shiny in order to bring you the (Drink Name Generator)[<a href="http://datamancy.blogspot.ca/2014/07/build-your-bar-project-whats-in-drink.html">http://datamancy.blogspot.ca/2014/07/build-your-bar-project-whats-in-drink.html</a>]. I thought to myself surely there must be a way to leverage the power of shiny to perform parameter fine tuning in a way that doesn’t create more overhead than it’s worth.</p>
+<p>By the time I had that thought I was already lost. I spent most of the past two days putting together a small package that gives a (in my oppinion) intuitive interface to shiny. The package allows for applets to be created from a pre-existing R code with only a few minor changes.</p>
+<div id="without-further-ado-the-readme-from-my-github" class="section level2">
+<h2>Without further ado, the README from my GitHub</h2>
+<p>FriendlyShiny is my attempt at making the wonderful reactive code abilities of R’s shiny package more accessible to novice users, and folks who want interactive code quickly. FriendlyShiny provides a simple syntax for specifying reactive elements in code chunk without the overhead of designing the user interface and coding the applet by hand.</p>
+<p>To allow interactivity for a code chunk, it just needs to be wrapped in an <code>interact</code> function call.</p>
+<p>Consider trying to teach a math class about line specifications. You’ve taught them a line can be specified by <code>y = mx + b</code> but you’d like to show them how the line changes with its parameters.</p>
+<p>You could write demostration code like this to plot a line, and bring the plot up in front of your students</p>
+<pre class="r"><code>  slope &lt;- 1
+  intercept &lt;- 0
+  
+  plot(0,
+       ylim = c(0, 15),
+       xlim = c(0, 10),
+       xlab = &quot;x&quot;,
+       ylab = &quot;y&quot;,
+       col = 0)
+  
+  abline(intercept, slope)</code></pre>
+<p>Now you could go back to your code and change the values of slope and intercept by hand, <em>OR</em> you can make it interactive very simply like so:</p>
+<pre class="r"><code>interact(
+{
+  slope &lt;- sI(&quot;slope&quot;, 1, min = 1/3, max = 3)
+  intercept &lt;- nI(&quot;intercept&quot;, 0)
+
+  plot(0,
+       ylim = c(0, 15),
+       xlim = c(0, 10),
+       xlab = &quot;x&quot;,
+       ylab = &quot;y&quot;,
+       col = 0)
+  
+  abline(intercept, slope)
+  
+}, outputType = &quot;plot&quot;)</code></pre>
+<p>All you need to do is wrap your code in curly braces and a call to <code>interact</code>, then you need to specify you want a slider to help you choose the slope, and a numerical input box to specify the intercept (you probably want a slider for that too, but I’m sure you can see how to fix it).</p>
+<p>The last argument after the curly braces tells the interact function whether to render your output as text or as a plot. Text output is useful for fine tuning parameters for modelling parameters and plot output is useful for getting the graphing parameter juuust right.</p>
+</div>
+<div id="supported-widgets" class="section level2">
+<h2>Supported Widgets</h2>
+<p>Currently friendlyShiny supports:</p>
+<ul>
+<li>SliderInput: <code>sI(name, start, min, max, step = NULL)</code></li>
+<li>NumericInput: <code>nI(name, start)</code></li>
+<li>TextInput: <code>tI(name, start = &quot;&quot;)</code></li>
+<li>SelectInput (i.e. Drop down box): <code>dI(name, type, start, ...)</code> where … are your choices (comma delimited) and type can be “character” or “numeric”</li>
+<li>RadioButtons: <code>rI</code>(name, type, start, …) exactly like dI but a different choice mode</li>
+<li>CheckboxInput: <code>cI</code>(name, start = FALSE) toggles a logical between true and false</li>
+</ul>
+<p>please note that the shorthand widget specifications use capital i, not l as it appears in this font.</p>
+</div>
+<div id="how-to-install" class="section level2">
+<h2>How to install</h2>
+<p>If you’re on here you probably know how to do this better than I do, but you can install this package to play with and improve (if you’re up to the task) by running the following commands in R:</p>
+<pre class="r"><code>install.packages(&quot;devtools&quot;) #if you don&#39;t already have devtools installed
+library(devtools)
+
+install_git(&quot;datamancy/friendlyShiny&quot;)</code></pre>
+</div>
+<div id="outro" class="section level2">
+<h2>Outro</h2>
+<p>I hope you like my package! I sincerely hope someone takes the reigns on this project, anyone can take my code and turn it into something amazing. I don’t intend to polish it much more than this, I just thought shiny should be accessible to everyone. If you notice any glaring errors please let me know.</p>
+</div>
+</div>
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

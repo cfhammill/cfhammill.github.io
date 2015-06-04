@@ -1,12 +1,10 @@
 ---
 title: "Advanced ggplot2: Watermarks and Overlays"
-author: "Chris Hammill"
-date: "07/23/2014"
 ---
 
 Hi Readers,
 
-[Previously](http://datamancy.blogspot.ca/2014/07/introducing-friendlyshiny-package-to.html) I mentioned I'm working on a contract for the Newfoundland government. For this contract I've had to make a number of figures for a report that's coming out in the near future on the state of Caribou in the province. When I began the contract I was new to [ggplot2](http://ggplot2.org/), a nice graphics package by R guru [Hadley Wickham](http://had.co.nz/) which has become *de rigueur* in the circles I find myself in. Now I use it all the time when I want to make high quality figures.
+[Previously](/posts/fS_blogPost.html) I mentioned I'm working on a contract for the Newfoundland government. For this contract I've had to make a number of figures for a report that's coming out in the near future on the state of Caribou in the province. When I began the contract I was new to [ggplot2](http://ggplot2.org/), a nice graphics package by R guru [Hadley Wickham](http://had.co.nz/) which has become *de rigueur* in the circles I find myself in. Now I use it all the time when I want to make high quality figures.
 
 For its many virtues there are drawbacks that come with producing figures with ggplot2. The primary difficulty is the syntax is inobvious without having read [Wickham's book](http://www.amazon.ca/ggplot2-Elegant-Graphics-Data-Analysis/dp/0387981403) (or the [Wilkinson book](http://www.amazon.ca/Grammar-Graphics-Leland-Wilkinson/dp/0387245448/ref=sr_1_1?s=books&ie=UTF8&qid=1406139836&sr=1-1&keywords=leland+grammar) that inspired it). Additionally there is an unfortunate dearth of documentation on the finer points of package.
 
