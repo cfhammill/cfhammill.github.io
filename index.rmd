@@ -21,4 +21,4 @@ Here you'll find a collection of musings on all things data related.
 Hot Off The Presses
 ----------------------
 
-<div id='blogpost' class = "well"></div>
+<div id='blogpost'></div>
