@@ -27,7 +27,7 @@ Getting Started
 
 I won't lie, there were quite a few gotchas[^1] along the way, but you get the opportunity to learn from my mistakes. To start a beamer presentation in R Studio, create a new markdown document as I discussed in the post about markdown, but instead of choosing the default settings, click the panel labelled presentation, then select beamer and ok
 
-![](beamerPres.png)
+![](/images/beamerPres.png)
 
 R Studio throws in some demonstration slides to give you a taste for how to make your presentation, you can go ahead an delete that (though keep the yaml block at the very top [the stuff enclosed by --- ]) because I'll walk you through how to write a really simple presentation.<br>  
 
