@@ -11,7 +11,7 @@ Here are some visualizations I've made for jobs past and present. Hover over the
 <div class="css-slideshow">
 <figure>
 <img src="/images/contours.svg">
-<figcaption>Visualization coexistence in a two competitor metacommunity individual based model I
+<figcaption>Visualizing coexistence in a two competitor metacommunity individual based model I
 wrote for my Master's thesis. Light green indicates long duration coexistence, dark colours show
 one competitor going extinct earlier.
 </figcaption> 
