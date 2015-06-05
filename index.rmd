@@ -17,7 +17,7 @@
 Welcome to the New and Improved Datamancy Blog!
 -----------------------------------------------
 
-Here you'll a assortment of musings on all things data related. This site is a blog-folio-sum\c130 for me (Chris Hammill), a statistical biologist, bioinformatics dilletante, and wannabe data scientist. This site came together over a few days with me learning html, css, and javascript as I went (I migrated here from my old [blogspot](www.datamancy.blogspot.ca)). So far there is no commenting system, so if you have any questions, concerns, or gripes you can find my contact info in the [about me](/pages/aboutMe.html) section.
+Here you'll a assortment of musings on all things data related. This site is a blog-folio-sum&eacute; for me (Chris Hammill), a statistical biologist, bioinformatics dilletante, and wannabe data scientist. This site came together over a few days with me learning html, css, and javascript as I went (I migrated here from my old [blogspot](www.datamancy.blogspot.ca)). So far there is no commenting system, so if you have any questions, concerns, or gripes you can find my contact info in the [about me](/pages/aboutMe.html) section.
 
 <br>
 
