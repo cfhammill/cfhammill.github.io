@@ -1,0 +1,33 @@
+---
+title: Data Viz
+output: 
+  html_document:
+    includes: 
+      in_header: ../include/slideshow_header.html
+---
+
+Here are some visualizations I've made for jobs past and present. Hover over the image to get a quick blurb about each figure. All figure copyrights are mine except for the caribou migration figure which is owned by the Government of Newfoundland and Labradour with data from Department of Wildlife and Conservation.
+
+<div class="css-slideshow">
+<figure>
+<img src="/images/contours.svg">
+<figcaption>Visualization coexistence in a two competitor metacommunity individual based model I
+wrote for my Master's thesis. Light green indicates long duration coexistence, dark colours show
+one competitor going extinct earlier.
+</figcaption> 
+</figure>
+<figure>
+<img src="/images/fidelityMigration.svg"/>
+<figcaption>Newfoundland Caribou home range size variation by decade and time of year (left panel)
+right panel shows time of spring and fall migrations with respect to year.
+</figcaption> 
+</figure>
+<figure>
+<img src="/images/diabetesGraph.svg"/>
+<figcaption>Feature dependency graph for type 1 diabetes patients in Newfoundland and Labradour</figcaption> 
+</figure>
+<figure>
+<img src="/images/diabetesPCA.svg"/>
+<figcaption>Structural principle component analysis for all features, contours indicate number of features in a region of compenent space, arrows show the direction each real feature changes the location on the PCA</figcaption> 
+</figure>
+</div>

@@ -10,7 +10,7 @@
 
 
 
-<title>Drink Name Generator</title>
+<title>Data Viz</title>
 
 <script src="libs/jquery-1.11.0/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -38,6 +38,77 @@
   .dropdown-menu>li>a {
   color: black;
   }
+  
+  .css-slideshow{
+    position: relative;
+}
+.css-slideshow figure{
+    position: absolute;
+    margin: 0;
+    top: 0;
+    width: 60%;
+    background: #000;
+}
+.css-slideshow img{
+    box-shadow: 0 0 2px #666;
+}
+.css-slideshow figcaption{
+    position: absolute;
+    top: 0;
+    color: #fff;
+    background: rgba(0,0,0, .6);
+    font-size: .8em;
+    padding: 8px 12px;
+    opacity: 0;
+    transition: opacity .5s;
+}
+.css-slideshow:hover figure figcaption{
+    transition: opacity .5s;
+    opacity: 1;
+}
+.css-slideshow-attr{
+    text-align: right;
+    font-size: .7em;
+    font-style: italic;
+    margin:0 auto;
+}
+.css-slideshow-attr a{
+    color: #666;
+}
+.css-slideshow figure{
+    opacity:0;
+}
+
+figure:nth-child(1) {
+    animation: xfade 32s 24s infinite;
+}
+figure:nth-child(2) {
+    animation: xfade 32s 16s infinite;
+}
+figure:nth-child(3) {
+    animation: xfade 32s 8s infinite;
+}
+figure:nth-child(4) {
+    animation: xfade 32s 0s infinite;
+}
+
+@keyframes xfade{
+    0%{
+  opacity: 1;
+    }
+    23.5% {
+	opacity: 1;
+    }
+    25%{
+	opacity: 0;
+    }
+    98% {
+	opacity: 0;
+    }
+    100% {
+	opacity: 1;
+    }
+}
 </style>
 
 <script>
@@ -129,27 +200,36 @@ img {
 </div><!--/.navbar -->
 
 <div id="header">
-<h1 class="title">Drink Name Generator</h1>
+<h1 class="title">Data Viz</h1>
 </div>
 
 
-<p><em>Here’s the generator!</em></p>
-<iframe src="https://datamancy.shinyapps.io/drinkNameGenerator/" style="border: none; width: 440px; height: 200px"></iframe>
-
-
-<div id="recap" class="section level2">
-<h2>Recap</h2>
-<p>I have been looking at a data set containing names and recipes for ~17000 cocktails. The original goal of the project was to use publicly available recipe data to inform a descision of what drinks to buy for a small home bar. The project since spun out of control because I realized the wealth of interesting trivia in the data.</p>
-</div>
-<div id="how-do-people-name-their-cocktails" class="section level2">
-<h2>How Do People Name Their Cocktails</h2>
-<p>Conceptually it might be worthwhile to separate out drinks into several naming classes based on their popularity. There are popular drinks that can be found at nearly any bar worth its salt, there are specialty drinks which are often variants of a popular drink with ingredient tweaks, and there are unique drinks that are unlikely to be found at any bar and will require a recipe if you want one. Each class is generally named differently. Popular drinks have readily recognizable names. Specialty drinks often have parts of a popular drink name with additional words indicating the variations involved. The unique drinks do not follow a pattern as closely as the other two, reflecting the heterogeneity of people creating these unique drinks.</p>
-<p>In order to learn a bit about how words are distributed within drink names I collated all the drink names in my data set and performed some simple analyses. After clean-up, I made a word cloud containing the top 100 words used in drink names. This analysis does not consider the popularity of the drink itself, but the data does contain some indication of popularity (e.g. more popular drinks are more likely to have multiple recipes with the same name).</p>
-<p>An interesting follow up to this analysis would be to re-weight the word frequencies according to how popular the drinks they are found in are. This will make the data look more like what you might see on a cocktail menu.</p>
-</div>
-<div id="drink-name-generator" class="section level2">
-<h2>Drink Name Generator</h2>
-<p>Part of the data exploration I calculated the frequencies of the top 500 words, as well as the distribution of the number of words in a cocktail name. The largest name in my data set was 8 words, with two being the most frequent. I contrained my drink name generator to produce drink names between 2 and 5 words. The generator generates a random number between 0 and 1, it compares that number to a look-up table corresponding to the cummulative distribution function (cdf) of word number frequencies. That number of words is generated using the same method but from the cdf of word name frequencies. The generator then returns your new drink name. The app was written using <a href="http://shiny.rstudio.com/">shiny</a>, a way to write small apps using R, which I will probably talk about in a future post.</p>
+<p>Here are some visualizations I’ve made for jobs past and present. Hover over the image to get a quick blurb about each figure. All figure copyrights are mine except for the caribou migration figure which is owned by the Government of Newfoundland and Labradour with data from Department of Wildlife and Conservation.</p>
+<div class="css-slideshow">
+<figure>
+<img src="/images/contours.svg">
+<figcaption>
+Visualization coexistence in a two competitor metacommunity individual based model I wrote for my Master’s thesis. Light green indicates long duration coexistence, dark colours show one competitor going extinct earlier.
+</figcaption> 
+</figure>
+<figure>
+<img src="/images/fidelityMigration.svg"/>
+<figcaption>
+Newfoundland Caribou home range size variation by decade and time of year (left panel) right panel shows time of spring and fall migrations with respect to year.
+</figcaption> 
+</figure>
+<figure>
+<img src="/images/diabetesGraph.svg"/>
+<figcaption>
+Feature dependency graph for type 1 diabetes patients in Newfoundland and Labradour
+</figcaption> 
+</figure>
+<figure>
+<img src="/images/diabetesPCA.svg"/>
+<figcaption>
+Structural principle component analysis for all features, contours indicate number of features in a region of compenent space, arrows show the direction each real feature changes the location on the PCA
+</figcaption> 
+</figure>
 </div>
 
 
