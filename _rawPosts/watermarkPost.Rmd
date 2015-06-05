@@ -80,7 +80,7 @@ So now we have our watermark line ready to be added to our future plots.
 ###The other plots
 
 
-The other plots are going to need special themes to ensure the watermark is visible. Themes are how ggplot2 controls the final look of a plot. By specifying the background of both the panel and plot windows as "element_blank()" you ensure that your plots to cover your watermark (this took me far too long to figure out, I had the watermark superimposed but highly transparent because I had given up on having it in the background.) I also removed the grid lines because they're obtrusive[^2]. 
+The other plots are going to need special themes to ensure the watermark is visible. Themes are how ggplot2 controls the final look of a plot. By specifying the background of both the panel and plot windows as "element_blank()" you ensure that your plots cover your watermark (this took me far too long to figure out, I had the watermark superimposed but highly transparent because I had given up on having it in the background.) I also removed the grid lines because they're obtrusive[^2]. 
 
 
 ```{r, cache=TRUE, autodep=TRUE}
@@ -133,7 +133,7 @@ quartLine$vp <- viewport(width = .8, height = .91, x = .55, y = .55)
 ##The Final Product
 
 
-```{r, autodep=TRUE, cache=TRUE, eval = FALSE}
+```{r, autodep=TRUE, cache=TRUE}
 grid.newpage()
 grid.draw(quartLine)
 
