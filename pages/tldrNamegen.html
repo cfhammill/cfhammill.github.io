@@ -128,17 +128,6 @@ img {
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-63858206-1', 'auto');
-  ga('send', 'pageview');
-
-</script>
-
 <div id="header">
 <h1 class="title">Drink Name Generator</h1>
 </div>
@@ -163,6 +152,20 @@ img {
 <p>Part of the data exploration I calculated the frequencies of the top 500 words, as well as the distribution of the number of words in a cocktail name. The largest name in my data set was 8 words, with two being the most frequent. I contrained my drink name generator to produce drink names between 2 and 5 words. The generator generates a random number between 0 and 1, it compares that number to a look-up table corresponding to the cummulative distribution function (cdf) of word number frequencies. That number of words is generated using the same method but from the cdf of word name frequencies. The generator then returns your new drink name. The app was written using <a href="http://shiny.rstudio.com/">shiny</a>, a way to write small apps using R, which I will probably talk about in a future post.</p>
 </div>
 
+
+<!-- some extra javascript for older browsers -->
+<script type="text/javascript" src="libs/polyfill.js"></script>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-63858206-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
 
 </div>
 
