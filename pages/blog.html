@@ -137,12 +137,23 @@ var mostRecentFour = ["statsvsdata.html",
                       "knitEnginePost.html"];
 
   function loadPost(ind, post){
+  
   $("#post" + ind).load("../posts/" + post + " div.main-container",
     function(){
       $("#post" + ind).find(".navbar").remove();
+      
+      $("#post" + ind + " img").each(function(i, image){
+        var source = $(image).attr("src")
+        var doesMatch = source.indexOf("_files/") != -1;
+        if(doesMatch){
+          $(image).attr("src", "/posts/" + source);
+        }
+      });
+      
       $('pre code').each(function(i, block) {
         hljs.highlightBlock(block);
       });
+      
     });
   };
   
@@ -150,7 +161,8 @@ var mostRecentFour = ["statsvsdata.html",
   
   loadPost(1, mostRecentFour[0]);
   loadPost(2, mostRecentFour[1]);
-  
+  loadPost(3, mostRecentFour[2]);
+  loadPost(4, mostRecentFour[3]);
 });
 </script>
 
@@ -159,12 +171,12 @@ var mostRecentFour = ["statsvsdata.html",
 </div>
 <br>
 <hr>
-<div id="post2" onmouseover="loadPost(3, mostRecentFour[2])">
+<div id="post2">
 
 </div>
 <br>
 <hr>
-<div id="post3" onmouseover="loadPost(4, mostRecentFour[3])">
+<div id="post3">
 
 </div>
 <br>
