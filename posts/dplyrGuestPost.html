@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="author" content="Guest Post by Keith Lewis" />
+
+
+<title>Getting to Know Dplyr</title>
+
+<script src="libs/jquery-1.11.0/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap-3.3.1/css/flatly.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.1/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.1/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.1/shim/respond.min.js"></script>
+
+<style type="text/css">
+  /* padding for bootstrap navbar */
+  body {
+  padding-top: 80px;
+  padding-bottom: 40px;
+  }
+  /* offset scroll position for anchor links (for fixed navbar)  */
+  .section h2 {
+  padding-top: 55px;
+  margin-top: -55px;
+  }
+  .section h3 {
+  padding-top: 55px;
+  margin-top: -55px;
+  }
+  /* don't use link color in navbar */
+  .dropdown-menu>li>a {
+  color: black;
+  }
+</style>
+
+<script>
+  $(document).on('click','.navbar-collapse.in',function(e) {
+  if( $(e.target).is('a') && $(e.target).attr('class') != 'dropdown-toggle' ) {
+  $(this).collapse('hide');
+  }
+  });
+</script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<link rel="stylesheet"
+      href="libs/highlight/textmate.css"
+      type="text/css" />
+<script src="libs/highlight/highlight.js"></script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img { 
+  max-width:100%; 
+  height: auto; 
+}
+</style>
+<div class="container-fluid main-container">
+
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+	<span class="icon-bar"></span>
+	<span class="icon-bar"></span>
+	<span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">Datamancy</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+	<li><a href="/index.html">Home</a></li>
+	<li><a href="/pages/blog.html">Blog</a></li>
+	<li><a href="/pages/aboutMe.html">About Me</a></li>
+	<li class="dropdown">
+	  <a href="Tutorials" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Tutorials <span class="caret"></span></a>
+	  <ul class="dropdown-menu" role="menu">
+	    <li class="dropdown-header">Tutorials</li>
+	    <li><a href="/posts/startRMarkdown.html">Getting Started With R Markdown</a></li>
+	    <li><a href="/posts/beamerPresentations.html">Breaking Up With Powerpoint</a></li>
+	    <li><a href="/posts/regexPost.html">Regular Expressions in R</a></li>
+	    <li><a href="/posts/watermarkPost.html">Overlays with ggplot2</a></li>
+	  </ul>
+	</li>
+	<li>
+	  <a href="/pages/graphics.html">Data Viz</a>
+	</li>
+	<li class="dropdown">
+	  <a href="Diversions" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Diversions <span class="caret"></span></a>
+	  <ul class="dropdown-menu" role="menu">
+	    <li class="dropdown-header"><a href="/pages/tldrNamegen.html">Drink Name Generator</a></li>
+	  </ul>
+	</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+<h1 class="title">Getting to Know Dplyr</h1>
+<h4 class="author"><em>Guest Post by Keith Lewis</em></h4>
+</div>
+
+
+<p>I’d first like thank Chris for letting me guest blog. This is an idea I’ve been toying with for some time but the lack of technical web skills has always held me back.</p>
+<div id="advanced-data-manipulation-in-r-with-plyrdplyr" class="section level2">
+<h2>Advanced data manipulation in R with plyr/dplyr</h2>
+<div id="a-brief-overview" class="section level3">
+<h3>A Brief Overview</h3>
+<p>The plyr/dplyr packages are primarily meant for ‘data wrangling’ or manipulation of data sets. I believe they are the most useful of Hadley Wickham’s many contributions to R and I find myself continually using them, especially the newer dplyr package. Like ggplot2, the application of this package is really limited only by your creativity.<br /> Briefly, the idea behind these packages is that we often need to split a data set, do something to it (apply), and then combine it back together again. So the primary purpose is data manipulation.<br /> Like many of Wickham’s packages, there has been an evolution. Plyr is the older version of the package and was meant to replace the many ‘apply’ functions available in base R. Plyr would use the split-apply-combine strategy to summarize (e.g. take a mean and SD for the levels of a categorical variable) or transform, i.e. create a new variable. Dplyr was introduced in 2014 and has far more extensive capabilities.</p>
+</div>
+</div>
+<div id="split-apply-combine-the-concept" class="section level2">
+<h2>Split-apply-combine: the concept</h2>
+<p>The idea is that we often have a data frame, with say 5 main groupings (fields, study plots, subjects, etc.). We want to split the data frame into these groups, and do something, i.e. apply. This can be as simple as just taking a mean to very complex analyses, or graphical summaries. Then, we want to combine it all back together in either a new data frame (summarize) or a new variable (transform). Below is a very simple graphical representation of this concept.</p>
+<p><img src="/images/split_apply_combine.png" /></p>
+</div>
+<div id="i-know-plyr-so-why-change" class="section level2">
+<h2>I know plyr so why change?</h2>
+<p>For those familiar with plyr, you are probably asking yourself, like I did, “I’m busy, I spent a lot of time learning plyr so why upgrade to dplyr?”. I’ll admit that I was initially reluctant and skeptical about some of improvements. Dplyr is promoted as being much, much faster than plyr but for me, this held little appeal. Up until recently, my data sets have been relatively small (low 10,000s or rows at the most). Waiting 0.2 seconds v. 2 seconds for a calculation is, quite frankly, not worth the time invested in learning something new. Another feature that held little appeal was the code is supposedly easier to read – big whoop I said to myself! I’m glad that I ignored these misgivings and kept reading.</p>
+</div>
+<div id="the-good-stuff-why-dplyr" class="section level2">
+<h2>The good stuff: why dplyr</h2>
+<p>There are two really great things about dplyr. First, while split-apply-combine was the essence of plyr, dplyr is essentially one stop shopping (along with tidyr – the new reshape2 – subject of another blog) for data wrangling. Basically, dplyr can do all of the following for a data set using 5 ‘verbs’ or functions:</p>
+<p>– Filtering rows (to create a subset)<br /> – Selecting columns of data (i.e., selecting variables)<br /> – Adding new variables (split-apply-combine)<br /> – Sorting<br /> – Aggregating</p>
+<p>The following website (<a href="http://www.sharpsightlabs.com/dplyr-intro-data-manipulation-with-r/">http://www.sharpsightlabs.com/dplyr-intro-data-manipulation-with-r/</a>) does a superb job introducing these concepts. I will simply suggest that you read it if you are interested in the detail. Obviously, all of these examples can be performed with other functions, particularly in base R. But now, it’s all unified in one package. Plus, there is a handy ‘cheat sheet’ (<a href="http://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf">http://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf</a>)</p>
+<p>If that is not enough, the second really cool thing about dplyr is that it has borrowed the ‘piping’ concept in Unix, called ‘chaining’. Chaining is a really simple way to link your commands together and despite my earlier skepticism, it really does make reading code easier and that really does make a difference. I strongly encourage that you work your way to the last example on the above website. I concur with the author’s claim that 5 lines of code combining dplyr and ggplot2 would represent hours of work in MS Excel.<br />Having code that is easy to read makes life much easier, and lessens the dense of dread, when you come back to a project after months away from it.</p>
+</div>
+<div id="split-apply-combine-the-code" class="section level2">
+<h2>Split-apply-combine: the code</h2>
+<p>The following is a simple example of split-apply-combine with plyr code and dplyr code. These take a dummy dataframe with a caribou per row and summarize it by the number of caribou by study area and year.</p>
+<div id="dplyr-code" class="section level3">
+<h3>Dplyr code:</h3>
+<p>In order to run the following examples make sure you have dplyr, plyr, and tidyr installed and loaded:</p>
+<pre class="r"><code>install.packages(&quot;plyr&quot;)
+install.packages(&quot;dplyr&quot;)
+install.packages(&quot;tidyr&quot;)
+
+library(plyr)
+library(dplyr)
+library(tidyr)</code></pre>
+<p>You’ll also want to grab the <a href="" title="https://drive.google.com/file/d/0B5MOuYjRSGYUOUxhMV9NZUZUbEQ4TF94SFRaN0RFUjktdkhZ/view?usp=sharing">csv from Chris’ google drive</a></p>
+<p>In the following, the <code>group_by</code> command splits that data frame into Study Areas and Year. The data are <code>summarise</code>d by count (apply) and then combined into a new data frame (pivot1). I cheated a little here and used a command from tidyr (next blog) just to make the output really nice.</p>
+<pre class="r"><code>mark &lt;- read.csv(&quot;mark_data.csv&quot;) #Or whatever you downloaded it as
+
+pivot1 &lt;- mark %&gt;%                     # calls the data frame
+ group_by(StudyArea, Year) %&gt;%         # splits groups intro study area and year
+ summarise(count = n()) %&gt;%              # counts the no. of caribou by study area and year
+  spread(Year, count)              # converts the data to a ‘wide’    format</code></pre>
+<pre><code>    StudyArea     2008 2009 2010 2011 2012 2013
+         1          30   40   24   25   25   NA
+         2          24   33   16   31   29   25
+         3          15   11   14   28   34   18
+         4          28   38   NA   24   24   NA
+</code></pre>
+<p>The following is plyr code equivalent to the above.</p>
+<pre class="r"><code>temp &lt;- ddply(mark, .(StudyArea, Year), nrow)
+pivot2 &lt;- spread(temp, Year, V1) #V1 is the name of the column in temp for the count of rows, i.e. nrow</code></pre>
+<p>Admittedly, the plyr version is shorter in this simple example. I’ll make two points in favour of dplyr. First, the longer and more complex the code, the more useful chaining is (like in the webpage above). Secondly, and this could just be me, I never really got plyr syntax. It always seemed to do strange things. I just find dplyr is much more intuitive and the commands are more readily available thanks to the cheat sheet. There are additional benefits to dplyr as well, Chris shared my trepidation for trying dplyr, so he asked Hadley why he thought people needed to switch:</p>
+<blockquote class="twitter-tweet" lang="en"><p lang="en" dir="ltr">
+<a href="https://twitter.com/CFHammill"><span class="citation">@CFHammill</span></a> it's 10x-10,000x faster &amp; and way easier to understand
+</p>
+— Hadley Wickham (<span class="citation">@hadleywickham</span>) <a href="https://twitter.com/hadleywickham/status/609071298992480258">June 11, 2015</a>
+</blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<p>In addition to speed and learning curve benefits, dplyr is a concerted effor to unify data manipulation under a common umbrella. Dplyr has facillities for connecting to external databases directly, so you don’t need to be a SQL master to pull useful information out of central repositories, and is expected to work well with SparkR, the emerging most popular tool in big-data.</p>
+</div>
+</div>
+<div id="conclusion" class="section level2">
+<h2>Conclusion</h2>
+<p>Dplyr is a simple package that has functions for taking care of most of your data manipulation needs. We all spend a lot of time getting our data into the right format so that we can analyze it. Having ‘one stop shopping’ for this time consuming process that is fast and easy to read is a HUGE benefit.</p>
+</div>
+<div id="follow-up" class="section level2">
+<h2>Follow up</h2>
+<p>Wickham’s other really useful package is the reshape/tidyr package. Like his other popular packages, this one has also gone through an evolution from reshape, reshape2, and finally tidyr. For those of you who use pivot tables in Excel, this does similar things except for better. And while Excel can only go from long to wide (data in the model based format to tabular format), tidyr can take your data in both directions.</p>
+</div>
+
+
+<!-- some extra javascript for older browsers -->
+<script type="text/javascript" src="libs/polyfill.js"></script>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-63858206-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
