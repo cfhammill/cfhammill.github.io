@@ -2,6 +2,7 @@
 title: Blog Archive
 ---
 
+* [Reproducible Science Workflows](/posts/reproducibleScienceWorkflows.html) (August 27, 2015)  
 * [Getting Started With Dplyr](/posts/dplyrGuestPost.html) (July 15)
 * [Statistics Orthodoxy vs. Data Science](/posts/statsvsdata.html) (June 1, 2015)
 * [Breaking Up With Powerpoint](/posts/beamerPresentations.html) (April 14, 2015)
