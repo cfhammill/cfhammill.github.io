@@ -6,9 +6,24 @@ output:
       in_header: ../include/slideshow_header.html
 ---
 
+<script>
+$(document).ready(function(){
+  $("#css-slideshow > figure:gt(0)").hide();
+
+  setInterval(function() { 
+    $('#css-slideshow > figure:first')
+      .fadeOut(1000)
+      .next()
+      .fadeIn(1000)
+      .end()
+      .appendTo('#css-slideshow');
+      },  6000);
+})
+</script>
+
 Here are some visualizations I've made for jobs past and present. Hover over the image to get a quick blurb about each figure. All figure copyrights are mine except for the caribou migration figure which is owned by the Government of Newfoundland and Labrador with data from Department of Wildlife and Conservation.
 
-<div class="css-slideshow">
+<div id="css-slideshow">
 <figure>
 <img src="/images/contours.svg">
 <figcaption>Visualizing coexistence in a two competitor metacommunity individual based model I
