@@ -1,6 +1,6 @@
 unnamed-chunk-3	^	data.frame
 unnamed-chunk-4	aes	geom_line	ggplot	polyData	x	y4
-unnamed-chunk-5	==	[[	$	ggplot_build	ggplot_gtable	quartPlot	which
+unnamed-chunk-5	[[	==	$	ggplot_build	ggplot_gtable	quartPlot	which
 unnamed-chunk-6	aes	element_blank	geom_line	ggplot	polyData	theme	x	y1	y2	y3	ylab
 unnamed-chunk-7	viewport
 unnamed-chunk-8	$<-	viewport

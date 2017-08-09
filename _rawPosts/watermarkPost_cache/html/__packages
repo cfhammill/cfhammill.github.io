@@ -2,3 +2,6 @@ base
 knitr
 ggplot2
 gtable
+dplyr
+ggjoy
+bindrcpp

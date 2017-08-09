@@ -4,20 +4,24 @@
 
 <head>
 
-<meta charset="utf-8">
+<meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 
 
 
+
 <title>Writing a Knitr Engine to run code through an interpreter of your choice!</title>
 
-<script src="libs/jquery-1.11.0/jquery.min.js"></script>
+<script src="libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="libs/bootstrap-3.3.1/css/flatly.min.css" rel="stylesheet" />
-<script src="libs/bootstrap-3.3.1/js/bootstrap.min.js"></script>
-<script src="libs/bootstrap-3.3.1/shim/html5shiv.min.js"></script>
-<script src="libs/bootstrap-3.3.1/shim/respond.min.js"></script>
+<link href="libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="libs/navigation-1.1/tabsets.js"></script>
+<link href="libs/highlightjs-1.1/textmate.css" rel="stylesheet" />
+<script src="libs/highlightjs-1.1/highlight.js"></script>
 
 <style type="text/css">
   /* padding for bootstrap navbar */
@@ -49,10 +53,6 @@
 </script>
 
 <style type="text/css">code{white-space: pre;}</style>
-<link rel="stylesheet"
-      href="libs/highlight/textmate.css"
-      type="text/css" />
-<script src="libs/highlight/highlight.js"></script>
 <style type="text/css">
   pre:not([class]) {
     background-color: white;
@@ -66,6 +66,34 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 }
 </script>
 
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
 
 
 </head>
@@ -82,12 +110,34 @@ code {
   color: inherit;
   background-color: rgba(0, 0, 0, 0.04);
 }
-img { 
-  max-width:100%; 
-  height: auto; 
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
 }
 </style>
+
+
+
 <div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
 
 <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -128,8 +178,12 @@ img {
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-<div id="header">
-<h1 class="title">Writing a Knitr Engine to run code through an interpreter of your choice!</h1>
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Writing a Knitr Engine to run code through an interpreter of your choice!</h1>
+
 </div>
 
 
@@ -150,13 +204,17 @@ img {
 <pre class="r"><code>library(knitr)
 names(knit_engines$get())</code></pre>
 <pre><code>##  [1] &quot;awk&quot;       &quot;bash&quot;      &quot;coffee&quot;    &quot;gawk&quot;      &quot;groovy&quot;   
-##  [6] &quot;haskell&quot;   &quot;lein&quot;      &quot;node&quot;      &quot;perl&quot;      &quot;python&quot;   
-## [11] &quot;Rscript&quot;   &quot;ruby&quot;      &quot;sas&quot;       &quot;scala&quot;     &quot;sed&quot;      
-## [16] &quot;sh&quot;        &quot;stata&quot;     &quot;zsh&quot;       &quot;highlight&quot; &quot;Rcpp&quot;     
-## [21] &quot;tikz&quot;      &quot;dot&quot;       &quot;c&quot;         &quot;fortran&quot;   &quot;asy&quot;      
-## [26] &quot;cat&quot;       &quot;asis&quot;      &quot;stan&quot;</code></pre>
+##  [6] &quot;haskell&quot;   &quot;lein&quot;      &quot;mysql&quot;     &quot;node&quot;      &quot;octave&quot;   
+## [11] &quot;perl&quot;      &quot;psql&quot;      &quot;python&quot;    &quot;Rscript&quot;   &quot;ruby&quot;     
+## [16] &quot;sas&quot;       &quot;scala&quot;     &quot;sed&quot;       &quot;sh&quot;        &quot;stata&quot;    
+## [21] &quot;zsh&quot;       &quot;highlight&quot; &quot;Rcpp&quot;      &quot;tikz&quot;      &quot;dot&quot;      
+## [26] &quot;c&quot;         &quot;fortran&quot;   &quot;fortran95&quot; &quot;asy&quot;       &quot;cat&quot;      
+## [31] &quot;asis&quot;      &quot;stan&quot;      &quot;block&quot;     &quot;block2&quot;    &quot;js&quot;       
+## [36] &quot;css&quot;       &quot;sql&quot;       &quot;go&quot;</code></pre>
 <p>A quick scan of the available engines shows that <code>knitr</code> should be perfectly capable of executing python code. So I tried:</p>
-<p>```{r, engine = “python”}<br /> #My python code<br />```</p>
+<p>```{r, engine = “python”}<br />
+#My python code<br />
+```</p>
 <p>Which sadly did not work as I had hoped. The python interpreter used by <code>knitr</code> in that situation was the stock python interpreter. It failed to properly import the modules I needed and was untenable for my objectives. “Alas, if only there was an ipython engine” I thought to myself, and then promptly decided I should probably build one.</p>
 <p><br></p>
 </div>
@@ -172,8 +230,8 @@ names(knit_engines$get())</code></pre>
 ##         f = basename(tempfile(engine, &quot;.&quot;, switch(engine, sas = &quot;.sas&quot;, 
 ##             Rscript = &quot;.R&quot;, stata = &quot;.do&quot;, &quot;.txt&quot;)))
 ##         writeLines(c(switch(engine, sas = &quot;OPTIONS NONUMBER NODATE PAGESIZE = MAX FORMCHAR = &#39;|----|+|---+=|-/&lt;&gt;*&#39; FORMDLIM=&#39; &#39;;title;&quot;, 
-##             haskell = &quot;:set +m&quot;), options$code), f)
-##         on.exit(unlink(f))
+##             NULL), options$code), f)
+##         on.exit(unlink(f), add = TRUE)
 ##         switch(engine, haskell = paste(&quot;-e&quot;, shQuote(paste(&quot;:script&quot;, 
 ##             f))), sas = {
 ##             logf = sub(&quot;[.]sas$&quot;, &quot;.lst&quot;, f)
@@ -183,26 +241,28 @@ names(knit_engines$get())</code></pre>
 ##         }, stata = {
 ##             logf = sub(&quot;[.]do$&quot;, &quot;.log&quot;, f)
 ##             on.exit(unlink(c(logf)), add = TRUE)
-##             paste(ifelse(.Platform$OS.type == &quot;windows&quot;, &quot;/q /e&quot;, 
-##                 &quot;-q -b&quot;), f)
+##             paste(switch(Sys.info()[[&quot;sysname&quot;]], Windows = &quot;/q /e do&quot;, 
+##                 Darwin = &quot;-q -e do&quot;, Linux = &quot;-q -b do&quot;, &quot;-q -b do&quot;), 
+##                 shQuote(normalizePath(f)))
 ##         }, f)
 ##     }
 ##     else paste(switch(engine, bash = &quot;-c&quot;, coffee = &quot;-e&quot;, groovy = &quot;-e&quot;, 
-##         lein = &quot;exec -e&quot;, node = &quot;-e&quot;, perl = &quot;-e&quot;, python = &quot;-c&quot;, 
-##         ruby = &quot;-e&quot;, scala = &quot;-e&quot;, sh = &quot;-c&quot;, zsh = &quot;-c&quot;, NULL), 
-##         shQuote(paste(options$code, collapse = &quot;\n&quot;)))
+##         lein = &quot;exec -e&quot;, mysql = &quot;-e&quot;, node = &quot;-e&quot;, octave = &quot;--eval&quot;, 
+##         perl = &quot;-e&quot;, psql = &quot;-c&quot;, python = &quot;-c&quot;, ruby = &quot;-e&quot;, 
+##         scala = &quot;-e&quot;, sh = &quot;-c&quot;, zsh = &quot;-c&quot;, NULL), shQuote(paste(options$code, 
+##         collapse = &quot;\n&quot;)))
 ##     code = if (engine %in% c(&quot;awk&quot;, &quot;gawk&quot;, &quot;sed&quot;, &quot;sas&quot;)) 
 ##         paste(code, options$engine.opts)
 ##     else paste(options$engine.opts, code)
-##     cmd = options$engine.path %n% engine
+##     cmd = get_engine_path(options$engine.path, engine)
 ##     out = if (options$eval) {
 ##         message(&quot;running: &quot;, cmd, &quot; &quot;, code)
-##         tryCatch(system2(cmd, code, stdout = TRUE, stderr = TRUE), 
-##             error = function(e) {
-##                 if (!options$error) 
-##                   stop(e)
-##                 paste(&quot;Error in running command&quot;, cmd)
-##             })
+##         tryCatch(system2(cmd, code, stdout = TRUE, stderr = TRUE, 
+##             env = options$engine.env), error = function(e) {
+##             if (!options$error) 
+##                 stop(e)
+##             paste(&quot;Error in running command&quot;, cmd)
+##         })
 ##     }
 ##     else &quot;&quot;
 ##     if (!options$error &amp;&amp; !is.null(attr(out, &quot;status&quot;))) 
@@ -215,7 +275,8 @@ names(knit_engines$get())</code></pre>
 <p>First good sign, all the code is R with no references to byte-code and it’s short enough to not take all day to figure out. First thing to note about the code is it’s a function, and not only that it’s a function of one argument, <code>options</code>. The first line of code takes a named element of <code>options</code> called <code>engine</code> (so options is a named list containing things like the name of the engine). My intuition was that <code>options</code> was a list of every component of chunk, and the rest of the function largely confirmed that intuition. Other named elements of <code>options</code> used in the function include:</p>
 <ul>
 <li><code>code</code></li>
-<li><code>engine.opts</code><br /></li>
+<li><code>engine.opts</code><br />
+</li>
 <li><code>engine.path</code></li>
 <li><code>error</code></li>
 </ul>
@@ -260,7 +321,10 @@ names(knit_engines$get())</code></pre>
 <h2>Using the engine</h2>
 <p>To use the engine in your R Markdown / Knitr documents just run <code>library(knitr)</code> in your first code chunk, and include the function declaration for your engine along with the <code>environment</code> and <code>knit_engines$set</code> statements above and then you can use your engine in your document.</p>
 <p>Now we can run</p>
-<p>```{r, engine = “ipython”, engine.path = “path/to/ipython/”}<br /> #Python code to execute<br />```<br />with impunity and it works like a charm!.</p>
+<p>```{r, engine = “ipython”, engine.path = “path/to/ipython/”}<br />
+#Python code to execute<br />
+```<br />
+with impunity and it works like a charm!.</p>
 <p><br></p>
 </div>
 <div id="wrap-up" class="section level2">
@@ -284,14 +348,20 @@ names(knit_engines$get())</code></pre>
 
 </script>
 
+
+
 </div>
 
 <script>
 
 // add bootstrap table styles to pandoc tables
-$(document).ready(function () {
+function bootstrapStylePandocTables() {
   $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
 });
+
 
 </script>
 
@@ -300,7 +370,7 @@ $(document).ready(function () {
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
 </script>

@@ -4,21 +4,25 @@
 
 <head>
 
-<meta charset="utf-8">
+<meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+
 
 <meta name="author" content="Guest Post by Keith Lewis" />
 
 
 <title>Getting to Know Dplyr</title>
 
-<script src="libs/jquery-1.11.0/jquery.min.js"></script>
+<script src="libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="libs/bootstrap-3.3.1/css/flatly.min.css" rel="stylesheet" />
-<script src="libs/bootstrap-3.3.1/js/bootstrap.min.js"></script>
-<script src="libs/bootstrap-3.3.1/shim/html5shiv.min.js"></script>
-<script src="libs/bootstrap-3.3.1/shim/respond.min.js"></script>
+<link href="libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="libs/navigation-1.1/tabsets.js"></script>
+<link href="libs/highlightjs-1.1/textmate.css" rel="stylesheet" />
+<script src="libs/highlightjs-1.1/highlight.js"></script>
 
 <style type="text/css">
   /* padding for bootstrap navbar */
@@ -50,10 +54,6 @@
 </script>
 
 <style type="text/css">code{white-space: pre;}</style>
-<link rel="stylesheet"
-      href="libs/highlight/textmate.css"
-      type="text/css" />
-<script src="libs/highlight/highlight.js"></script>
 <style type="text/css">
   pre:not([class]) {
     background-color: white;
@@ -67,6 +67,34 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 }
 </script>
 
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
 
 
 </head>
@@ -83,12 +111,34 @@ code {
   color: inherit;
   background-color: rgba(0, 0, 0, 0.04);
 }
-img { 
-  max-width:100%; 
-  height: auto; 
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
 }
 </style>
+
+
+
 <div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
 
 <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -129,9 +179,13 @@ img {
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-<div id="header">
-<h1 class="title">Getting to Know Dplyr</h1>
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Getting to Know Dplyr</h1>
 <h4 class="author"><em>Guest Post by Keith Lewis</em></h4>
+
 </div>
 
 
@@ -140,13 +194,18 @@ img {
 <h2>Advanced data manipulation in R with plyr/dplyr</h2>
 <div id="a-brief-overview" class="section level3">
 <h3>A Brief Overview</h3>
-<p>The plyr/dplyr packages are primarily meant for ‘data wrangling’ or manipulation of data sets. I believe they are the most useful of Hadley Wickham’s many contributions to R and I find myself continually using them, especially the newer dplyr package. Like ggplot2, the application of this package is really limited only by your creativity.<br /> Briefly, the idea behind these packages is that we often need to split a data set, do something to it (apply), and then combine it back together again. So the primary purpose is data manipulation.<br /> Like many of Wickham’s packages, there has been an evolution. Plyr is the older version of the package and was meant to replace the many ‘apply’ functions available in base R. Plyr would use the split-apply-combine strategy to summarize (e.g. take a mean and SD for the levels of a categorical variable) or transform, i.e. create a new variable. Dplyr was introduced in 2014 and has far more extensive capabilities.</p>
+<p>The plyr/dplyr packages are primarily meant for ‘data wrangling’ or manipulation of data sets. I believe they are the most useful of Hadley Wickham’s many contributions to R and I find myself continually using them, especially the newer dplyr package. Like ggplot2, the application of this package is really limited only by your creativity.<br />
+Briefly, the idea behind these packages is that we often need to split a data set, do something to it (apply), and then combine it back together again. So the primary purpose is data manipulation.<br />
+Like many of Wickham’s packages, there has been an evolution. Plyr is the older version of the package and was meant to replace the many ‘apply’ functions available in base R. Plyr would use the split-apply-combine strategy to summarize (e.g. take a mean and SD for the levels of a categorical variable) or transform, i.e. create a new variable. Dplyr was introduced in 2014 and has far more extensive capabilities.</p>
 </div>
 </div>
 <div id="split-apply-combine-the-concept" class="section level2">
 <h2>Split-apply-combine: the concept</h2>
 <p>The idea is that we often have a data frame, with say 5 main groupings (fields, study plots, subjects, etc.). We want to split the data frame into these groups, and do something, i.e. apply. This can be as simple as just taking a mean to very complex analyses, or graphical summaries. Then, we want to combine it all back together in either a new data frame (summarize) or a new variable (transform). Below is a very simple graphical representation of this concept.</p>
-<p><img src="/images/split_apply_combine.png" /></p>
+<div class="figure">
+<img src="/images/split_apply_combine.png" />
+
+</div>
 </div>
 <div id="i-know-plyr-so-why-change" class="section level2">
 <h2>I know plyr so why change?</h2>
@@ -155,9 +214,14 @@ img {
 <div id="the-good-stuff-why-dplyr" class="section level2">
 <h2>The good stuff: why dplyr</h2>
 <p>There are two really great things about dplyr. First, while split-apply-combine was the essence of plyr, dplyr is essentially one stop shopping (along with tidyr – the new reshape2 – subject of another blog) for data wrangling. Basically, dplyr can do all of the following for a data set using 5 ‘verbs’ or functions:</p>
-<p>– Filtering rows (to create a subset)<br /> – Selecting columns of data (i.e., selecting variables)<br /> – Adding new variables (split-apply-combine)<br /> – Sorting<br /> – Aggregating</p>
-<p>The following website (<a href="http://www.sharpsightlabs.com/dplyr-intro-data-manipulation-with-r/">http://www.sharpsightlabs.com/dplyr-intro-data-manipulation-with-r/</a>) does a superb job introducing these concepts. I will simply suggest that you read it if you are interested in the detail. Obviously, all of these examples can be performed with other functions, particularly in base R. But now, it’s all unified in one package. Plus, there is a handy ‘cheat sheet’ (<a href="http://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf">http://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf</a>)</p>
-<p>If that is not enough, the second really cool thing about dplyr is that it has borrowed the ‘piping’ concept in Unix, called ‘chaining’. Chaining is a really simple way to link your commands together and despite my earlier skepticism, it really does make reading code easier and that really does make a difference. I strongly encourage that you work your way to the last example on the above website. I concur with the author’s claim that 5 lines of code combining dplyr and ggplot2 would represent hours of work in MS Excel.<br />Having code that is easy to read makes life much easier, and lessens the dense of dread, when you come back to a project after months away from it.</p>
+<p>– Filtering rows (to create a subset)<br />
+– Selecting columns of data (i.e., selecting variables)<br />
+– Adding new variables (split-apply-combine)<br />
+– Sorting<br />
+– Aggregating</p>
+<p>The following website (<a href="http://www.sharpsightlabs.com/dplyr-intro-data-manipulation-with-r/" class="uri">http://www.sharpsightlabs.com/dplyr-intro-data-manipulation-with-r/</a>) does a superb job introducing these concepts. I will simply suggest that you read it if you are interested in the detail. Obviously, all of these examples can be performed with other functions, particularly in base R. But now, it’s all unified in one package. Plus, there is a handy ‘cheat sheet’ (<a href="http://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf" class="uri">http://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf</a>)</p>
+<p>If that is not enough, the second really cool thing about dplyr is that it has borrowed the ‘piping’ concept in Unix, called ‘chaining’. Chaining is a really simple way to link your commands together and despite my earlier skepticism, it really does make reading code easier and that really does make a difference. I strongly encourage that you work your way to the last example on the above website. I concur with the author’s claim that 5 lines of code combining dplyr and ggplot2 would represent hours of work in MS Excel.<br />
+Having code that is easy to read makes life much easier, and lessens the dense of dread, when you come back to a project after months away from it.</p>
 </div>
 <div id="split-apply-combine-the-code" class="section level2">
 <h2>Split-apply-combine: the code</h2>
@@ -172,7 +236,7 @@ install.packages(&quot;tidyr&quot;)
 library(plyr)
 library(dplyr)
 library(tidyr)</code></pre>
-<p>You’ll also want to grab the <a href="" title="https://drive.google.com/file/d/0B5MOuYjRSGYUOUxhMV9NZUZUbEQ4TF94SFRaN0RFUjktdkhZ/view?usp=sharing">csv from Chris’ google drive</a></p>
+<p>You’ll also want to grab the <a href="%22https://drive.google.com/file/d/0B5MOuYjRSGYUOUxhMV9NZUZUbEQ4TF94SFRaN0RFUjktdkhZ/view?usp=sharing%22">csv from Chris’ google drive</a></p>
 <p>In the following, the <code>group_by</code> command splits that data frame into Study Areas and Year. The data are <code>summarise</code>d by count (apply) and then combined into a new data frame (pivot1). I cheated a little here and used a command from tidyr (next blog) just to make the output really nice.</p>
 <pre class="r"><code>mark &lt;- read.csv(&quot;mark_data.csv&quot;) #Or whatever you downloaded it as
 
@@ -190,13 +254,13 @@ pivot1 &lt;- mark %&gt;%                     # calls the data frame
 <pre class="r"><code>temp &lt;- ddply(mark, .(StudyArea, Year), nrow)
 pivot2 &lt;- spread(temp, Year, V1) #V1 is the name of the column in temp for the count of rows, i.e. nrow</code></pre>
 <p>Admittedly, the plyr version is shorter in this simple example. I’ll make two points in favour of dplyr. First, the longer and more complex the code, the more useful chaining is (like in the webpage above). Secondly, and this could just be me, I never really got plyr syntax. It always seemed to do strange things. I just find dplyr is much more intuitive and the commands are more readily available thanks to the cheat sheet. There are additional benefits to dplyr as well, Chris shared my trepidation for trying dplyr, so he asked Hadley why he thought people needed to switch:</p>
-<blockquote class="twitter-tweet" lang="en"><p lang="en" dir="ltr">
+<blockquote class="twitter-tweet" lang="en">
+<p lang="en" dir="ltr">
 <a href="https://twitter.com/CFHammill"><span class="citation">@CFHammill</span></a> it's 10x-10,000x faster &amp; and way easier to understand
 </p>
 — Hadley Wickham (<span class="citation">@hadleywickham</span>) <a href="https://twitter.com/hadleywickham/status/609071298992480258">June 11, 2015</a>
 </blockquote>
 <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
-
 <p>In addition to speed and learning curve benefits, dplyr is a concerted effor to unify data manipulation under a common umbrella. Dplyr has facillities for connecting to external databases directly, so you don’t need to be a SQL master to pull useful information out of central repositories, and is expected to work well with SparkR, the emerging most popular tool in big-data.</p>
 </div>
 </div>
@@ -224,14 +288,20 @@ pivot2 &lt;- spread(temp, Year, V1) #V1 is the name of the column in temp for th
 
 </script>
 
+
+
 </div>
 
 <script>
 
 // add bootstrap table styles to pandoc tables
-$(document).ready(function () {
+function bootstrapStylePandocTables() {
   $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
 });
+
 
 </script>
 
@@ -240,7 +310,7 @@ $(document).ready(function () {
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
 </script>

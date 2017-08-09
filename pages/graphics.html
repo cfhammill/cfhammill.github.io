@@ -4,20 +4,24 @@
 
 <head>
 
-<meta charset="utf-8">
+<meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 
 
 
+
 <title>Data Viz</title>
 
-<script src="libs/jquery-1.11.0/jquery.min.js"></script>
+<script src="libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="libs/bootstrap-3.3.1/css/flatly.min.css" rel="stylesheet" />
-<script src="libs/bootstrap-3.3.1/js/bootstrap.min.js"></script>
-<script src="libs/bootstrap-3.3.1/shim/html5shiv.min.js"></script>
-<script src="libs/bootstrap-3.3.1/shim/respond.min.js"></script>
+<link href="libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="libs/navigation-1.1/tabsets.js"></script>
+<link href="libs/highlightjs-1.1/textmate.css" rel="stylesheet" />
+<script src="libs/highlightjs-1.1/highlight.js"></script>
 
 <style type="text/css">
   /* padding for bootstrap navbar */
@@ -84,10 +88,6 @@
 </script>
 
 <style type="text/css">code{white-space: pre;}</style>
-<link rel="stylesheet"
-      href="libs/highlight/textmate.css"
-      type="text/css" />
-<script src="libs/highlight/highlight.js"></script>
 <style type="text/css">
   pre:not([class]) {
     background-color: white;
@@ -101,6 +101,34 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 }
 </script>
 
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
 
 
 </head>
@@ -117,12 +145,34 @@ code {
   color: inherit;
   background-color: rgba(0, 0, 0, 0.04);
 }
-img { 
-  max-width:100%; 
-  height: auto; 
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
 }
 </style>
+
+
+
 <div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
 
 <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -163,8 +213,12 @@ img {
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-<div id="header">
-<h1 class="title">Data Viz</h1>
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Data Viz</h1>
+
 </div>
 
 
@@ -182,32 +236,31 @@ $(document).ready(function(){
       },  6000);
 })
 </script>
-
 <p>Here are some visualizations I’ve made for jobs past and present. Hover over the image to get a quick blurb about each figure. All figure copyrights are mine except for the caribou migration figure which is owned by the Government of Newfoundland and Labrador with data from Department of Wildlife and Conservation.</p>
 <div id="css-slideshow">
 <figure>
 <img src="/images/contours.svg">
 <figcaption>
 Visualizing coexistence in a two competitor metacommunity individual based model I wrote for my Master’s thesis. Light green indicates long duration coexistence, dark colours show one competitor going extinct earlier.
-</figcaption> 
+</figcaption>
 </figure>
 <figure>
 <img src="/images/fidelityMigration.svg"/>
 <figcaption>
 Newfoundland Caribou home range size variation by decade and time of year (left panel) right panel shows time of spring and fall migrations with respect to year.
-</figcaption> 
+</figcaption>
 </figure>
 <figure>
 <img src="/images/diabetesGraph.svg"/>
 <figcaption>
 Feature dependency graph for type 1 diabetes patients in Newfoundland and Labrador
-</figcaption> 
+</figcaption>
 </figure>
 <figure>
 <img src="/images/diabetesPCA.svg"/>
 <figcaption>
 Structural principle component analysis for all features, contours indicate number of features in a region of compenent space, arrows show the direction each real feature changes the location on the PCA
-</figcaption> 
+</figcaption>
 </figure>
 </div>
 
@@ -226,14 +279,20 @@ Structural principle component analysis for all features, contours indicate numb
 
 </script>
 
+
+
 </div>
 
 <script>
 
 // add bootstrap table styles to pandoc tables
-$(document).ready(function () {
+function bootstrapStylePandocTables() {
   $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
 });
+
 
 </script>
 
@@ -242,7 +301,7 @@ $(document).ready(function () {
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
 </script>

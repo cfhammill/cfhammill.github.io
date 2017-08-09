@@ -4,20 +4,24 @@
 
 <head>
 
-<meta charset="utf-8">
+<meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 
 
 
+
 <title>Breaking Up With Powerpoint</title>
 
-<script src="libs/jquery-1.11.0/jquery.min.js"></script>
+<script src="libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="libs/bootstrap-3.3.1/css/flatly.min.css" rel="stylesheet" />
-<script src="libs/bootstrap-3.3.1/js/bootstrap.min.js"></script>
-<script src="libs/bootstrap-3.3.1/shim/html5shiv.min.js"></script>
-<script src="libs/bootstrap-3.3.1/shim/respond.min.js"></script>
+<link href="libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="libs/navigation-1.1/tabsets.js"></script>
+<link href="libs/highlightjs-1.1/textmate.css" rel="stylesheet" />
+<script src="libs/highlightjs-1.1/highlight.js"></script>
 
 <style type="text/css">
   /* padding for bootstrap navbar */
@@ -49,10 +53,6 @@
 </script>
 
 <style type="text/css">code{white-space: pre;}</style>
-<link rel="stylesheet"
-      href="libs/highlight/textmate.css"
-      type="text/css" />
-<script src="libs/highlight/highlight.js"></script>
 <style type="text/css">
   pre:not([class]) {
     background-color: white;
@@ -66,6 +66,34 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 }
 </script>
 
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
 
 
 </head>
@@ -82,12 +110,34 @@ code {
   color: inherit;
   background-color: rgba(0, 0, 0, 0.04);
 }
-img { 
-  max-width:100%; 
-  height: auto; 
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
 }
 </style>
+
+
+
 <div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
 
 <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -128,8 +178,12 @@ img {
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-<div id="header">
-<h1 class="title">Breaking Up With Powerpoint</h1>
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Breaking Up With Powerpoint</h1>
+
 </div>
 
 
@@ -139,7 +193,8 @@ img {
 <h2>Background</h2>
 <p>If you’re not familiar yet with R Markdown, I recommend you go back and read my <a href="/posts/startRMarkdown.html">introduction to Knitr and R Markdown</a>. It has become so natural to do the bulk of my work without leaving the comfortable confines of R Studio that I keep looking for more tasks I can do without switching software. Presentations were a logical next step. Previously I had dipped my toes into the problem of authoring presentations with markdown. I used ioslides (another presentation format offered by R Markdown), but was unsatisfied with the level of customization I could achieve (with my primitive knowledge of javascript). So I tried again, but this time with beamer. Beamer for those who haven’t spent much time swimming in the LaTeX pools is a convenient package for rendering LaTeX code as pdf slide-decks. I encountered beamer for first when I tried learning LaTeX originally but never had enough time or drive to master it. However, now with the added ease offered by R Markdown I decided to give it another shot.</p>
 <p>These are the results:</p>
-<iframe src="http://www.slideshare.net/slideshow/embed_code/46955120" width="425" height="355" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe> 
+<iframe src="http://www.slideshare.net/slideshow/embed_code/46955120" width="425" height="355" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen>
+</iframe>
 <div style="margin-bottom:5px">
 <strong> <a href="http://www.slideshare.net/chammill1/introduction-to-igraph-and-shiny" title="Introduction To Igraph and Shiny">Introduction To Igraph and Shiny</a> </strong> from <strong><a href="http://www.slideshare.net/chammill1">Chris Hammill</a></strong>
 </div>
@@ -149,7 +204,10 @@ img {
 <div id="getting-started" class="section level2">
 <h2>Getting Started</h2>
 <p>I won’t lie, there were quite a few gotchas<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a> along the way, but you get the opportunity to learn from my mistakes. To start a beamer presentation in R Studio, create a new markdown document as I discussed in the post about markdown, but instead of choosing the default settings, click the panel labelled presentation, then select beamer and ok</p>
-<p><img src="/images/beamerPres.png" /></p>
+<div class="figure">
+<img src="/images/beamerPres.png" />
+
+</div>
 <p>R Studio throws in some demonstration slides to give you a taste for how to make your presentation, you can go ahead an delete that (though keep the yaml block at the very top [the stuff enclosed by — ]) because I’ll walk you through how to write a really simple presentation.<br></p>
 </div>
 <div id="first-gotcha-yaml-headers-and-themes" class="section level2">
@@ -252,14 +310,20 @@ Untitled slide 2</code></pre>
 
 </script>
 
+
+
 </div>
 
 <script>
 
 // add bootstrap table styles to pandoc tables
-$(document).ready(function () {
+function bootstrapStylePandocTables() {
   $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
 });
+
 
 </script>
 
@@ -268,7 +332,7 @@ $(document).ready(function () {
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
 </script>

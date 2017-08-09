@@ -4,20 +4,24 @@
 
 <head>
 
-<meta charset="utf-8">
+<meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 
 
 
+
 <title>What’s in a (drink) name?</title>
 
-<script src="libs/jquery-1.11.0/jquery.min.js"></script>
+<script src="libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="libs/bootstrap-3.3.1/css/flatly.min.css" rel="stylesheet" />
-<script src="libs/bootstrap-3.3.1/js/bootstrap.min.js"></script>
-<script src="libs/bootstrap-3.3.1/shim/html5shiv.min.js"></script>
-<script src="libs/bootstrap-3.3.1/shim/respond.min.js"></script>
+<link href="libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="libs/navigation-1.1/tabsets.js"></script>
+<link href="libs/highlightjs-1.1/textmate.css" rel="stylesheet" />
+<script src="libs/highlightjs-1.1/highlight.js"></script>
 
 <style type="text/css">
   /* padding for bootstrap navbar */
@@ -49,10 +53,6 @@
 </script>
 
 <style type="text/css">code{white-space: pre;}</style>
-<link rel="stylesheet"
-      href="libs/highlight/textmate.css"
-      type="text/css" />
-<script src="libs/highlight/highlight.js"></script>
 <style type="text/css">
   pre:not([class]) {
     background-color: white;
@@ -66,6 +66,34 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 }
 </script>
 
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
 
 
 </head>
@@ -82,12 +110,34 @@ code {
   color: inherit;
   background-color: rgba(0, 0, 0, 0.04);
 }
-img { 
-  max-width:100%; 
-  height: auto; 
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
 }
 </style>
+
+
+
 <div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
 
 <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -128,8 +178,12 @@ img {
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-<div id="header">
-<h1 class="title">What’s in a (drink) name?</h1>
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">What’s in a (drink) name?</h1>
+
 </div>
 
 
@@ -164,7 +218,7 @@ img {
 <li>Keywords</li>
 <li>Number of ratings</li>
 <li>Average rating (out of 10)</li>
-<li><span style="font-variant:small-caps;">URL</span></li>
+<li><span style="font-variant: small-caps;">URL</span></li>
 </ol>
 <p>In order to get at these values I need to design a regular expression that will only capture the tag of interest. I discussed regular expressions briefly in my previous post, we will rely heavily on the non-greedy quantifier “.+?” I discussed <a href="http://datamancy.blogspot.ca/2014/07/build-your-bar-project-introduction-and.html#1">here</a>.</p>
 </div>
@@ -243,7 +297,7 @@ drinkData &lt;- processSites(fileNames)</code></pre>
 <div id="exploratory-data-analysis-eda" class="section level2">
 <h2>Exploratory Data Analysis (EDA)</h2>
 <p>The cornerstone of any data related project is poking and proding the data to figure out what’s in there. Make some histograms, correlation matrices, and any other simple data visualizations you think might be informative. This step is probably my favourite because it</p>
-<ol style="list-style-type: example">
+<ol class="example" style="list-style-type: decimal">
 <li>Helps recognize general patterns</li>
 <li>Identifies issues with data quality</li>
 <li>It’s fun to watch your data set begin to tell its first story</li>
@@ -313,13 +367,6 @@ dev.off()</code></pre>
 <h4>Booze Cloud!</h4>
 <p><a href = "https://lh3.googleusercontent.com/rlpFcl6kg0Nzcu4yY4LUuUwLqPkIm9Wm7BGjYSONtU_RQQi6cOaC_xG6qa_tA_5sXDxn-GS-fyUxhfR3A2KeVYWN4i0UnQZVZVSwBiC3Qtr3BJMpTbnkz2F-tRkYrCc6cw"><img src="https://lh3.googleusercontent.com/rlpFcl6kg0Nzcu4yY4LUuUwLqPkIm9Wm7BGjYSONtU_RQQi6cOaC_xG6qa_tA_5sXDxn-GS-fyUxhfR3A2KeVYWN4i0UnQZVZVSwBiC3Qtr3BJMpTbnkz2F-tRkYrCc6cw" style="width: 400px; height: 400px;"></a> Click to embignify</p>
 <!--<iframe src="https://datamancy.shinyapps.io/drinkNameGenerator/" style="border: none; width: 440px; height: 500px"></iframe>-->
-
-
-
-
-
-
-
 </div>
 </div>
 
@@ -338,14 +385,20 @@ dev.off()</code></pre>
 
 </script>
 
+
+
 </div>
 
 <script>
 
 // add bootstrap table styles to pandoc tables
-$(document).ready(function () {
+function bootstrapStylePandocTables() {
   $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
 });
+
 
 </script>
 
@@ -354,7 +407,7 @@ $(document).ready(function () {
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
 </script>

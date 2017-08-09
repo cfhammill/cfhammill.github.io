@@ -4,20 +4,24 @@
 
 <head>
 
-<meta charset="utf-8">
+<meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 
 
 
+
 <title>Regex in R</title>
 
-<script src="libs/jquery-1.11.0/jquery.min.js"></script>
+<script src="libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="libs/bootstrap-3.3.1/css/flatly.min.css" rel="stylesheet" />
-<script src="libs/bootstrap-3.3.1/js/bootstrap.min.js"></script>
-<script src="libs/bootstrap-3.3.1/shim/html5shiv.min.js"></script>
-<script src="libs/bootstrap-3.3.1/shim/respond.min.js"></script>
+<link href="libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="libs/navigation-1.1/tabsets.js"></script>
+<link href="libs/highlightjs-1.1/textmate.css" rel="stylesheet" />
+<script src="libs/highlightjs-1.1/highlight.js"></script>
 
 <style type="text/css">
   /* padding for bootstrap navbar */
@@ -49,10 +53,6 @@
 </script>
 
 <style type="text/css">code{white-space: pre;}</style>
-<link rel="stylesheet"
-      href="libs/highlight/textmate.css"
-      type="text/css" />
-<script src="libs/highlight/highlight.js"></script>
 <style type="text/css">
   pre:not([class]) {
     background-color: white;
@@ -66,6 +66,34 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 }
 </script>
 
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
 
 
 </head>
@@ -82,12 +110,34 @@ code {
   color: inherit;
   background-color: rgba(0, 0, 0, 0.04);
 }
-img { 
-  max-width:100%; 
-  height: auto; 
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
 }
 </style>
+
+
+
 <div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
 
 <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -128,8 +178,12 @@ img {
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-<div id="header">
-<h1 class="title">Regex in R</h1>
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Regex in R</h1>
+
 </div>
 
 
@@ -151,7 +205,7 @@ img {
 </div>
 <div id="more-about-perl-like" class="section level2">
 <h2>More about Perl-Like</h2>
-<p>The help file for regex offers the advice to head to <a href="http://www.pcre.org">pcre</a> web page, but you will likely want to go straight to the source: <a href="http://perldoc.perl.org/perlre.html">http://perldoc.perl.org/perlre.html</a>. The perl documentation page on the current state of their regex syntax is a handy reference for anyone who plans on using perl-like regex.</p>
+<p>The help file for regex offers the advice to head to <a href="http://www.pcre.org">pcre</a> web page, but you will likely want to go straight to the source: <a href="http://perldoc.perl.org/perlre.html" class="uri">http://perldoc.perl.org/perlre.html</a>. The perl documentation page on the current state of their regex syntax is a handy reference for anyone who plans on using perl-like regex.</p>
 <p>Unfortunately for us R users, many of perl’s really handy regex features aren’t available to us. Native perl regex allow for concurrent search and accession, meaning you can search for multiple tokens within a string and access the returned tokens without storing the matches in an intermediary object first. More simply, in perl, searching and editing a string is essentially the same action. In R, searching and accession are handled by completely seperate functions, and regular expressions aren’t tokenized to allow multiple operations on the same search criterion.</p>
 <p>These differences are due to the fact that perl was designed for text manipulation, it is self-described as the “swiss army knife” of scripting languages allowing you to functionality from multiple languages with perl as the middle-man. The <em>lingua franca</em> of all programming languages is the source code, which perl can elegantly cut, trim, and glue together. R was built for statistics, and so string manipulation is more of an acquired skill. However, let it never be said you can’t do powerful string manipulation in R, it’s just not true. String manipulation in R is clunky, maybe, but powerful enough to do anything you need.</p>
 </div>
@@ -160,7 +214,8 @@ img {
 <p>I love string manipulation because it appeals to my love of puzzle solving. Finding just the right regex to get what you’re looking for really gives me the thrill of the hunt.</p>
 <ul>
 <li>So you want to find a number in the middle of a word, but only after an m and only in the last word of string: <strong>REGEX</strong></li>
-<li>So you want to trim whitespace from the end of the string but only if there are 3 or more spaces: <strong>REGEX</strong><br /></li>
+<li>So you want to trim whitespace from the end of the string but only if there are 3 or more spaces: <strong>REGEX</strong><br />
+</li>
 <li>Want to find brand names with between one and three capitalized words in a list of drink ingredients <strong>REGEX</strong></li>
 </ul>
 <p>Hopefully your interest is piqued and you now want to learn all about using regex like a wizard. If so, great, because I’m going to show you how! But first, a key R idiosyncracy that needs to be addressed.</p>
@@ -174,7 +229,7 @@ img {
 <h2>First Steps (Wild-Cards and Quantifiers)</h2>
 <p>The first things you’re going to need to learn to become a Perl-Like regex master is to use wild-cards and quantifiers. You may have run into wild-cards in any number of different places, google used to support them for example. Wild-cards are regex speak for “just give me anything”.</p>
 <p>Unless you’ve worked with regex before you’ve probably never worked closely with quantifiers. Quantifiers are regex speak for “give me some number of these”. If you’ve seen the wild-cards “*” and “?” from DOS, “?” is a wild-card meaning any one character, “*” is a wild-card with an indefinite quantifier meaning give me any number of any character.</p>
-<table>
+<table style="width:76%;">
 <colgroup>
 <col width="18%" />
 <col width="58%" />
@@ -209,7 +264,7 @@ img {
 </tbody>
 </table>
 <p>With these tools at your disposal you can begin your oddessey into the world of pattern matching. Let’s see some examples</p>
-<table>
+<table style="width:99%;">
 <colgroup>
 <col width="18%" />
 <col width="80%" />
@@ -242,7 +297,7 @@ img {
 <p>I’ve hinted at this next group of behaviours in the previous set of examples. The “(Na )+” I used to match the batman theme song is an example of grouping. Using parantheses groups a series of characters such that they can be quantified like a single character. The above regex states that I want one or more sets of the sequence “Na”.</p>
 <p>Suppose you weren’t satisfied that you found all the ways people transcribe the batman theme, for example you have a friend use the phoneme “Da” to represent the notes in the song. Never fear, bracketed character classes to the rescue. You can allow the regular expression to choose one of several characters. Bracketed character classes are denoted with square braces “[]”.</p>
 <p>Lastly, maybe the vowel is all wrong too. Maybe you think people might be using phonemes like “Duh” or “Nah”. You can specify these specific combinations within a group, and let the regex match any group with an alternation. Alternations are specified with “|”.</p>
-<table>
+<table style="width:99%;">
 <colgroup>
 <col width="29%" />
 <col width="70%" />
@@ -273,7 +328,7 @@ img {
 <div id="positioning-and-quantifier-modification" class="section level2">
 <h2>Positioning and Quantifier Modification</h2>
 <p>Another useful tool is the ability to specificy where in a string you’d like to match. Two handy positioning modifiers are allowed in a regular experession. You can specify the beginning of a string “^” and the end of a string “$”</p>
-<table>
+<table style="width:99%;">
 <colgroup>
 <col width="18%" />
 <col width="80%" />
@@ -298,8 +353,11 @@ img {
 <p>Quantifier modification is a topic I’ve touched on in a <a href="http://datamancy.blogspot.ca/2014/07/build-your-bar-project-introduction-and.html">previous post</a> where I demonstrated how to process html to extract tag values. The question mark has a double meaning depending on where it is found in a regular expression. Normally it is a treated as a quantifier meaning {0,1}, however when it appears immediately after another quantifier, it instructs that quantifier to behave non-greedily.</p>
 <p>Greedy is a reference to a quantifier’s habit of trying to capture as many characters as possible. If given a choice between matching one or seven characters, it will choose seven. We can modify this behaviour to just take one.</p>
 <p>Take for example the body of a very simple html document</p>
-<p>&lt;body&gt;<br />&lt;p&gt; Generic things on the &lt;b&gt;Internet&lt;b&gt; have grown &lt;b&gt; tiresome&lt;/b&gt;&lt;/p&gt;<br />&lt;/body&gt;</p>
-<p>If I was curious about all the things the author thought worthy of bolding, I might first try the regex<br />&quot;&lt;b&gt;.+&lt;/b&gt;&quot;</p>
+<p>&lt;body&gt;<br />
+&lt;p&gt; Generic things on the &lt;b&gt;Internet&lt;b&gt; have grown &lt;b&gt; tiresome&lt;/b&gt;&lt;/p&gt;<br />
+&lt;/body&gt;</p>
+<p>If I was curious about all the things the author thought worthy of bolding, I might first try the regex<br />
+&quot;&lt;b&gt;.+&lt;/b&gt;&quot;</p>
 <p>But I would get one match &lt;b&gt;Internet&lt;b&gt; have grown &lt;b&gt; tiresome&lt;/b&gt;</p>
 <p>My indefinite quantifier would match all the way to the very last &lt;/b&gt; in the document, obviously not what I wanted. So instead I should tell the “+” quantifier to not be so greedy &quot;&lt;b&gt;.+?&lt;/b&gt;&quot;</p>
 <p>Then it would correctly match &quot;&lt;b&gt;Internet&lt;/b&gt;&quot; and &quot;&lt;b&gt;Tiresome&lt;/b&gt;&quot;.</p>
@@ -310,25 +368,25 @@ img {
 <table>
 <thead>
 <tr class="header">
-<th align="left">Character</th>
+<th>Character</th>
 <th align="left">Meaning</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">\w</td>
+<td>\w</td>
 <td align="left">any word character - all numbers, letters, and underscores</td>
 </tr>
 <tr class="even">
-<td align="left">\W</td>
+<td>\W</td>
 <td align="left">non-word character - anything except the above</td>
 </tr>
 <tr class="odd">
-<td align="left">\d</td>
+<td>\d</td>
 <td align="left">any single digit number</td>
 </tr>
 <tr class="even">
-<td align="left">\s</td>
+<td>\s</td>
 <td align="left">any space character (regular space or tab)</td>
 </tr>
 </tbody>
@@ -351,7 +409,7 @@ img {
 <ol>
 <li id="fn1"><p>I recently discovered the wonderful package <a href="http://cran.r-project.org/web/packages/stringr/index.html">stringr</a> another of Hadley Wickham’s packages. The syntax for specifying perl-like mode with stringr functions is different, you just wrap your regex string in a call to the <code>perl</code> function like so: <code>stringr_foo(&quot;string&quot;, pattern = perl(&quot;pattern&quot;))</code>. Stringr is a dependency of several of Wickham’s other packages so you likely already have it installed.<a href="#fnref1">↩</a></p></li>
 <li id="fn2"><p>The function gsub is R’s equivalent of find and replace all<a href="#fnref2">↩</a></p></li>
-<li id="fn3"><p>The matchPull function is my convenience function for finding and extracting a matched text from a string. Similar in idea to str_extract from stringr, but I wrote matchPull before I knew about stringr, and I’m too lazy to learn someone else’s convenience function when I have my own. Plus as a hold over from my days coding in java I think underscores in function names are yucky. Code for matchPull is available in my post <a href="http://datamancy.blogspot.ca/2014/07/build-your-bar-project-introduction-and.html">here</a> and also comes in my <a href="" title="https:github.com/datamancy/friendlyshiny">friendlyShiny package</a>.<a href="#fnref3">↩</a></p></li>
+<li id="fn3"><p>The matchPull function is my convenience function for finding and extracting a matched text from a string. Similar in idea to str_extract from stringr, but I wrote matchPull before I knew about stringr, and I’m too lazy to learn someone else’s convenience function when I have my own. Plus as a hold over from my days coding in java I think underscores in function names are yucky. Code for matchPull is available in my post <a href="http://datamancy.blogspot.ca/2014/07/build-your-bar-project-introduction-and.html">here</a> and also comes in my <a href="%22https:github.com/datamancy/friendlyshiny%22">friendlyShiny package</a>.<a href="#fnref3">↩</a></p></li>
 </ol>
 </div>
 
@@ -370,14 +428,20 @@ img {
 
 </script>
 
+
+
 </div>
 
 <script>
 
 // add bootstrap table styles to pandoc tables
-$(document).ready(function () {
+function bootstrapStylePandocTables() {
   $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
 });
+
 
 </script>
 
@@ -386,7 +450,7 @@ $(document).ready(function () {
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
 </script>

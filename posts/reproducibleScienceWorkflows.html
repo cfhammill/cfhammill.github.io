@@ -4,21 +4,25 @@
 
 <head>
 
-<meta charset="utf-8">
+<meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+
 
 <meta name="author" content="Guest Post by Keith Lewis" />
 
 
 <title>R, LaTeX/LyX, and your scientific workflow</title>
 
-<script src="libs/jquery-1.11.0/jquery.min.js"></script>
+<script src="libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="libs/bootstrap-3.3.1/css/flatly.min.css" rel="stylesheet" />
-<script src="libs/bootstrap-3.3.1/js/bootstrap.min.js"></script>
-<script src="libs/bootstrap-3.3.1/shim/html5shiv.min.js"></script>
-<script src="libs/bootstrap-3.3.1/shim/respond.min.js"></script>
+<link href="libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="libs/navigation-1.1/tabsets.js"></script>
+<link href="libs/highlightjs-1.1/textmate.css" rel="stylesheet" />
+<script src="libs/highlightjs-1.1/highlight.js"></script>
 
 <style type="text/css">
   /* padding for bootstrap navbar */
@@ -50,10 +54,6 @@
 </script>
 
 <style type="text/css">code{white-space: pre;}</style>
-<link rel="stylesheet"
-      href="libs/highlight/textmate.css"
-      type="text/css" />
-<script src="libs/highlight/highlight.js"></script>
 <style type="text/css">
   pre:not([class]) {
     background-color: white;
@@ -67,6 +67,34 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 }
 </script>
 
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
 
 
 </head>
@@ -83,12 +111,34 @@ code {
   color: inherit;
   background-color: rgba(0, 0, 0, 0.04);
 }
-img { 
-  max-width:100%; 
-  height: auto; 
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
 }
 </style>
+
+
+
 <div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
 
 <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -129,9 +179,13 @@ img {
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-<div id="header">
-<h1 class="title">R, LaTeX/LyX, and your scientific workflow</h1>
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">R, LaTeX/LyX, and your scientific workflow</h1>
 <h4 class="author"><em>Guest Post by Keith Lewis</em></h4>
+
 </div>
 
 
@@ -141,14 +195,27 @@ img {
 <div id="on-workflow-models" class="section level2">
 <h2>On Workflow models</h2>
 <p>If you’re anything like me, as time goes on, you forget where a file was, or why you did some critical step in an analysis, or a data cleaning step all of which can be very frustrating and time consuming as you retrace your steps. By integrating our writing and analysis, i.e. workflows, we can make it harder for things to go wrong. So what are the steps involved in a typical science workflow. Here is a generic workflow model (after the reading, hypothesis formation, study design, and field/lab work of course).</p>
-<p><img src="/images/workflowFigs/fig1.png" /></p>
+<div class="figure">
+<img src="/images/workflowFigs/fig1.png" />
+
+</div>
 <p>So, how can we tackle this universal problem? I’ll present to you the evolution of my workflow model as special cases of the Generic Model. Here is my original workflow model - it may look rather familiar. (Note that ‘Manipulate data’ is a category for that phase when you are cleaning the data, manipulating it, doing exploratory analysis, and making a bunch of decisions before the formal analysis).</p>
-<p><img src="/images/workflowFigs/fig2.png" /></p>
+<div class="figure">
+<img src="/images/workflowFigs/fig2.png" />
+
+</div>
 <p>So clearly, this was a bloody mess and is frankly, a bit embarrassing although not all of it was my fault. As biologists, we never really got any training in this area because until fairly recently, large biological data sets weren’t terribly common. Therefore, our mentors usually didn’t know a lot about this stuff, so most of us learned by trial and error. But to briefly elaborate, I had nice data sheets but no systematic way to enter the data into Excel. I’d never head of metadata (data that describes data, e.g. sources, definitions of variables and acronyms). I was pretty good with Excel and formatted my data using a combination of cut/paste, multiple worksheets, and pivot tables. I did my analyses in several packages depending on what was easiest (Minitab, SAS, DataDesk - a wonderful little program). Graphing was done in SigmaPlot (bad, evil, SigmaPlot; the designers are clearly not statisticians familiar with the model based approach). Then, I would write it all up in Word (Perfect!). In addition to the problems I’ve outlined above, having all these tools made it really difficult to become really proficient with any of them. It also made formatting painful but the real trouble began when I had to go back and re-analyze/re-write. The limitations of this approach became obvious. What did that acronym mean? Why did I make that change from the raw data? Why did I use this analysis and not that one? Where are the @#$%&amp;# files and which one of the several versions should I use? Why in ‘choose your deity’ name does SigmaPlot have your format the data in such an asinine way? Etc. Etc. Etc. This approach was, and probably still is, fairly common.</p>
-<p><img src="/images/workflowFigs/fig3.png" /></p>
+<div class="figure">
+<img src="/images/workflowFigs/fig3.png" />
+
+</div>
 <p>During my PhD, I got a bit smarter and was lucky enough to have Dave Fifield show me how to use relational databases (MS Access) which are vastly superior to spreadsheets for inputting and managing data. Data was well organized, the entry was standardized and the queries in Access are something of a record for how data was manipulated. I won’t talk about this step further but if there is any complexity to your data, or you are setting up a long term research program, do yourself a favour and get it in a database, see this <a href="http://rstb.royalsocietypublishing.org/content/365/1550/2177.short">data management paper</a>. But I still didn’t know about metadata and the middle to right side remained a pretty sloppy system. For example, I still had to transfer data from Access to Excel so that I could tweak data for analyses. Even after I moved to R, I really didn’t know much about the data manipulation side of things and all the problems of returning to an analysis and manuscript listed above still apply.</p>
-<p><img src="/images/workflowFigs/fig4.png" /></p>
-<p>I’m pretty pleased with my current approach In addition to the previous model, I now make sure I have really comprehensive metadata and I save my SQL code (from Access) for each query. I also keep an analysis log writing down all the decisions that I’ve made - there’s nothing worse than thinking hard, for a long time to solve a problem, implementing the solution, only to forget the subtleties 6 months later. Once out of Access, I do all my data manipulation in R (see the dplyr blog; of course I document all the reasons for data manipulation in the code) before preceding to the analyses and graphical output (link to blog on ggplot2).<br />So suppose you have a good data management system, you’re a whiz with R and reasonably organized. You still need to get your statistical and graphical outputs into a document and format it properly - but Word really sucks for this. The rest of this blog is meant to introduce you to the alphabets soup of tools that can make the right side of the workflow model much, much, easier. The cornerstones of this approach are R (obviously) and LaTeX, the world’s best document preparation system which are linked together by knitr.</p>
+<div class="figure">
+<img src="/images/workflowFigs/fig4.png" />
+
+</div>
+<p>I’m pretty pleased with my current approach In addition to the previous model, I now make sure I have really comprehensive metadata and I save my SQL code (from Access) for each query. I also keep an analysis log writing down all the decisions that I’ve made - there’s nothing worse than thinking hard, for a long time to solve a problem, implementing the solution, only to forget the subtleties 6 months later. Once out of Access, I do all my data manipulation in R (see the dplyr blog; of course I document all the reasons for data manipulation in the code) before preceding to the analyses and graphical output (link to blog on ggplot2).<br />
+So suppose you have a good data management system, you’re a whiz with R and reasonably organized. You still need to get your statistical and graphical outputs into a document and format it properly - but Word really sucks for this. The rest of this blog is meant to introduce you to the alphabets soup of tools that can make the right side of the workflow model much, much, easier. The cornerstones of this approach are R (obviously) and LaTeX, the world’s best document preparation system which are linked together by knitr.</p>
 <div id="a-bit-of-background" class="section level3">
 <h3>A bit of background:</h3>
 <p>Basically, writing has under gone four major changes since the invention of paper, the first three being hand written documents, typewriters, and word processors. The fourth stage, is where the story gets interesting. Some years ago during my post-doc, I stumbled upon ‘Sweave’, the precursor to knitr, and LaTeX on the package <a href="http://cc.oulu.fi/~jarioksa/softhelp/vegan.html">vegan website</a>. Because vegan is so great, I decided to investigate. You know about knitr from Chris’s blog. <a href="http://www.latex-project.org/">LaTeX</a>(pronounced lay -Tech) - click here for the <a href="https://tobi.oetiker.ch/lshort/lshort.pdf">bible</a>, is a document preparation system that has been around since the 1980s and is widely used in mathematics, engineering, and computer science. If you have spent any time in an R help file, you’ll notice that they all look alike and that’s because they are written in LaTeX.</p>
@@ -160,9 +227,14 @@ img {
 </div>
 <div id="major-difference-between-word-and-latex" class="section level2">
 <h2>Major Difference Between Word and LaTeX</h2>
-<p>The difference between a word processor and a document preparation system like LaTex is that word processors are what-you-see-is-what-you-get (WYSIWYG) while LaTeX is what-you-see-is-what-you-mean (WYSIWYM). Basically, in a word processor, you have to make it look right on the screen. Some folks are good at this. But if you lack artistic sensibilities (like me), or you just want consistently formatted output that you don’t have to worry too much about it (like me), you need a document preparation system.<br />In a document preparation system, you write and the computer produces well formatted documents. You usually have to tweak things of course. But the great thing, is that you don’t have to worry about the most of the formatting, i.e. you separate the task of writing from the task of presentation (most of what I’ve read on efficient writing suggests you should separate the tasks of writing, editing, and presentation - <a href="http://www.lyx.org/WhatIsLyX">for more info see</a> and for something slightly more <a href="http://schneider.ncifcrf.gov/latex.html">opinionated</a>. To date, I’ve written lengthy reports with multiple tables and figures. It was a bit of work but formatting hasn’t been anywhere near a problem like in MS Word. To give an example, a few years back when I was learning about this stuff, I was tasked with writing a government report that grew to 180 pages. Formatting was an absolute nightmare. For reasons known only to itself, Word kept italicizing paragraphs, changing headers, etc. Thankfully, I never had to format the bloody thing because unlike a thesis or manuscript, I couldn’t put my tables/figures at the end of a chapter. It would have taken forever! Never again will I use MS Word of my own free will for a complex document! I now do almost all my writing in LaTeX (actually, I use LyX, a GUI for LaTeX - see below). My rule of thumb is that if it’s more than 5-10 pages and has any number of tables or figures, I use LyX!<br />Formatting is one advantage, but more important for me is the ability to knit my R code with my text and keep track of everything (data manipulation decisions, figures, analyses, etc.). Another advantage to this approach is that you can update reports or papers on the fly (see R and LyX). Suppose you are in the second year of your thesis (<a href="https://www.sharelatex.com/blog/2013/08/02/thesis-series-pt1.html">this website</a> is a 5 part blog on writing a thesis in LaTeX). Or you are required to submit annual reports for a grant. You have drafted a report or prepared a draft document for publication. Then you have your next field season. With this approach, all you have to do (after entering the data in the proper format of course) is open the document, and re-run the analyses. Of course if this changes your results, you have some work to do but you’d have to do that anyway.</p>
+<p>The difference between a word processor and a document preparation system like LaTex is that word processors are what-you-see-is-what-you-get (WYSIWYG) while LaTeX is what-you-see-is-what-you-mean (WYSIWYM). Basically, in a word processor, you have to make it look right on the screen. Some folks are good at this. But if you lack artistic sensibilities (like me), or you just want consistently formatted output that you don’t have to worry too much about it (like me), you need a document preparation system.<br />
+In a document preparation system, you write and the computer produces well formatted documents. You usually have to tweak things of course. But the great thing, is that you don’t have to worry about the most of the formatting, i.e. you separate the task of writing from the task of presentation (most of what I’ve read on efficient writing suggests you should separate the tasks of writing, editing, and presentation - <a href="http://www.lyx.org/WhatIsLyX">for more info see</a> and for something slightly more <a href="http://schneider.ncifcrf.gov/latex.html">opinionated</a>. To date, I’ve written lengthy reports with multiple tables and figures. It was a bit of work but formatting hasn’t been anywhere near a problem like in MS Word. To give an example, a few years back when I was learning about this stuff, I was tasked with writing a government report that grew to 180 pages. Formatting was an absolute nightmare. For reasons known only to itself, Word kept italicizing paragraphs, changing headers, etc. Thankfully, I never had to format the bloody thing because unlike a thesis or manuscript, I couldn’t put my tables/figures at the end of a chapter. It would have taken forever! Never again will I use MS Word of my own free will for a complex document! I now do almost all my writing in LaTeX (actually, I use LyX, a GUI for LaTeX - see below). My rule of thumb is that if it’s more than 5-10 pages and has any number of tables or figures, I use LyX!<br />
+Formatting is one advantage, but more important for me is the ability to knit my R code with my text and keep track of everything (data manipulation decisions, figures, analyses, etc.). Another advantage to this approach is that you can update reports or papers on the fly (see R and LyX). Suppose you are in the second year of your thesis (<a href="https://www.sharelatex.com/blog/2013/08/02/thesis-series-pt1.html">this website</a> is a 5 part blog on writing a thesis in LaTeX). Or you are required to submit annual reports for a grant. You have drafted a report or prepared a draft document for publication. Then you have your next field season. With this approach, all you have to do (after entering the data in the proper format of course) is open the document, and re-run the analyses. Of course if this changes your results, you have some work to do but you’d have to do that anyway.</p>
 <p>However, there are barriers to learning this approach. LaTeX is code driven and initially, I was in no mood to learn to program for document writing. Fortunately, there is a GUI for LaTeX called <a href="http://www.lyx.org/">LyX</a>. LyX has the look and feel of a word processor but with all the power of LaTeX.</p>
-<p><img src="/images/workflowFigs/fig5.png" /></p>
+<div class="figure">
+<img src="/images/workflowFigs/fig5.png" />
+
+</div>
 <p>And what is really cool is that LyX can also be integrated (with a little effort) with R and you can produce documents just like Chris has shown in Markdown. More on that below. But if you are not interested in LyX, LaTeX documents can be produced in RStudio (you need to install knitr and then simply File -&gt; New -&gt; R Sweave) or one of the various LaTeX editors like MikTeX (but you are on your own if you choose this path).</p>
 </div>
 <div id="getting-started-with-r-and-lyx" class="section level2">
@@ -171,11 +243,17 @@ img {
 <p>Basically, you use chunks just like in Markdown. Write your text just like a word processor. When you want to do an analysis, hit Ctrl-L and an Evil Red Text (ERT) box appears (see below). You then create the R chunk and LyX will embed this analysis in your document. Note that Markdown uses ``` for chunks while LaTeX starts a chunk with &lt;&lt;&gt;&gt;= and ends with @. The following text and code in LyX produces the following output:</p>
 <p><img src="/images/workflowFigs/fig6.png" /> <img src="/images/workflowFigs/fig7.png" /></p>
 <p>And as mentioned above, if you prefer, you can skip LyX altogether (not sure I recommend this) and do LaTeX right in RStudio just like Chris has done with Markdown. The below will give identical output as the LyX example above. Note that everything following the backslash and in blue font is LaTeX code.</p>
-<p><img src="/images/workflowFigs/fig8.png" /></p>
+<div class="figure">
+<img src="/images/workflowFigs/fig8.png" />
+
+</div>
 <p>Also, through knitr you have complete control over what does and doesn’t appear in the output.</p>
 <p><em>First the headlines, now the details</em></p>
 <p>OK - that was a very simple introduction but there are some things you need to know before you can really get going. When you open LyX, the first thing you should do is goto Document -&gt; Settings. You should see something like this.</p>
-<p><img src="/images/workflowFigs/fig9.png" /></p>
+<div class="figure">
+<img src="/images/workflowFigs/fig9.png" />
+
+</div>
 <p>The options in Document Settings are too numerous to blog about but basically, this gives box gives you tremendous flexibility and control over what type of document you create. If you click on Document class, you’ll notice that there are a huge number of document classes to choose from. I usually stick with Article (but see Beamer below). Modules are the way to link to knitr and R (see above).</p>
 <p>There is also the format bar the upper left corner (click on ‘Standard’ or Ctl-P). This is required for creating headers and the table of contents. It’s much, much better than Word which again, seems to have a logic known only to its creators. When you are writing your paragraphs, use the ‘Standard’ option - everything else (Section, sub section, paragraph, subparagraph are for the headings).</p>
 <p>If you want to see some output, the shortcut is to click on the ‘eyes’ in the upper left corner. Or, you can go to File-&gt;export. There’s a lot of options. I usually just use pdflatex.</p>
@@ -215,7 +293,11 @@ img {
 </div>
 <div id="good-websites" class="section level3">
 <h3>Good websites:</h3>
-<p>For a tonne of GREAT resources on reproducible research, knitr, and a bunch of other cool stuff!<br /><a href="http://kbroman.org/Tools4RR/pages/resources.html">http://kbroman.org/Tools4RR/pages/resources.html</a><br />Also see:<br /><a href="http://biostat.mc.vanderbilt.edu/wiki/Main/KnitrHowto">http://biostat.mc.vanderbilt.edu/wiki/Main/KnitrHowto</a><br /><a href="http://joshldavis.com/2014/04/12/beginners-tutorial-for-knitr/">http://joshldavis.com/2014/04/12/beginners-tutorial-for-knitr/</a></p>
+<p>For a tonne of GREAT resources on reproducible research, knitr, and a bunch of other cool stuff!<br />
+<a href="http://kbroman.org/Tools4RR/pages/resources.html" class="uri">http://kbroman.org/Tools4RR/pages/resources.html</a><br />
+Also see:<br />
+<a href="http://biostat.mc.vanderbilt.edu/wiki/Main/KnitrHowto" class="uri">http://biostat.mc.vanderbilt.edu/wiki/Main/KnitrHowto</a><br />
+<a href="http://joshldavis.com/2014/04/12/beginners-tutorial-for-knitr/" class="uri">http://joshldavis.com/2014/04/12/beginners-tutorial-for-knitr/</a></p>
 </div>
 </div>
 
@@ -234,14 +316,20 @@ img {
 
 </script>
 
+
+
 </div>
 
 <script>
 
 // add bootstrap table styles to pandoc tables
-$(document).ready(function () {
+function bootstrapStylePandocTables() {
   $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
 });
+
 
 </script>
 
@@ -250,7 +338,7 @@ $(document).ready(function () {
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
 </script>
