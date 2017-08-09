@@ -2,12 +2,13 @@
 title: Blog Archive
 ---
 
-* [Reproducible Science Workflows](/posts/reproducibleScienceWorkflows.html) (August 27, 2015)  
+* [Preserving The Signal](/posts/preserving_the_signal.html) (August 8th, 2017)
+* [Reproducible Science Workflows](/posts/reproducibleScienceWorkflows.html) (August 27, 2015)
 * [Getting Started With Dplyr](/posts/dplyrGuestPost.html) (July 15)
 * [Statistics Orthodoxy vs. Data Science](/posts/statsvsdata.html) (June 1, 2015)
 * [Breaking Up With Powerpoint](/posts/beamerPresentations.html) (April 14, 2015)
 * [Getting Started With R Markdown](/posts/startRMarkdown) (March 3, 2015)
-*	[Writing a Knitr Engine to run code through an interpreter of your choice!](/posts/knitEnginePost.html) (February 24, 2015)
+* [Writing a Knitr Engine to run code through an interpreter of your choice!](/posts/knitEnginePost.html) (February 24, 2015)
 * [99th ESA Meeting in Sacramento](/posts/ESATalk.html) (August 13, 2014)
 * [Regular Expressions in R: A Primer](/posts/regexPost.html) (August 6, 2014)
 * [Advanced ggplot2: How to add overlays, underlays, and make multi-axis plots](/posts/watermarkPost.html) (July 23, 2014)

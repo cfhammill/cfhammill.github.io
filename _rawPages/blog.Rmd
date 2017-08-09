@@ -2,10 +2,11 @@
 ---
 
 <script>
-var mostRecentFour = ["reproducibleScienceWorkflows.html",
-                      "dplyrGuestPost.html",
-                      "statsvsdata.html",
-                      "beamerPresentations.html"];
+var mostRecentFour = ["preserving_the_signal.html"
+                   , "reproducibleScienceWorkflows.html"
+                   , "dplyrGuestPost.html"
+                   , "statsvsdata.html"
+                     ];
 
   function loadPost(ind, post){
   
