@@ -1,0 +1,582 @@
+---
+title: "Monoids for Data Scientists"
+output: html_document
+---
+
+This is the beginning of a blog series in which I'm going to try to bridge
+two of my main programming interests, data science and strongly typed functional
+programming. If you're reading this I assume you've perhaps heard some of the 
+intimidating sounding concepts coming out of the functional programming communities,
+and hope to learn more about them. Some of the terms I'm hoping to cover include
+concepts like *functor*, *monoid*, and the ever popular *monad*. I'm going to try to 
+explain these concepts with accessible examples using data structures that will be
+familiar to people who do data science.
+
+I've chosen to begin this adventure discussing monoids. I think monoids are
+an ideal starting point because they are relatively simple to describe and 
+immediately point to best practices for designing reusable code. Monoids are 
+also an appealing start point because they appear early in abstract
+math curricula, and are relatively foundational.
+
+## Monoids
+
+Sets and functions form the building blocks of modern mathematics, and
+by extensions functional programming. If sets and functions are the building 
+blocks, monoids are one of the simplest structures you can think to
+build out of them. You take one set, and a bunch of two argument functions
+following three rules and you have yourself a monoid.
+The technical definition of a monoid is a set together with an operation $\oplus$.
+The operation needs to have the following properties (or satisfy the following "laws"). 
+
+- The operation needs to take two elements of the underlying set and produce
+   another element of the set. 
+- The operation needs to be associative. This means if I have 
+  $A \oplus B \oplus C$ it doesn't matter if I do $A \oplus B$ or $B \oplus C$ first, 
+  so I can arbitrarily bracket monoidal operations. 
+- The operation needs to have an identity element. This is an element of the underlying
+  set that doesn't change the result of the monoidal operation, we'll call it O for now. 
+  The condition for O is that $A \oplus$ O = O $\oplus$ A = A$
+
+A handy slogan for remembering what monoids are all about:
+
+> Monoids are the essence of putting things together.
+
+Let's make this concrete with an example. For simplicity we're going to say that 
+any type in our programming language can be a monoidal set. We're swapping "type"
+for "set" in the above definitions. This isn't a big stretch: 
+you can imagine the integer type in R as the set of all integers that you can
+store in 64 bits of memory. One type we might consider is the type of numeric vectors. 
+
+## A first monoid
+
+> Numeric vectors with concatenation and an empty vector form a monoid
+
+Now if our set of values is all the numeric vectors, we can take R's `c` function as
+the monoidal operation. Let's check that this is indeed a monoid. First we're going
+to make an infix version of `c` so it looks like our equations above.
+
+```{r}
+"%c%" <- c
+```
+
+Does applying
+the monoidal operation to two elements of our set give another element of that set?
+
+```{r}
+A <- 1:3
+B <- 4:7
+C <- 8:10
+
+class(A); class(B); class(C)
+
+class(A %c% B %c% C)
+```
+
+Great, our monoidal operation appears to preserve the type. Is it associative?
+
+```{r}
+v1 <- (A %c% B) %c% C
+v2 <- A %c% (B %c% C)
+
+all.equal(v1, v2)
+```
+
+Sure is! And now do we have an identity?
+
+```{r}
+O <- integer(0)
+
+v1 <- A %c% O
+v2 <- O %c% A
+
+all.equal(v1, A)
+all.equal(v2, A)
+```
+
+Great. So it looks like we have a monoid. Now let's try to think of some more.
+What about `data.frames` and `dplyr`'s `bind_rows`?
+
+```{r}
+suppressPackageStartupMessages(
+  library(dplyr)
+)
+
+"%b%" <- bind_rows
+
+A <- data.frame(x = 1:10, y = 21:30)
+B <- data.frame(z = 31:40)
+C <- data.frame(q = 501:510, r = 401:410)
+
+class(A); class(B); class(C)
+
+class(A %b% B %b% C)
+```
+
+Looking good so far. Associativity?
+
+```{r}
+v1 <- (A %b% B) %b% C
+v2 <- A %b% (B %b% C)
+
+all.equal(v1, v2)
+```
+
+Great! And now identity:
+
+```{r}
+v1 <- A %b% data.frame()
+v2 <- data.frame() %b% A
+all.equal(v1, A)
+all.equal(v2, A)
+```
+
+So `data.frames` under `row_bind`ing form a monoid. As you can probably
+start to see monoids are everywhere. Ok one more example of a monoid before
+we start to discuss why this idea matters.
+
+```{r}
+`%+%` <- `+`
+A <- 1
+B <- 2
+C <- 3
+O <- 0
+```
+
+So our monoidal operation is addition, our class is 1 element integer vectors
+and our identity element is zero. As we know from math class addition is associative,
+adding zero doesn't change our sum, so -- heck yes this is a monoid. In fact when 
+I think of monoids, my go to example is numbers with zero and addition.
+
+If at this point you're thinking the idea of a monoid is kind of
+trivial, I don't blame you, but monoids can be much stranger. Let's demonstrate
+one weird example. Since R is dynamically typed, there is a single type that can
+represent any R object or function. Now I want you to think of all one argument
+functions. These functions take an object or function and produce another object
+or function. If I want to do two of these functions I can compose them, calling
+one after the other. There is the function `identity` that doesn't change the function
+it's composed with. Gee, this is starting to sound like functions under composition
+form a monoid, and indeed they do! My colleague called this the Ur-monoid, as it's
+really the most primitive of them all.
+
+```{r}
+"%then%" <- function(f,g) compose(g,f)
+A <- log
+B <- exp
+C <- sqrt
+O <- identity
+
+f1 <- (A %then% B) %then% C
+f2 <- A %then% (B %then% C)
+
+f1(5) == f2(5)
+(f1 %then% identity)(10) == (identity %then% f1)(10)
+```
+
+Now I've broken with mathematical tradition here and defined our composition
+operator to call the left hand side first. The reason is because when written
+this way our compose operator says "call A then call B on the result, then
+call C on the result of that." This pattern may be familiar, it goes by
+another name:
+
+```{r, eval = FALSE}
+%>% #Ceci est une pipe
+```
+
+That's right, our beloved pipe is essentially the compose operator for the
+monoid of single argument R functions! It also provides a handy shorthand
+for functions that take an argument `.`, but at its heart is function 
+composition (well application)<a name="note1">[$^1$](#note1-text) .
+
+So think back to the slogan, monoids really are about adding
+things together, adding numbers, composing functions, building lists,
+and more. All of these are views of the same underlying mathematical 
+structure, and that's monoids!
+
+## Why does this idea matter?
+
+Coming up with good easy to use abstractions is key to making programming easier.
+If you see this pattern of putting elements together why not see if you can
+make your operation associative, why not give it a zero element? This allows
+someone new to your code base a reference point for understanding you data structure
+and how it ought to be used.
+
+Using the right abstraction is also important for reducing code duplication.
+Let's see this in action. 
+
+Suppose, for example, I want to write a function
+that binds together a `list` of `data.frames` (ignoring that `bind_rows` can
+already take many arguments). Since we're using functional
+programming we'll use `purrr`'s `reduce` function.
+
+```{r}
+bind_many_rows <- function(frames) reduce(frames, bind_rows, data.frame())
+```
+
+If you're fuzzy on what `reduce` does, it takes a function of two arguments,
+a list of values, and an initial value. With those components in hand
+it takes the first element of the list and applies the function to it and 
+the initial element, then that result is used with the second element 
+of the list. The function can be thought of as taking a running sum 
+over the input list.
+
+In the code above we take a bunch of frames and an empty frame and iteratively
+bind the next `data.frame` to the bottom of our growing 
+accumulator, which is also a `data.frame`. 
+
+Ok now we want to write a function to sum a vector of numbers.
+
+```{r}
+sum_many_numbers <- function(nums) reduce(nums, `+`, 0)
+```
+
+or put bunch of vectors togther
+
+```{r}
+bind_many_vectors <- function(vects) reduce(vects, c, vector(0))
+```
+
+All of these functions are really the same. We're taking some
+zero element and then iteratively adding more elements of the
+same type. Given this pattern, wouldn't it be nice if we
+didn't have to write it for each new monoid we see?
+
+In haskell the strategy we use for this problem is to
+construct a typeclass, which is roughly equivalent to an S3 class, 
+called monoid. Then for each type we
+decide is a monoid we tell haskell what the operation is and
+what zero is, then we get sum for free.
+
+```
+class Monoid a where
+   mempty  :: a           -- our identity element
+   mappend :: a -> a -> a -- our operator
+   mconcat :: [a] -> a    -- our sum operation
+   mconcat = foldr mappend mempty z
+   x (<>) y = mappend x y
+```
+
+This code says to be a member of the type class monoid you need to give haskell
+a way to add two members of the monoid (mappend or <>). You also
+need to supply an identity element, and then you get monoidal sum 
+for free. 
+
+To read the code above, we're creating a type class Monoid that
+requires you to specify a type `a`. Code after the double-colons
+indicates what type the variable needs to be. The type of `mempty` is
+`a`. The type for `mappend` is a little more complicated, it is a function
+that takes two `a`'s and produces another `a`, and `mconcat` takes a
+list of `a`'s and produces an `a`. The definition for `mconcat` works even
+if we have no idea what `mempty` and `mappend` are.
+
+You might be distracted by the nomenclature here. I've been calling the monoid
+operation "add" and the identity element "zero", this is because in my head
+monoids are things that act like numbers under addition. In haskell, the writers
+see monoids as things that behave like lists under appending. The beauty is
+these two views are both correct and useful for conceptualizing how monoids work.
+
+Ok so maybe at this point you see that having the monoid abstration might reduce
+code duplication *a little bit*, but that's just scratching the surface.
+
+Say you're spelunking a novel code base and you're tasked with trying to make
+some code faster. You notice that the programmer before you was kind enough
+to tag the long running operation as a monoidal sum. You now already know 
+how to make it faster. How you ask?
+
+Do it in parallel!
+
+Since the monoidal operation is associative, it doesn't matter
+what order you do it in. So you can split the inputs into chunks and compute the
+partial sums on many cores, adding the chunks up at the end. You got an easy 
+performance gain just by knowing you had a monoid on your hands. This is
+the real reason people care about the abstractions in functional programming,
+learn them once and see/use them everywhere. It's a significant time investment
+at first, but it's worth it.
+
+## Making some monoids in R
+
+At this point in the post we're going to emulate haskell's typeclass
+view of monoids in R. So here's a simple S3 implementation of monoids.
+
+```{r}
+suppressPackageStartupMessages({
+  library(purrr)
+  library(dplyr)
+  library(rlang)
+})
+
+mappend <- function(x,y) UseMethod("mappend")
+"%<>%" <- mappend
+
+mappend.list <- function(x,y) c(x,y)
+mappend.data.frame <- function(x,y) bind_rows(x,y)
+mappend.character <- function(x,y) paste0(x,y)
+mappend.numeric <- function(x,y) x + y
+mappend.integer <- function(x,y) x + y
+
+mempty <- function(x) UseMethod("mempty")
+mempty.list <- function(x) list()
+mempty.data.frame <- function(x) data.frame()
+mempty.character <- function(x) ""
+mempty.numeric <- function(x) 0
+mempty.integer <- function(x) 0
+
+mconcat <- function(xs) UseMethod("mconcat", xs[[1]])
+mconcat.default <- function(xs) reduce(xs, mappend, .init = mempty(xs[[1]]))
+# you can omit the `.init` if you're feeling bold
+```
+
+Great let's try them out:
+
+```{r}
+mconcat(1:10)
+mconcat(c(1, .1, .01, .001, .0001))
+mconcat(list(2.1, 1.2))
+mconcat(list(data.frame(a = 5, b = 6)
+           , data.frame(f = 21, g = 33)
+           , data.frame(q = 44, r = 1)))
+mconcat(list(list("happy")
+           , list("monoid")
+           , list("fun-times")))
+```
+
+Isn't that great?! Now anyone can go ahead and implement `mconcat` and
+`mempty` for their classes and start using `mconcat`, it also doesn't seem
+to care if we use a vector or a list to hold the elements we'd like
+to sum up, thanks to `purrr`'s `reduce` being awesome.
+
+But this implementation isn't very good. Say I have a list of vectors and
+I want to add another.
+
+```{r}
+list(1:2, 6:9) %<>% 3:5
+```
+
+Wait a minute, I wanted to add another element to add the vector
+3:5 to my list, not add 3 new elements. Instead of failing because
+the types to my monoidal operation were wrong, R blissfully promoted
+my vector to a list, but not in the way I wanted. So we'd need to
+go back to our definitions of `mappend` and add type checking:
+
+```{r}
+mappend.list <- function(x,y){
+  if(!is.list(y))
+    stop("Second argument to the monoidal operation was not a list!")
+
+  c(x, y)
+}
+```
+
+Now if we want to `mconcat` 1000 elements, we need to check 999 types
+when we run our program. This is one of the advantages of using
+a statically-typed compiled language like haskell. By ensuring when
+we write the program that the arguments to `mconcat` are always the
+right type, the program doesn't need to check. This slightly improves
+performance.
+
+In R:
+
+```{r}
+# Reference
+system.time(mconcat(as.numeric(1:1000000)))
+
+# Implement checked mappend
+mappend.numeric <- function(x,y){
+  if(!is.numeric(y))
+    stop("Second argument to monoidal operation wasn't numeric")
+
+  x + y
+}
+
+# Checked implementation
+system.time(mconcat(as.numeric(1:1000000)))
+```
+
+Skipping the type check gives a small speed up. 
+But we get a dramatic speedup just by knowing what monoidal operation
+to use:
+
+```{r}
+mconcat.numeric <- function(xs) reduce(xs, mappend.numeric, .init = xs[[1]])
+
+system.time(mconcat.default(as.numeric(1:1000000)))
+system.time(mconcat.numeric(as.numeric(1:1000000)))
+```
+
+We can reduce our runtime by ~60% just by skipping the S3 method lookups!
+In haskell, the compiler figures out from our type signatures what implementation
+of `mappend` it needs to use so there is no cost of lookup at run time. We can
+recover our lost performance by redefining our default `mconcat`.
+
+```{r}
+rm(mconcat.numeric)
+
+mconcat.default <- function(xs){
+  mappend_typed <- getS3method("mappend", class(xs[[1]]))
+  reduce(xs, mappend_typed, .init = mempty(xs[[1]]))
+}
+
+system.time(mconcat.default(as.numeric(1:1000000)))
+```
+
+Here we get the performance equivalent to the operation with known
+types. The last thing you might want to do is provide a really fast implementation
+for `mconcat`, the default implementation doesn't have to be the end of the
+story. Let's write some fast `mconcat`'s:
+
+```{r}
+mconcat.numeric <- function(xs){
+  if(!all(map_lgl(xs, is.numeric)))
+    stop("All arguments to mconcat must be numeric")
+  sum(unlist(xs))
+}
+
+system.time(mconcat(as.numeric(1:100000)))
+```
+
+That's an order of magnitude speedup; not bad not bad. How
+about `data.frame` row binding:
+
+
+```{r}
+mconcat.data.frame <- function(xs){
+  if(!all(map_lgl(xs, is.data.frame)))
+    stop("All arguments to mconcat must be `data.frame`'s")
+
+  bind_rows(!!!xs)
+}
+```
+
+or string joining?
+
+```{r}
+mconcat.character <- function(xs){
+  if(!all(map_lgl(xs, is.character)))
+    stop("All arguments to mconcat must be `character`.")
+
+  eval_tidy(quo(paste0(UQS(xs))))
+}
+```
+
+## Parallelizing
+
+As I mentioned earlier in the post, having an associative operation 
+means we can trivially parallelize our default `mconcat`. It also
+means we can add our elements of our monoid up left to right, right to
+left or in arbitrary pieces. So let's quickly write a parallel implementation
+for `mconcat` that can be run in serial if the user wishes. We're going
+to use the `furrr` library for parallelization.
+
+```{r}
+library(furrr)
+plan("multiprocess")
+
+mconcat.default <- function(xs, cores = options("mc.cores")){
+  mappend_typed <-
+    getS3method("mappend", class(xs[[1]]))
+  mconcat_helper <-
+    function(xs_chunk) reduce(xs_chunk, mappend_typed, .init = mempty(xs[[1]]))
+
+  ## Generate a vector of chunk labels
+  chunk_id <- rep(seq_along(xs)
+                , each = ceiling(length(xs) / cores)
+                , length.out = length(xs))
+
+  # Split our vector in to chunks, map regular mconcat over them
+  # Then mconcat up the results
+  future_map(split(xs, chunk_id), mconcat_helper) %>%
+    mconcat_helper
+}
+
+system.time(v1 <- mconcat.default(as.numeric(1:1000000), 4))
+system.time(v2 <- mconcat.numeric(as.numeric(1:1000000)))
+
+v1 == v2
+```
+
+By using four cores we can beat R's super-fast C sum function using
+our default parallel `mconcat`. 
+
+## Conclusion 
+
+So there you have it, monoids in R using S3 generics. I hope by now I've convinced you that monoids are a really useful concept
+for programming abstractly. Abstract code improves your experience
+programming by reducing the number of distinct concepts you need to hold
+in your head. I also hope you've taken the bait and become at least a little
+more interested in what is going on in the statically typed functional programming
+world.
+
+In this post we saw monoids, the mathematical abstraction for things that can
+be added together.  In the process of writing this post I realized that 
+these examples belong in a package. You can download and play with all 
+the code in this post (in slightly cleaner / better type checked form) from my github: 
+https://github.com/cfhammill/monoids.
+
+One topic I've avoided discussing is the notion of purity. If our monoidal
+operation performs an action like printing to the screen, the operation is
+no longer associative. It matters what order we evaluate a sequence of 
+monoidal operations. Augmenting a monoids with effects like input/output and
+access to global state gives you monads. Which we'll hopefully discuss in
+a later post.
+
+In the next entry of this blog series I'm going to cover Functors, which are
+the essence of mapping between different types. Of particular importance
+is the mapping between things and list of things, and the spirit of containers.
+Stay tuned!
+
+## Acknowledgements
+
+I've very grateful to Ben Darwin and Zsuzsa Lindenmaier for reading drafts
+of this post and providing many helpful comments.
+
+---
+
+## Notes
+
+<a name="note1-text">
+[1:](#note1) If you found the description of pipe suspicious, congratulations you
+caught me in a small deception. If we look at at pipeline `a %>% f %>% g %>% h`
+the `f %>% g %>% h` part looks like function composition, but the types don't
+quite line up. You likely noticed `a` isn't a function, it's an object! So 
+the type of our pipe operator is `object -> function -> object` not 
+`function -> function -> function`,
+it's not a particularly a big deception, objects are just zero argument 
+functions after all ;). What we'd really like is a pipe operator that is
+the monoidal operator for functions but provides syntactic sugar for
+passing an argument to the composed function. We could write such a 
+function like this: 
+```{r}
+"%>>%" <- function(x,y){
+  if(is.function(x)){
+    compose(y, x)
+  } else {
+    y(x)
+  }
+}
+```
+
+There, all better. Now this pipe is missing the things that make `magrittr`
+pipes great like -- easy anonymous functions for example. In 
+its present for we'd have to write our pipes like:
+
+```{r}
+5 %>>% 
+  function(.){ log(.)  } %>>%
+  function(.){ exp(.)  } %>>%
+  function(.){ sqrt(.) }
+## yuck
+```
+
+but I'll save writing that syntactic sugar for another day. The (admittedly small)
+benefit of using a monoidal pipe operator is that (once equipped with syntactic
+sugar) we can write pipeline segments even cleaner than before
+
+```{r}
+# Old way
+f1 <- . %>% log %>% sum %>% exp
+
+# With monoidal pipes
+f2 <- log %>>% sum %>>% exp
+```
+
+And we get `mconcat` for for lists of functions (sorry if you haven't gotten
+to that section in the main body of the post yet). 
