@@ -200,7 +200,7 @@ $(document).ready(function () {
 <ul>
 <li>The operation needs to take two elements of the underlying set and produce another element of the set.</li>
 <li>The operation needs to be associative. This means if I have <span class="math inline">\(A \oplus B \oplus C\)</span> it doesn’t matter if I do <span class="math inline">\(A \oplus B\)</span> or <span class="math inline">\(B \oplus C\)</span> first, so I can arbitrarily bracket monoidal operations.</li>
-<li>The operation needs to have an identity element. This is an element of the underlying set that doesn’t change the result of the monoidal operation, we’ll call it O for now. The condition for O is that <span class="math inline">\(A \oplus\)</span> O = O <span class="math inline">\(\oplus\)</span> A = A$</li>
+<li>The operation needs to have an identity element. This is an element of the underlying set that doesn’t change the result of the monoidal operation, we’ll call it O for now. The condition for O is that <span class="math inline">\(A \oplus O = O \oplus A = A\)</span></li>
 </ul>
 <p>A handy slogan for remembering what monoids are all about:</p>
 <blockquote>
@@ -408,7 +408,7 @@ mconcat.default &lt;- function(xs) reduce(xs, mappend, .init = mempty(xs[[1]]))
 <pre class="r"><code># Reference
 system.time(mconcat(as.numeric(1:1000000)))</code></pre>
 <pre><code>##    user  system elapsed 
-##   2.042   0.035   2.056</code></pre>
+##   2.061   0.010   2.050</code></pre>
 <pre class="r"><code># Implement checked mappend
 mappend.numeric &lt;- function(x,y){
   if(!is.numeric(y))
@@ -420,16 +420,16 @@ mappend.numeric &lt;- function(x,y){
 # Checked implementation
 system.time(mconcat(as.numeric(1:1000000)))</code></pre>
 <pre><code>##    user  system elapsed 
-##   2.200   0.022   2.198</code></pre>
+##   2.240   0.013   2.230</code></pre>
 <p>Skipping the type check gives a small speed up. But we get a dramatic speedup just by knowing what monoidal operation to use:</p>
 <pre class="r"><code>mconcat.numeric &lt;- function(xs) reduce(xs, mappend.numeric, .init = xs[[1]])
 
 system.time(mconcat.default(as.numeric(1:1000000)))</code></pre>
 <pre><code>##    user  system elapsed 
-##   2.251   0.018   2.245</code></pre>
+##   2.188   0.007   2.168</code></pre>
 <pre class="r"><code>system.time(mconcat.numeric(as.numeric(1:1000000)))</code></pre>
 <pre><code>##    user  system elapsed 
-##   0.749   0.051   0.786</code></pre>
+##   0.763   0.034   0.783</code></pre>
 <p>We can reduce our runtime by ~60% just by skipping the S3 method lookups! In haskell, the compiler figures out from our type signatures what implementation of <code>mappend</code> it needs to use so there is no cost of lookup at run time. We can recover our lost performance by redefining our default <code>mconcat</code>.</p>
 <pre class="r"><code>rm(mconcat.numeric)
 
@@ -440,7 +440,7 @@ mconcat.default &lt;- function(xs){
 
 system.time(mconcat.default(as.numeric(1:1000000)))</code></pre>
 <pre><code>##    user  system elapsed 
-##   0.753   0.063   0.801</code></pre>
+##   0.831   0.008   0.824</code></pre>
 <p>Here we get the performance equivalent to the operation with known types. The last thing you might want to do is provide a really fast implementation for <code>mconcat</code>, the default implementation doesn’t have to be the end of the story. Let’s write some fast <code>mconcat</code>’s:</p>
 <pre class="r"><code>mconcat.numeric &lt;- function(xs){
   if(!all(map_lgl(xs, is.numeric)))
@@ -450,7 +450,7 @@ system.time(mconcat.default(as.numeric(1:1000000)))</code></pre>
 
 system.time(mconcat(as.numeric(1:100000)))</code></pre>
 <pre><code>##    user  system elapsed 
-##   0.069   0.001   0.068</code></pre>
+##   0.065   0.001   0.066</code></pre>
 <p>That’s an order of magnitude speedup; not bad not bad. How about <code>data.frame</code> row binding:</p>
 <pre class="r"><code>mconcat.data.frame &lt;- function(xs){
   if(!all(map_lgl(xs, is.data.frame)))
@@ -491,10 +491,10 @@ mconcat.default &lt;- function(xs, cores = options(&quot;mc.cores&quot;)){
 
 system.time(v1 &lt;- mconcat.default(as.numeric(1:1000000), 4))</code></pre>
 <pre><code>##    user  system elapsed 
-##   1.187   0.201   0.556</code></pre>
+##   1.204   0.173   0.393</code></pre>
 <pre class="r"><code>system.time(v2 &lt;- mconcat.numeric(as.numeric(1:1000000)))</code></pre>
 <pre><code>##    user  system elapsed 
-##   0.683   0.043   0.712</code></pre>
+##   0.663   0.039   0.689</code></pre>
 <pre class="r"><code>v1 == v2</code></pre>
 <pre><code>## [1] TRUE</code></pre>
 <p>By using four cores we can beat R’s super-fast C sum function using our default parallel <code>mconcat</code>.</p>

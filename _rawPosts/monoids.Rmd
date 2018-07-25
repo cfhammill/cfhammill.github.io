@@ -35,7 +35,7 @@ The operation needs to have the following properties (or satisfy the following "
   so I can arbitrarily bracket monoidal operations. 
 - The operation needs to have an identity element. This is an element of the underlying
   set that doesn't change the result of the monoidal operation, we'll call it O for now. 
-  The condition for O is that $A \oplus$ O = O $\oplus$ A = A$
+  The condition for O is that $A \oplus O = O \oplus A = A$
 
 A handy slogan for remembering what monoids are all about:
 
