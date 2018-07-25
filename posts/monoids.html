@@ -192,7 +192,7 @@ $(document).ready(function () {
 </div>
 
 
-<p>This is the beginning of a blog series in which I’m going to try to bridge two of my main programming interests, data science and strongly typed functional programming. If you’re reading this I assume you’ve perhaps heard some of the intimidating sounding concepts coming out of the functional programming communities, and hope to learn more about them. Some of the terms I’m hoping to cover include concepts like <em>functor</em>, <em>monoid</em>, and the ever popular <em>monad</em>. I’m going to try to explain these concepts with accessible examples using data structures that will be familiar to people who do data science.</p>
+<p>This is the beginning of a blog series in which I’m going to try to bridge two of my main programming interests, data science and strongly typed functional programming. If you’re reading this I assume you’ve perhaps heard some of the intimidating sounding concepts coming out of the functional programming communities, and hope to learn more about them. Some of the terms I’m hoping to cover include concepts like <em>functor</em>, <em>monoid</em>, and the ever popular <em>monad</em>. I’m going to try to explain these concepts with accessible examples using data structures that will be familiar to people who do data science. I’ll be using R for most of the examples with references to haskell where useful.</p>
 <p>I’ve chosen to begin this adventure discussing monoids. I think monoids are an ideal starting point because they are relatively simple to describe and immediately point to best practices for designing reusable code. Monoids are also an appealing start point because they appear early in abstract math curricula, and are relatively foundational.</p>
 <div id="monoids" class="section level2">
 <h2>Monoids</h2>
@@ -408,7 +408,7 @@ mconcat.default &lt;- function(xs) reduce(xs, mappend, .init = mempty(xs[[1]]))
 <pre class="r"><code># Reference
 system.time(mconcat(as.numeric(1:1000000)))</code></pre>
 <pre><code>##    user  system elapsed 
-##   2.061   0.010   2.050</code></pre>
+##   2.089   0.039   2.106</code></pre>
 <pre class="r"><code># Implement checked mappend
 mappend.numeric &lt;- function(x,y){
   if(!is.numeric(y))
@@ -420,16 +420,16 @@ mappend.numeric &lt;- function(x,y){
 # Checked implementation
 system.time(mconcat(as.numeric(1:1000000)))</code></pre>
 <pre><code>##    user  system elapsed 
-##   2.240   0.013   2.230</code></pre>
+##   2.215   0.011   2.203</code></pre>
 <p>Skipping the type check gives a small speed up. But we get a dramatic speedup just by knowing what monoidal operation to use:</p>
 <pre class="r"><code>mconcat.numeric &lt;- function(xs) reduce(xs, mappend.numeric, .init = xs[[1]])
 
 system.time(mconcat.default(as.numeric(1:1000000)))</code></pre>
 <pre><code>##    user  system elapsed 
-##   2.188   0.007   2.168</code></pre>
+##   2.278   0.013   2.270</code></pre>
 <pre class="r"><code>system.time(mconcat.numeric(as.numeric(1:1000000)))</code></pre>
 <pre><code>##    user  system elapsed 
-##   0.763   0.034   0.783</code></pre>
+##   0.782   0.029   0.797</code></pre>
 <p>We can reduce our runtime by ~60% just by skipping the S3 method lookups! In haskell, the compiler figures out from our type signatures what implementation of <code>mappend</code> it needs to use so there is no cost of lookup at run time. We can recover our lost performance by redefining our default <code>mconcat</code>.</p>
 <pre class="r"><code>rm(mconcat.numeric)
 
@@ -440,7 +440,7 @@ mconcat.default &lt;- function(xs){
 
 system.time(mconcat.default(as.numeric(1:1000000)))</code></pre>
 <pre><code>##    user  system elapsed 
-##   0.831   0.008   0.824</code></pre>
+##   0.786   0.035   0.806</code></pre>
 <p>Here we get the performance equivalent to the operation with known types. The last thing you might want to do is provide a really fast implementation for <code>mconcat</code>, the default implementation doesn’t have to be the end of the story. Let’s write some fast <code>mconcat</code>’s:</p>
 <pre class="r"><code>mconcat.numeric &lt;- function(xs){
   if(!all(map_lgl(xs, is.numeric)))
@@ -450,7 +450,7 @@ system.time(mconcat.default(as.numeric(1:1000000)))</code></pre>
 
 system.time(mconcat(as.numeric(1:100000)))</code></pre>
 <pre><code>##    user  system elapsed 
-##   0.065   0.001   0.066</code></pre>
+##   0.063   0.006   0.067</code></pre>
 <p>That’s an order of magnitude speedup; not bad not bad. How about <code>data.frame</code> row binding:</p>
 <pre class="r"><code>mconcat.data.frame &lt;- function(xs){
   if(!all(map_lgl(xs, is.data.frame)))
@@ -491,10 +491,10 @@ mconcat.default &lt;- function(xs, cores = options(&quot;mc.cores&quot;)){
 
 system.time(v1 &lt;- mconcat.default(as.numeric(1:1000000), 4))</code></pre>
 <pre><code>##    user  system elapsed 
-##   1.204   0.173   0.393</code></pre>
+##   0.918   0.100   0.621</code></pre>
 <pre class="r"><code>system.time(v2 &lt;- mconcat.numeric(as.numeric(1:1000000)))</code></pre>
 <pre><code>##    user  system elapsed 
-##   0.663   0.039   0.689</code></pre>
+##   0.695   0.037   0.719</code></pre>
 <pre class="r"><code>v1 == v2</code></pre>
 <pre><code>## [1] TRUE</code></pre>
 <p>By using four cores we can beat R’s super-fast C sum function using our default parallel <code>mconcat</code>.</p>

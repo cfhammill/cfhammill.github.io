@@ -10,7 +10,8 @@ intimidating sounding concepts coming out of the functional programming communit
 and hope to learn more about them. Some of the terms I'm hoping to cover include
 concepts like *functor*, *monoid*, and the ever popular *monad*. I'm going to try to 
 explain these concepts with accessible examples using data structures that will be
-familiar to people who do data science.
+familiar to people who do data science. I'll be using R for most of the examples
+with references to haskell where useful.
 
 I've chosen to begin this adventure discussing monoids. I think monoids are
 an ideal starting point because they are relatively simple to describe and 
