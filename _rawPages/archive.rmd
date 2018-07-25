@@ -2,6 +2,7 @@
 title: Blog Archive
 ---
 
+* [Monoids for Data Scientists](/posts/monoids.html) (July 24th, 2018)
 * [Preserving The Signal](/posts/preserving_the_signal.html) (August 8th, 2017)
 * [Reproducible Science Workflows](/posts/reproducibleScienceWorkflows.html) (August 27, 2015)
 * [Getting Started With Dplyr](/posts/dplyrGuestPost.html) (July 15)

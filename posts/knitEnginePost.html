@@ -20,8 +20,8 @@
 <script src="libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="libs/bootstrap-3.3.5/shim/respond.min.js"></script>
 <script src="libs/navigation-1.1/tabsets.js"></script>
-<link href="libs/highlightjs-1.1/textmate.css" rel="stylesheet" />
-<script src="libs/highlightjs-1.1/highlight.js"></script>
+<link href="libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="libs/highlightjs-9.12.0/highlight.js"></script>
 
 <style type="text/css">
   /* padding for bootstrap navbar */
@@ -59,10 +59,12 @@
   }
 </style>
 <script type="text/javascript">
-if (window.hljs && document.readyState && document.readyState === "complete") {
-   window.setTimeout(function() {
-      hljs.initHighlighting();
-   }, 0);
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
 }
 </script>
 
@@ -116,6 +118,9 @@ img {
 }
 .tabbed-pane {
   padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
 }
 button.code-folding-btn:focus {
   outline: none;
@@ -205,12 +210,12 @@ $(document).ready(function () {
 names(knit_engines$get())</code></pre>
 <pre><code>##  [1] &quot;awk&quot;       &quot;bash&quot;      &quot;coffee&quot;    &quot;gawk&quot;      &quot;groovy&quot;   
 ##  [6] &quot;haskell&quot;   &quot;lein&quot;      &quot;mysql&quot;     &quot;node&quot;      &quot;octave&quot;   
-## [11] &quot;perl&quot;      &quot;psql&quot;      &quot;python&quot;    &quot;Rscript&quot;   &quot;ruby&quot;     
-## [16] &quot;sas&quot;       &quot;scala&quot;     &quot;sed&quot;       &quot;sh&quot;        &quot;stata&quot;    
-## [21] &quot;zsh&quot;       &quot;highlight&quot; &quot;Rcpp&quot;      &quot;tikz&quot;      &quot;dot&quot;      
-## [26] &quot;c&quot;         &quot;fortran&quot;   &quot;fortran95&quot; &quot;asy&quot;       &quot;cat&quot;      
-## [31] &quot;asis&quot;      &quot;stan&quot;      &quot;block&quot;     &quot;block2&quot;    &quot;js&quot;       
-## [36] &quot;css&quot;       &quot;sql&quot;       &quot;go&quot;</code></pre>
+## [11] &quot;perl&quot;      &quot;psql&quot;      &quot;Rscript&quot;   &quot;ruby&quot;      &quot;sas&quot;      
+## [16] &quot;scala&quot;     &quot;sed&quot;       &quot;sh&quot;        &quot;stata&quot;     &quot;zsh&quot;      
+## [21] &quot;highlight&quot; &quot;Rcpp&quot;      &quot;tikz&quot;      &quot;dot&quot;       &quot;c&quot;        
+## [26] &quot;fortran&quot;   &quot;fortran95&quot; &quot;asy&quot;       &quot;cat&quot;       &quot;asis&quot;     
+## [31] &quot;stan&quot;      &quot;block&quot;     &quot;block2&quot;    &quot;js&quot;        &quot;css&quot;      
+## [36] &quot;sql&quot;       &quot;go&quot;        &quot;python&quot;    &quot;julia&quot;</code></pre>
 <p>A quick scan of the available engines shows that <code>knitr</code> should be perfectly capable of executing python code. So I tried:</p>
 <p>```{r, engine = “python”}<br />
 #My python code<br />
@@ -224,52 +229,16 @@ names(knit_engines$get())</code></pre>
 <pre class="r"><code>knit_engines$get(&quot;python&quot;)</code></pre>
 <pre><code>## function (options) 
 ## {
-##     engine = options$engine
-##     code = if (engine %in% c(&quot;highlight&quot;, &quot;Rscript&quot;, &quot;sas&quot;, &quot;haskell&quot;, 
-##         &quot;stata&quot;)) {
-##         f = basename(tempfile(engine, &quot;.&quot;, switch(engine, sas = &quot;.sas&quot;, 
-##             Rscript = &quot;.R&quot;, stata = &quot;.do&quot;, &quot;.txt&quot;)))
-##         writeLines(c(switch(engine, sas = &quot;OPTIONS NONUMBER NODATE PAGESIZE = MAX FORMCHAR = &#39;|----|+|---+=|-/&lt;&gt;*&#39; FORMDLIM=&#39; &#39;;title;&quot;, 
-##             NULL), options$code), f)
-##         on.exit(unlink(f), add = TRUE)
-##         switch(engine, haskell = paste(&quot;-e&quot;, shQuote(paste(&quot;:script&quot;, 
-##             f))), sas = {
-##             logf = sub(&quot;[.]sas$&quot;, &quot;.lst&quot;, f)
-##             on.exit(unlink(c(logf, sub(&quot;[.]sas$&quot;, &quot;.log&quot;, f))), 
-##                 add = TRUE)
-##             f
-##         }, stata = {
-##             logf = sub(&quot;[.]do$&quot;, &quot;.log&quot;, f)
-##             on.exit(unlink(c(logf)), add = TRUE)
-##             paste(switch(Sys.info()[[&quot;sysname&quot;]], Windows = &quot;/q /e do&quot;, 
-##                 Darwin = &quot;-q -e do&quot;, Linux = &quot;-q -b do&quot;, &quot;-q -b do&quot;), 
-##                 shQuote(normalizePath(f)))
-##         }, f)
+##     if (isFALSE(options$python.reticulate)) {
+##         eng_interpreted(options)
 ##     }
-##     else paste(switch(engine, bash = &quot;-c&quot;, coffee = &quot;-e&quot;, groovy = &quot;-e&quot;, 
-##         lein = &quot;exec -e&quot;, mysql = &quot;-e&quot;, node = &quot;-e&quot;, octave = &quot;--eval&quot;, 
-##         perl = &quot;-e&quot;, psql = &quot;-c&quot;, python = &quot;-c&quot;, ruby = &quot;-e&quot;, 
-##         scala = &quot;-e&quot;, sh = &quot;-c&quot;, zsh = &quot;-c&quot;, NULL), shQuote(paste(options$code, 
-##         collapse = &quot;\n&quot;)))
-##     code = if (engine %in% c(&quot;awk&quot;, &quot;gawk&quot;, &quot;sed&quot;, &quot;sas&quot;)) 
-##         paste(code, options$engine.opts)
-##     else paste(options$engine.opts, code)
-##     cmd = get_engine_path(options$engine.path, engine)
-##     out = if (options$eval) {
-##         message(&quot;running: &quot;, cmd, &quot; &quot;, code)
-##         tryCatch(system2(cmd, code, stdout = TRUE, stderr = TRUE, 
-##             env = options$engine.env), error = function(e) {
-##             if (!options$error) 
-##                 stop(e)
-##             paste(&quot;Error in running command&quot;, cmd)
-##         })
+##     else {
+##         if (!loadable(&quot;reticulate&quot;)) 
+##             warning2(&quot;The &#39;python&#39; engine in knitr requires the reticulate package. &quot;, 
+##                 &quot;If you do not want to use the reticulate package, set the chunk option &quot;, 
+##                 &quot;python.reticulate = FALSE.&quot;)
+##         reticulate::eng_python(options)
 ##     }
-##     else &quot;&quot;
-##     if (!options$error &amp;&amp; !is.null(attr(out, &quot;status&quot;))) 
-##         stop(paste(out, collapse = &quot;\n&quot;))
-##     if (options$eval &amp;&amp; engine %in% c(&quot;sas&quot;, &quot;stata&quot;) &amp;&amp; file.exists(logf)) 
-##         out = c(readLines(logf), out)
-##     engine_output(options, options$code, out)
 ## }
 ## &lt;environment: namespace:knitr&gt;</code></pre>
 <p>First good sign, all the code is R with no references to byte-code and it’s short enough to not take all day to figure out. First thing to note about the code is it’s a function, and not only that it’s a function of one argument, <code>options</code>. The first line of code takes a named element of <code>options</code> called <code>engine</code> (so options is a named list containing things like the name of the engine). My intuition was that <code>options</code> was a list of every component of chunk, and the rest of the function largely confirmed that intuition. Other named elements of <code>options</code> used in the function include:</p>

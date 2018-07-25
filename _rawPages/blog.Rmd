@@ -2,10 +2,10 @@
 ---
 
 <script>
-var mostRecentFour = ["preserving_the_signal.html"
-                   , "reproducibleScienceWorkflows.html"
-                   , "dplyrGuestPost.html"
-                   , "statsvsdata.html"
+var mostRecentFour = ["monoids.html"
+	, "preserving_the_signal.html"
+	, "reproducibleScienceWorkflows.html"
+	, "dplyrGuestPost.html"
                      ];
 
   function loadPost(ind, post){

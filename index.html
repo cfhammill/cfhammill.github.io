@@ -20,8 +20,8 @@
 <script src="libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="libs/bootstrap-3.3.5/shim/respond.min.js"></script>
 <script src="libs/navigation-1.1/tabsets.js"></script>
-<link href="libs/highlightjs-1.1/textmate.css" rel="stylesheet" />
-<script src="libs/highlightjs-1.1/highlight.js"></script>
+<link href="libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="libs/highlightjs-9.12.0/highlight.js"></script>
 
 <style type="text/css">
   /* padding for bootstrap navbar */
@@ -59,10 +59,12 @@
   }
 </style>
 <script type="text/javascript">
-if (window.hljs && document.readyState && document.readyState === "complete") {
-   window.setTimeout(function() {
-      hljs.initHighlighting();
-   }, 0);
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
 }
 </script>
 
@@ -116,6 +118,9 @@ img {
 }
 .tabbed-pane {
   padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
 }
 button.code-folding-btn:focus {
   outline: none;
@@ -188,7 +193,7 @@ $(document).ready(function () {
 
 <script>
   $(document).ready(function(){
-    $("#blogpost").load("posts/preserving_the_signal.html div.main-container",
+    $("#blogpost").load("posts/monoids.html div.main-container",
     function(){
       $("#blogpost").find(".navbar").remove();
       $('pre code').each(function(i, block) {
@@ -202,9 +207,9 @@ $(document).ready(function () {
     });
   });
 </script>
-<div id="welcome-to-the-new-and-improved-datamancy-blog" class="section level2">
-<h2>Welcome to the New and Improved Datamancy Blog!</h2>
-<p>Here you’ll find an assortment of musings on all things data related. This site is a blog-folio-sumé for me (Chris Hammill), a statistical biologist and data scientist. This site came together over a few days with me learning html, css, and javascript as I went (I migrated here from my old <a href="www.datamancy.blogspot.ca">blogspot</a>). So far there is no commenting system, so if you have any questions, concerns, or gripes you can find my contact info in the <a href="/pages/aboutMe.html">about me</a> section.</p>
+<div id="welcome-to-the-datamancy-blog" class="section level2">
+<h2>Welcome to the Datamancy Blog!</h2>
+<p>Here you’ll find an assortment of musings on all things data related. This site is a blog-folio-sumé for me (Chris Hammill), and data scientist and neuroinformaticist. This site came together in the bad old days before blogdown (I migrated here from my old <a href="www.datamancy.blogspot.ca">blogspot</a>). There is no commenting system, and won’t be until I migrate over to blogdown/hugo so if you have any questions, concerns, or gripes you can find my contact info in the <a href="/pages/aboutMe.html">about me</a> section.</p>
 <p><br></p>
 </div>
 <div id="hot-off-the-presses" class="section level2">
