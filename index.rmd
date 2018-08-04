@@ -3,7 +3,7 @@
 
 <script>
   $(document).ready(function(){
-    $("#blogpost").load("posts/monoids.html div.main-container",
+    $("#blogpost").load("posts/row_binding_shootout.html div.main-container",
     function(){
       $("#blogpost").find(".navbar").remove();
       $('pre code').each(function(i, block) {
@@ -22,7 +22,7 @@
 Welcome to the Datamancy Blog!
 -----------------------------------------------
 
-Here you'll find an assortment of musings on all things data related. This site is a blog-folio-sum&eacute; for me (Chris Hammill), and data scientist and neuroinformaticist. This site came together in the bad old days before blogdown (I migrated here from my old [blogspot](www.datamancy.blogspot.ca)). There is no commenting system, and won't be until I migrate over to blogdown/hugo so if you have any questions, concerns, or gripes you can find my contact info in the [about me](/pages/aboutMe.html) section.
+Here you'll find an assortment of musings on all things data related. This site is a blog/portfolio for me (Chris Hammill), a data scientist and neuroinformaticist. This site came together in the bad old days before blogdown (I migrated here from my old [blogspot](www.datamancy.blogspot.ca)). There is no commenting system, and won't be until I migrate over to blogdown/hugo so if you have any questions, concerns, or gripes you can find my contact info in the [about me](/pages/aboutMe.html) section. The best place to find me is on twitter @cfhammill.
 
 <br>
 

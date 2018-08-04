@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>The row binding shootout</title>
+
+<script src="libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="libs/navigation-1.1/tabsets.js"></script>
+<link href="libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  /* padding for bootstrap navbar */
+  body {
+  padding-top: 80px;
+  padding-bottom: 40px;
+  }
+  /* offset scroll position for anchor links (for fixed navbar)  */
+  .section h2 {
+  padding-top: 55px;
+  margin-top: -55px;
+  }
+  .section h3 {
+  padding-top: 55px;
+  margin-top: -55px;
+  }
+  /* don't use link color in navbar */
+  .dropdown-menu>li>a {
+  color: black;
+  }
+</style>
+
+<script>
+  $(document).on('click','.navbar-collapse.in',function(e) {
+  if( $(e.target).is('a') && $(e.target).attr('class') != 'dropdown-toggle' ) {
+  $(this).collapse('hide');
+  }
+  });
+</script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+	<span class="icon-bar"></span>
+	<span class="icon-bar"></span>
+	<span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">Datamancy</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+	<li><a href="/index.html">Home</a></li>
+	<li><a href="/pages/blog.html">Blog</a></li>
+	<li><a href="/pages/aboutMe.html">About Me</a></li>
+	<li class="dropdown">
+	  <a href="Tutorials" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Tutorials <span class="caret"></span></a>
+	  <ul class="dropdown-menu" role="menu">
+	    <li class="dropdown-header">Tutorials</li>
+	    <li><a href="/posts/startRMarkdown.html">Getting Started With R Markdown</a></li>
+	    <li><a href="/posts/beamerPresentations.html">Breaking Up With Powerpoint</a></li>
+	    <li><a href="/posts/regexPost.html">Regular Expressions in R</a></li>
+	    <li><a href="/posts/watermarkPost.html">Overlays with ggplot2</a></li>
+	  </ul>
+	</li>
+	<li>
+	  <a href="/pages/graphics.html">Data Viz</a>
+	</li>
+	<li class="dropdown">
+	  <a href="Diversions" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Diversions <span class="caret"></span></a>
+	  <ul class="dropdown-menu" role="menu">
+	    <li class="dropdown-header"><a href="/pages/tldrNamegen.html">Drink Name Generator</a></li>
+	  </ul>
+	</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">The row binding shootout</h1>
+
+</div>
+
+
+<p>While writing my recent blog post on monoids I claimed to have written a fast <code>mconcat</code> for <code>data.frame</code>s. In this context <code>mconcat</code> means <code>row_bind</code>ing a list of <code>data.frames</code>. The simple implementation looks like:</p>
+<pre class="r"><code>reduce(frames, bind_rows)</code></pre>
+<p>Now this implementation will be quick, no doubt, but I claimed that this was faster:</p>
+<pre class="r"><code>bind_rows(!!!frames)</code></pre>
+<p>And then I thought about it, and I’m not too sure, maybe the cost of unquoting outweighs the multiple trips to c++. There are also other ways you can think to bind up <code>data.frames</code>. So I decided to have a little shootout.</p>
+<p>Here are the contenders:</p>
+<pre class="r"><code>suppressPackageStartupMessages({
+  library(dplyr)
+  library(purrr)
+  library(furrr)
+  library(tidyr)
+  library(data.table)
+  library(ggplot2)
+  library(microbenchmark)
+})
+
+contestants &lt;-
+  list(reduction = function(xs) reduce(xs, bind_rows)
+    , tidy_eval = function(xs) bind_rows(!!!xs)
+    , do_call = function(xs) do.call(bind_rows, xs)
+    , do_quoted_call = function(xs) do.call(bind_rows, xs, quote = TRUE)
+    , purrr_df = function(xs) map_df(xs, identity)
+    , purrr_dfr = function(xs) map_dfr(xs, identity)
+    , rbind_list = function(xs) as.data.frame(rbindlist(xs, fill = TRUE))
+      )</code></pre>
+<p>In the mix we have the two I mentioned above, two variants of <code>do.call</code>, and two sneaky options of using <code>purrr::map_*</code> of the <code>identity</code> function with<code>data.frame</code> reductions built in. And finally <code>data.table</code>’s <code>rbindlist</code> with a coerce back to <code>data.frame</code> at the end.</p>
+<p>We’ll vary the contest by three dimensions, number of rows and columns per <code>data.frame</code>, and the number of <code>data.frames</code>.</p>
+<pre class="r"><code>random_df_list &lt;- function(rows, cols, n, ...){
+  replicate(n, {
+    rnorm(rows * cols) %&gt;%
+      matrix(ncol = cols) %&gt;%
+      as.data.frame()
+  }, simplify = FALSE)
+}</code></pre>
+<p>Let’s do a quick test to make sure all the contestants give the same answer:</p>
+<pre class="r"><code>random_data &lt;- random_df_list(10,10,10)
+
+bound_results &lt;- map(contestants, ~ .(random_data))
+
+all(map_lgl(bound_results, ~ identical(., bound_results[[1]])))</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<p>Ok, great they do. So let’s run them through the battery. The grid will be:</p>
+<ul>
+<li>2, 10, and 100 columns.</li>
+<li>10, 100, and 1000 rows.</li>
+<li>2, 10, and 100 frames.</li>
+</ul>
+<p>We’ll generate our experiment grid:</p>
+<pre class="r"><code>set.seed(20180726)
+experiment_grid &lt;-
+  crossing(rows = c(2,10,100)
+         , cols = c(10,100,1000)
+         , n = c(1,10,100)
+         , iteration = 1:10) %&gt;%
+  mutate(test_data = pmap(., random_df_list))                                      </code></pre>
+<p>We’ll try each with 10 random data sets for each parameter combination. This take a little while to run so I’ll parallelize out to four cores with <code>furrr</code> (&lt; 1h after parallelizing). We’ll use <code>microbenchmark</code> to try 10 replicates of each contender on each data set.</p>
+<pre class="r"><code>plan(&quot;multicore&quot;)
+options(mc.cores = 4)
+
+results &lt;-
+  future_pmap_dfr(experiment_grid, function(test_data, ...){
+    imap_dfc(contestants, function(contestant, nm){
+      microbenchmark(contestant(test_data)
+                   , times = 10
+                   , unit = &quot;ms&quot;) %&gt;%
+        summary %&gt;%
+        { data_frame(!!nm := .[1,&quot;median&quot;]) }
+    })
+  })</code></pre>
+<p>Now we’ll tack the results on to the experiment grid and see what the results look like. The median of medians for each contender will be displayed across parameter combinations.</p>
+<pre class="r"><code>full_results &lt;-
+  experiment_grid %&gt;%
+  select(-test_data) %&gt;% #for space
+  bind_cols(results) %&gt;%
+  gather(contestant, time, !!!names(contestants)) %&gt;%
+  group_by(cols, rows, n, contestant) %&gt;%
+  summarize(time = median(time))
+
+full_results %&gt;%
+  ggplot(aes(x = n, y = time, colour = contestant)) +
+  geom_line() +
+  facet_grid(cols ~ rows, scales = &quot;free_y&quot;)</code></pre>
+<p><img src="row_binding_shootout_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p>A bit suprising to me, the <code>reduce</code> with <code>bind_rows</code> is dramatically slower than the other contestants, and <code>rbindlist</code> is dramatically faster. I’m quite surprised <code>do.call</code> in either form is as performant as the the other solutions. I was under the impression from <a href="https://rpubs.com/hadley/do-call">Hadley’s exploration of <code>do.call</code></a> that it would be quite slow.</p>
+<div id="closer-inspection" class="section level2">
+<h2>Closer inspection</h2>
+<p>Let’s remove the reduction because it’s really throwing off the scale. Evidentally passing the R/C++ interface multiple times prevents a lot of potential optimizations in the C++ code.</p>
+<pre class="r"><code>full_results %&gt;%
+  filter(contestant != &quot;reduction&quot;) %&gt;%
+  ggplot(aes(x = n, y = time, colour = contestant)) +
+  geom_line() +
+  facet_grid(cols ~ rows, scales = &quot;free_y&quot;)  </code></pre>
+<p><img src="row_binding_shootout_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p>My guess is that in most cases people are binding &lt;= 20 data frames together so let’s zoom in on those</p>
+<pre class="r"><code>full_results %&gt;%
+  filter(contestant != &quot;reduction&quot;) %&gt;%
+  filter(n &lt;= 20) %&gt;%
+  ggplot(aes(x = n, y = time, colour = contestant)) +
+  geom_line() +
+  facet_grid(cols ~ rows, scales = &quot;free_y&quot;) </code></pre>
+<p><img src="row_binding_shootout_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p>Unless you’re binding very small frames together <code>rbindlist</code> is the best. Now amongst the approaches that use <code>bind_rows</code>:</p>
+<pre class="r"><code>full_results %&gt;%
+  filter(! contestant %in% c(&quot;reduction&quot;, &quot;rbind_list&quot;)) %&gt;%
+  ggplot(aes(x = n, y = time, colour = contestant)) +
+  geom_line() +
+  facet_grid(cols ~ rows, scales = &quot;free_y&quot;) </code></pre>
+<p><img src="row_binding_shootout_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p>Amongst these solutions, the tidy evaluation approach is fastest at small sample frame sizes. When you have many large frames, using <code>purrr</code>’s <code>data.frame</code> returning <code>map</code>s are marginally faster than the other approaches but you’re looking at a handful of percent. You can see some issues with unquoted <code>do.call</code> start showing up at 1000 row <code>data.frame</code>s.</p>
+</div>
+<div id="revisiting-rbindlist" class="section level2">
+<h2>Revisiting <code>rbindlist</code></h2>
+<p>One concern I had before suggesting everyone use <code>rbindlist</code> is whether or not it deals nicely with <code>list</code> columns.</p>
+<pre class="r"><code>a &lt;- data_frame(a = list(1))
+b &lt;- data_frame(b = list(2))
+
+as.data.frame(rbindlist(list(a,b), fill = TRUE))</code></pre>
+<pre><code>##      a    b
+## 1    1 NULL
+## 2 NULL    2</code></pre>
+<p>So there is an undesirable behaviour here, <code>rbindlist</code> is <code>unlist</code>ing our simple list columns. Even worse the fill value has changed from <code>NA</code> to <code>NULL</code>. Let’s look at a more complicated list example:</p>
+<pre class="r"><code>a &lt;- data_frame(a = list(c = list(1), d = &quot;hi&quot;))
+b &lt;- data_frame(b = list(c = list(2), d = &quot;there&quot;))
+
+as.data.frame(rbindlist(list(a,b), fill = TRUE))</code></pre>
+<pre><code>##      a     b
+## 1    1  NULL
+## 2   hi  NULL
+## 3 NULL     2
+## 4 NULL there</code></pre>
+<p>Oh no, <code>list</code> columns are being recursively <code>unlist</code>ed.</p>
+<p>So <code>rbindlist</code> is unsuitable for use with <code>list</code> columns. And since <code>list</code> columns are very important to me <code>rbindlist</code> is not a suitable general purpose row binder. Now you could probably get good mileage out of traversing all of the <code>data.frame</code>s checking for list columns and using <code>rbindlist</code> if there aren’t any.</p>
+<p>In fact this is probably on average still the fastest approach, even with the cost of the traversal.</p>
+</div>
+<div id="conclusions" class="section level2">
+<h2>Conclusions</h2>
+<p>Switching from <code>reduce</code> to <code>bind_rows(!!!xs)</code> as I did in my monoids post did indeed provide a performance benefit, however the tidy evaluation approach is not the fastest way to bind <code>data.frame</code>s by row. If you’re certain you have no <code>list</code> columns, then <code>rbindlist</code> cannot be beat, being substantially faster and scaling better than the tidyverse alternatives. If <code>list</code> columns are a common part of your workflow, as they are mine, then using <code>purrr</code>’s <code>data.frame</code> reducing maps (<code>map_df</code> or <code>map_dfr</code>) are probably the fastest, but the tidy evaluation approach above is probably more than close enough.</p>
+</div>
+
+
+<!-- some extra javascript for older browsers -->
+<script type="text/javascript" src="libs/polyfill.js"></script>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-63858206-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

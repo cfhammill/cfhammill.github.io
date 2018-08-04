@@ -2,10 +2,11 @@
 ---
 
 <script>
-var mostRecentFour = ["monoids.html"
+var mostRecentFour = [
+    "row_binding_shootout.html"
+    , "monoids.html"
 	, "preserving_the_signal.html"
 	, "reproducibleScienceWorkflows.html"
-	, "dplyrGuestPost.html"
                      ];
 
   function loadPost(ind, post){
