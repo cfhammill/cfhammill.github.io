@@ -3,10 +3,10 @@
 
 <script>
 var mostRecentFour = [
-    "row_binding_shootout.html"
+	"loop_gotcha.html"
+    , "row_binding_shootout.html"
     , "monoids.html"
 	, "preserving_the_signal.html"
-	, "reproducibleScienceWorkflows.html"
                      ];
 
   function loadPost(ind, post){

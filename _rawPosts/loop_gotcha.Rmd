@@ -1,0 +1,67 @@
+---
+title: "Loop Gotcha"
+output: html_document
+---
+
+Recently I saw a tweet about a python behaviour I totally didn't expect. There's a very
+strange interaction between list comprehensions and anonymous functions (lambdas). I later
+realized the exact same thing happens in R's `for` loops. I've been using `*apply` and more
+recently `purrr::map*` for long enough I forgot this behaviour existed. So let's see the
+gotcha in action:
+
+```{r}
+funs <- list()
+for(i in 1:10){
+  funs[[i]] <- function(x) x^i
+}
+
+funs[[4]](2)
+```
+
+Hmmm, I was expecting this to return 16 (2^4), but instead I get 1024 (2^10).
+It doesn't take long to see that this is because the value `i` ends up at 10,
+and the function merely has a reference to the `i` that was defined in the loop.
+So our `i` is mutating under the hood and our functions aren't doing what we wanted.
+
+If that was the extent of the problem we'd be more or less ok. But the plot thickens.
+
+```{r}
+funs <- list()
+for(i in 1:10){
+  funs[[i]] <- function(x) x^i
+}
+
+for(i in 10:1)
+  "Do Nothing"
+  
+funs[[4]](2)
+```
+
+What! Now I'm getting 2 (2^1), what gives? 
+
+Well since the `i` escapes the loop, it is now sitting around in our global
+environment for us to (accidentally) modify. After the second loop `i` is 
+set to `1` and now all of our functions will return the number they're given.
+
+Now we can fix this by creating a new scope for our loop body and re-binding
+the index, then let the result escape the local scope.
+
+```{r}
+funs <- list()
+for(i in 1:10)
+  local({
+    j <- i
+    funs[[j]] <<- function(x) x^j
+  })
+
+funs[[4]](2)
+```
+
+or we could just do things the functional way:
+
+```{r}
+funs <- purrr::map(1:10, ~ function(x) x ^ .)
+funs[[4]](2)
+```
+
+Much better `r emo::ji("wink")`

@@ -11,7 +11,7 @@
 
 
 
-<title></title>
+<title>Loop Gotcha</title>
 
 <script src="libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -187,37 +187,48 @@ $(document).ready(function () {
 
 
 
+<h1 class="title toc-ignore">Loop Gotcha</h1>
 
 </div>
 
 
-<script>
-  $(document).ready(function(){
-    $("#blogpost").load("posts/loop_gotcha.html div.main-container",
-    function(){
-      $("#blogpost").find(".navbar").remove();
-      $('pre code').each(function(i, block) {
-        hljs.highlightBlock(block);
-        });
-        $('img').each(function(){
-          var url_orig = $(this).attr('src');
-          var url_fix = url_orig.replace(/(^[^/])/, "/posts/$1");
-          $(this).attr('src', url_fix);
-        });
-    });
-  });
-</script>
-<div id="welcome-to-the-datamancy-blog" class="section level2">
-<h2>Welcome to the Datamancy Blog!</h2>
-<p>Here you’ll find an assortment of musings on all things data related. This site is a blog/portfolio for me (Chris Hammill), a data scientist and neuroinformaticist. This site came together in the bad old days before blogdown (I migrated here from my old <a href="www.datamancy.blogspot.ca">blogspot</a>). There is no commenting system, and won’t be until I migrate over to blogdown/hugo so if you have any questions, concerns, or gripes you can find my contact info in the <a href="/pages/aboutMe.html">about me</a> section. The best place to find me is on twitter <a href="https://twitter.com/CFHammill">@cfhammill</a>.</p>
-<p><br></p>
-</div>
-<div id="hot-off-the-presses" class="section level2">
-<h2><em>Hot Off The Presses</em></h2>
-<div id="blogpost">
+<p>Recently I saw a tweet about a python behaviour I totally didn’t expect. There’s a very strange interaction between list comprehensions and anonymous functions (lambdas). I later realized the exact same thing happens in R’s <code>for</code> loops. I’ve been using <code>*apply</code> and more recently <code>purrr::map*</code> for long enough I forgot this behaviour existed. So let’s see the gotcha in action:</p>
+<pre class="r"><code>funs &lt;- list()
+for(i in 1:10){
+  funs[[i]] &lt;- function(x) x^i
+}
 
-</div>
-</div>
+funs[[4]](2)</code></pre>
+<pre><code>## [1] 1024</code></pre>
+<p>Hmmm, I was expecting this to return 16 (2^4), but instead I get 1024 (2^10). It doesn’t take long to see that this is because the value <code>i</code> ends up at 10, and the function merely has a reference to the <code>i</code> that was defined in the loop. So our <code>i</code> is mutating under the hood and our functions aren’t doing what we wanted.</p>
+<p>If that was the extent of the problem we’d be more or less ok. But the plot thickens.</p>
+<pre class="r"><code>funs &lt;- list()
+for(i in 1:10){
+  funs[[i]] &lt;- function(x) x^i
+}
+
+for(i in 10:1)
+  &quot;Do Nothing&quot;
+  
+funs[[4]](2)</code></pre>
+<pre><code>## [1] 2</code></pre>
+<p>What! Now I’m getting 2 (2^1), what gives?</p>
+<p>Well since the <code>i</code> escapes the loop, it is now sitting around in our global environment for us to (accidentally) modify. After the second loop <code>i</code> is set to <code>1</code> and now all of our functions will return the number they’re given.</p>
+<p>Now we can fix this by creating a new scope for our loop body and re-binding the index, then let the result escape the local scope.</p>
+<pre class="r"><code>funs &lt;- list()
+for(i in 1:10)
+  local({
+    j &lt;- i
+    funs[[j]] &lt;&lt;- function(x) x^j
+  })
+
+funs[[4]](2)</code></pre>
+<pre><code>## [1] 16</code></pre>
+<p>or we could just do things the functional way:</p>
+<pre class="r"><code>funs &lt;- purrr::map(1:10, ~ function(x) x ^ .)
+funs[[4]](2)</code></pre>
+<pre><code>## [1] 16</code></pre>
+<p>Much better 😉</p>
 
 
 <!-- some extra javascript for older browsers -->
